@@ -1,0 +1,36 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor — Webstorm/IntelliJ
+.idea/
+*.iml
+
+# Editor — VSCode
+.vscode/
+
+# Node (지금은 안 쓰지만 Phase 2 대비)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Build outputs (Phase 2 대비)
+dist/
+build/
+.next/
+out/
+
+# Claude — 개인/머신별 설정만 제외 (팀과 공유할 설정은 추후 .claude/settings.json으로 별도 관리)
+.claude/settings.local.json
+
+# Temp
+*.log
+*.tmp
+/tmp/
