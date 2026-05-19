@@ -1,9 +1,26 @@
 # 경향교회 홈페이지 — 작업 컨텍스트
 
-> **모드:** 본 개발 (Next.js 14 + Supabase + Vercel)
+> **기본 모드:** 본 개발 (Next.js 14 + Supabase + Vercel)
 > 시안 산물은 `prototypes/`에 동결 보관. 시안 컨텍스트/가드레일은 `prototypes/_archive/`.
 
-## 절대 규칙 — 어기지 마라
+## 모드 분기 — 가장 먼저 판정
+
+사용자 메시지에 **"시안 모드"**(또는 "프로토타입 모드", "prototype 모드") 가 명시되면 → **시안 모드 진입**.
+그 외 모든 경우 → 본 개발 모드 (디폴트).
+
+| 모드 | 컨텍스트 | 가드레일 | 산출물 |
+|---|---|---|---|
+| **본 개발** (디폴트) | `context/**` | `guardrails/**` | `app/`, `components/`, `lib/`, `supabase/` 등 |
+| **시안** | `prototypes/_archive/context/**` | `prototypes/_archive/guardrails/**` | `prototypes/designs/*.html` (단일 HTML, Tailwind CDN) |
+
+**두 모드의 격리 원칙:**
+- 시안 모드에서 `context/` 또는 `guardrails/` 건드리지 말 것 (본 개발 결정사항 침범)
+- 본 개발 모드에서 `prototypes/` 건드리지 말 것 (시안 동결)
+- 시안에서 잠긴 결정사항을 본 개발에 반영하려면 → 사용자가 "결정 잠금" 작업으로 명시 요청해야 함 (자동 동기화 안 함)
+
+시안 모드 상세는 아래 [§ 시안 모드](#시안-모드-디자이너-협업--비교용) 참조.
+
+## 절대 규칙 — 어기지 마라 (본 개발 모드)
 
 1. **결정 잠금 우선.** 디자인 토큰·IA·콘텐츠 결정사항은 `context/design/*`·`context/04-information-architecture.md`·`context/05-content-inventory.md`가 단일 출처. 코드보다 문서가 먼저 바뀐다.
 2. **컴포넌트는 카테고리 안에 있다.** primitives(shadcn 래퍼) / layout / content / interactive. 새 컴포넌트는 `context/components/00-inventory.md`에 먼저 등록 → frontmatter 채운 .md 만든 후 코드.
@@ -76,6 +93,46 @@ prototypes/                      시안 산물 동결 (수정 금지)
 - `> DECISION NEEDED:` 마커가 박힌 디자인 토큰이 있는데 그걸 사용하는 컴포넌트를 만들라는 지시
 - `guardrails/03-tech-constraints.md` 화이트리스트에 없는 의존성 추가 요구
 - 새가족 등록·신청 폼처럼 개인정보가 흐르는 컴포넌트인데 RLS·동의 처리 정의가 없는 상태
+
+## 시안 모드 (디자이너 협업 · 비교용)
+
+> 사용자가 "시안 모드" 마커를 메시지에 포함했을 때만 활성.
+> 본 개발 모드의 `context/`·`guardrails/` 와 **격리.**
+
+### 작동 방식
+
+1. 사용자 메시지에서 시안 모드 마커 감지 → 즉시 모드 전환
+2. **읽을 컨텍스트**: `prototypes/_archive/context/00-brief.md` ~ `04-references.md`
+3. **읽을 가드레일**: `prototypes/_archive/guardrails/00-rules.md` ~ `02-tech-constraints.md`
+4. **산출물 위치**: `prototypes/designs/0X-{이름}.html` (단일 정적 HTML)
+5. 작업 종료 시 본 개발 컨텍스트(`context/`)는 **건드리지 않음**
+
+### 시안 모드 라우터
+
+| 작업 | 반드시 읽어라 |
+|---|---|
+| 새 시안 페이지 만들기 | `prototypes/_archive/context/*` 5개 전체 + `prototypes/_archive/guardrails/00-rules.md` |
+| 기존 시안 수정 | `prototypes/_archive/context/01-design-system.md` (토큰) + 해당 시안 HTML |
+| 5개 시안 일관성 검증 | `prototypes/_archive/guardrails/01-consistency-checklist.md` |
+| 시안 디자인 토큰 변경 | `prototypes/_archive/context/01-design-system.md` 먼저 → 모든 시안 일괄 반영 |
+
+### 시안 모드 제약 (요약)
+
+- Next.js·Supabase·shadcn 사용 안 함 — 단일 HTML + Tailwind CDN
+- 빌드 도구 없음
+- 시안 자산을 본 개발 코드로 직접 복붙 금지 (디자인 토큰·접근성·성능 재검증 필요)
+- 시안에서 잠긴 결정사항 → 본 개발 반영하려면 사용자가 별도로 "결정 잠금" 작업 요청
+
+### 시안 → 본 개발 동기화
+
+시안 단계에서 결정 잠긴 항목(컬러 토큰·분위기·IA 등)은 이미 본 개발 `context/`에 마이그됨 (2026-05-19).
+시안에서 **추가로** 결정이 잠기면:
+
+1. 시안 컨텍스트(`prototypes/_archive/context/*`) 갱신
+2. 사용자에게 "본 개발 context에 반영할까?" 물어봄
+3. 합의 시 본 개발 `context/`의 해당 문서 갱신
+
+자동 동기화 절대 안 함 — 양쪽 모두 잠금 시점·잠금 사유가 다를 수 있음.
 
 ## 메모
 
