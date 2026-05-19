@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+<!--
+  경향교회 1차 시안 — D안 "경향교회 자체 스타일 (따뜻한 공동체 중심 모던 한국교회)"
+  레퍼런스: 없음 — 경향교회 정체성 기반 자체 제안
+  특징: 따뜻한 크림 베이스 + 브랜드 네이비+크림슨 / 영상 헤로 / 공동체·사람 중심 흐름
+        / 소프트 라운드(2xl) / "경향의 일주일" 시그니처 / 따뜻한 사진 모자이크
+  Design System: prototypes/_archive/context/01-design-system.md
+  Updated: 2026-05-19
+-->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>경향교회 — 오신 것을 환영합니다 (D안)</title>
+<meta name="description" content="경향교회 홈페이지 개편 1차 시안 — D안 경향교회 자체 스타일" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Pretendard Variable','Pretendard','-apple-system','system-ui','sans-serif'] },
+        colors: {
+          brand: {
+            bg:'#FBF7F1', surface:'#FFFFFF', ink:'#1E2742',
+            'ink-muted':'#6E7385', accent:'#C8252C', 'accent-2':'#16203A', line:'#ECE5DA'
+          }
+        },
+        maxWidth: { container:'1200px' }
+      }
+    }
+  };
+</script>
+<style>
+  body { font-family:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif; }
+  .hero-overlay {
+    background:linear-gradient(180deg,rgba(22,32,58,.30) 0%,rgba(22,32,58,.42) 50%,rgba(22,32,58,.80) 100%);
+  }
+  .fade-up { opacity:0; transform:translateY(18px); transition:opacity .7s ease-out,transform .7s ease-out; }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+  @keyframes scroll-hint { 0%,100%{transform:translateY(0);opacity:.55;} 50%{transform:translateY(8px);opacity:1;} }
+  .scroll-hint { animation:scroll-hint 1.8s ease-in-out infinite; }
+
+  #site-header.scrolled {
+    background-color:rgba(251,247,241,.95);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 1px 0 rgba(30,39,66,.08);
+  }
+  #site-header.scrolled .h-text  { color:#1E2742; }
+  #site-header.scrolled .h-text:hover { color:#C8252C; }
+  #site-header.scrolled .h-sub   { color:#6E7385; }
+  #site-header.scrolled .h-divider { border-color:#ECE5DA; }
+  #site-header.scrolled .h-burger { color:#1E2742; }
+
+  .nav-item:hover .dropdown,
+  .nav-item:focus-within .dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+  .dropdown {
+    opacity:0; visibility:hidden; transform:translateY(-8px);
+    transition:opacity .2s ease-out,transform .2s ease-out,visibility .2s;
+  }
+</style>
+</head>
+<body class="bg-brand-bg text-brand-ink antialiased">
+
+<!-- ===== D안 HEADER: 따뜻한 모던 ===== -->
+<header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <div class="max-w-container mx-auto px-5 md:px-8 h-16 md:h-20 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-brand-accent flex items-center justify-center shadow-sm">
+        <span class="text-white font-bold text-base md:text-lg leading-none">경</span>
+      </div>
+      <div class="flex flex-col leading-tight">
+        <span class="h-text text-base md:text-lg font-bold text-white transition-colors">경향교회</span>
+        <span class="h-sub hidden md:block text-[10px] tracking-[0.18em] text-white/70 transition-colors">SINCE 1973 · 함께 자라는 공동체</span>
+      </div>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-1">
+      <div class="nav-item relative">
+        <button class="h-text px-4 py-2 text-[15px] font-medium text-white transition-colors inline-flex items-center gap-1">교회소개 <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+        <div class="dropdown absolute top-full left-1/2 -translate-x-1/2 mt-1 min-w-[180px] bg-brand-surface rounded-2xl shadow-lg border border-brand-line py-2">
+          <a href="02-intro.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">교회 안내</a>
+          <a href="02-intro.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">섬기는 사람들</a>
+          <a href="02-intro.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">교회 정보</a>
+          <a href="02-intro.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">Q&amp;A</a>
+        </div>
+      </div>
+      <div class="nav-item relative">
+        <button class="h-text px-4 py-2 text-[15px] font-medium text-white transition-colors inline-flex items-center gap-1">예배와 교육 <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+        <div class="dropdown absolute top-full left-1/2 -translate-x-1/2 mt-1 min-w-[200px] bg-brand-surface rounded-2xl shadow-lg border border-brand-line py-2">
+          <a href="03-worship.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">예배 시간 안내</a>
+          <a href="03-worship.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">생방송 · 예배실황</a>
+          <a href="03-worship.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">주일학교</a>
+          <a href="03-worship.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">중·고·대학부</a>
+          <a href="03-worship.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">청년회</a>
+        </div>
+      </div>
+      <div class="nav-item relative">
+        <button class="h-text px-4 py-2 text-[15px] font-medium text-white transition-colors inline-flex items-center gap-1">목양과 사역 <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+        <div class="dropdown absolute top-full left-1/2 -translate-x-1/2 mt-1 min-w-[200px] bg-brand-surface rounded-2xl shadow-lg border border-brand-line py-2">
+          <a href="04-care.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">새가족</a>
+          <a href="04-care.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">구역모임</a>
+          <a href="04-care.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">경향시니어스쿨</a>
+          <a href="04-care.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">평생교육원</a>
+        </div>
+      </div>
+      <div class="nav-item relative">
+        <button class="h-text px-4 py-2 text-[15px] font-medium text-white transition-colors inline-flex items-center gap-1">교회 활동 <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+        <div class="dropdown absolute top-full right-0 mt-1 min-w-[180px] bg-brand-surface rounded-2xl shadow-lg border border-brand-line py-2">
+          <a href="05-activity.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">교회 일정</a>
+          <a href="05-activity.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">주보</a>
+          <a href="05-activity.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">교회 소식</a>
+          <a href="05-activity.html" class="block px-4 py-2 text-sm text-brand-ink hover:bg-brand-bg hover:text-brand-accent transition-colors">경향의 일주일</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="hidden lg:flex items-center gap-2.5 pl-3 border-l h-divider border-white/30 transition-colors">
+      <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener"
+         class="h-text inline-flex items-center gap-1.5 text-[13px] font-medium text-white transition-colors">
+        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span></span>
+        생방송
+      </a>
+      <a href="04-care.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-accent text-white text-[13px] font-semibold hover:bg-brand-accent/90 transition-colors shadow-sm">
+        새가족 등록 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+      </a>
+    </div>
+    <button id="menu-open" class="h-burger lg:hidden text-white p-2 -mr-2 transition-colors" aria-label="메뉴 열기">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
+</header>
+
+<!-- 모바일 메뉴 -->
+<div id="mobile-menu" class="fixed inset-0 z-[60] bg-brand-bg overflow-y-auto hidden">
+  <div class="px-5 h-16 flex items-center justify-between border-b border-brand-line">
+    <span class="text-base font-bold text-brand-ink">경향교회</span>
+    <button id="menu-close" class="p-2 -mr-2 text-brand-ink" aria-label="메뉴 닫기"><i data-lucide="x" class="w-6 h-6"></i></button>
+  </div>
+  <nav class="px-5 py-6 flex flex-col">
+    <a href="02-intro.html" class="flex items-center justify-between py-4 border-b border-brand-line text-lg font-semibold text-brand-ink">교회소개 <i data-lucide="chevron-right" class="w-5 h-5 text-brand-ink-muted"></i></a>
+    <a href="03-worship.html" class="flex items-center justify-between py-4 border-b border-brand-line text-lg font-semibold text-brand-ink">예배와 교육 <i data-lucide="chevron-right" class="w-5 h-5 text-brand-ink-muted"></i></a>
+    <a href="04-care.html" class="flex items-center justify-between py-4 border-b border-brand-line text-lg font-semibold text-brand-ink">목양과 사역 <i data-lucide="chevron-right" class="w-5 h-5 text-brand-ink-muted"></i></a>
+    <a href="05-activity.html" class="flex items-center justify-between py-4 border-b border-brand-line text-lg font-semibold text-brand-ink">교회 활동 <i data-lucide="chevron-right" class="w-5 h-5 text-brand-ink-muted"></i></a>
+    <a href="04-care.html" class="flex items-center justify-between py-4 border-b border-brand-line text-lg font-semibold text-brand-accent">새가족 <i data-lucide="chevron-right" class="w-5 h-5 text-brand-accent"></i></a>
+    <div class="mt-8 flex flex-col gap-3">
+      <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-5 py-4 rounded-full bg-brand-accent-2 text-white font-semibold">생방송 보기</a>
+      <a href="04-care.html" class="inline-flex items-center justify-center gap-2 px-5 py-4 rounded-full bg-brand-accent text-white font-semibold">새가족 등록</a>
+    </div>
+  </nav>
+</div>
+
+<!-- ===== D안 HERO: 영상 + 따뜻한 환영 ===== -->
+<section class="relative h-[88svh] md:h-screen min-h-[560px] max-h-[900px] flex items-end overflow-hidden">
+  <video autoplay muted loop playsinline
+    poster="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1920&q=80"
+    class="absolute inset-0 w-full h-full object-cover hidden md:block" aria-hidden="true">
+    <source src="https://gts.ac.kr/UserData/gtshp/Layouts/gtshp_Layout/Images/20250605.mp4" type="video/mp4" />
+  </video>
+  <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1080&q=80"
+       alt="햇살 아래 두 팔을 벌린 실루엣 — 경향교회 헤로 배경"
+       class="absolute inset-0 w-full h-full object-cover md:hidden" />
+  <div class="absolute inset-0 hero-overlay"></div>
+
+  <div class="relative max-w-container mx-auto px-5 md:px-8 w-full text-white pb-16 md:pb-24">
+    <div class="max-w-2xl">
+      <p class="inline-flex items-center gap-2 text-xs md:text-sm text-white/85 tracking-[0.2em] mb-5 font-medium">
+        <span class="w-8 h-px bg-brand-accent"></span> SINCE 1973 · 경향교회
+      </p>
+      <h1 class="text-[40px] leading-[1.14] md:text-[64px] md:leading-[1.08] font-bold mb-5">
+        오신 것을<br />환영합니다
+      </h1>
+      <p class="text-[15px] md:text-xl text-white/85 leading-relaxed mb-2">
+        "네 입을 크게 열라 내가 채우리라" <span class="text-white/55 text-sm md:text-base">— 시편 81:10</span>
+      </p>
+      <p class="text-[15px] md:text-lg text-white/70 leading-relaxed mb-8 max-w-xl">
+        하나님의 사랑 안에서 함께 자라는 공동체. 처음 오시는 분도 편안하게 머물 수 있어요.
+      </p>
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="#this-week"
+           class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-brand-accent text-white font-semibold hover:bg-brand-accent/90 transition-colors shadow-lg">
+          이번 주 한눈에 보기 <i data-lucide="arrow-down" class="w-4 h-4"></i>
+        </a>
+        <a href="04-care.html"
+           class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 text-white font-semibold border border-white/35 backdrop-blur hover:bg-white/20 transition-colors">
+          처음 오셨나요?
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 scroll-hint hidden md:flex flex-col items-center gap-1.5">
+    <span class="text-[10px] tracking-[0.2em]">SCROLL</span>
+    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+  </div>
+</section>
+
+<!-- ===== SECTION: 이번 주 경향교회 — 한눈에 ===== -->
+<section id="this-week" class="py-18 md:py-24 bg-brand-bg">
+  <div class="max-w-container mx-auto px-5 md:px-8">
+    <div class="fade-up mb-9 md:mb-12 text-center">
+      <p class="inline-flex items-center gap-2 text-xs md:text-sm tracking-[0.2em] text-brand-accent font-semibold mb-3">
+        <span class="w-6 h-px bg-brand-accent"></span> THIS WEEK <span class="w-6 h-px bg-brand-accent"></span>
+      </p>
+      <h2 class="text-[26px] md:text-[38px] font-bold leading-tight">이번 주 경향교회</h2>
+    </div>
+
+    <div class="fade-up grid md:grid-cols-3 gap-5 md:gap-6">
+      <!-- 이번 주 설교 (메인) -->
+      <div class="md:col-span-2 bg-brand-surface rounded-2xl border border-brand-line p-7 md:p-9 flex flex-col">
+        <div class="flex flex-wrap items-center gap-2.5 mb-5">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-accent/10 text-brand-accent text-xs font-semibold">
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> 5월 24일 (주일)
+          </span>
+          <span class="text-xs text-brand-ink-muted">다음 예배까지 D-6</span>
+        </div>
+        <p class="text-xs tracking-widest text-brand-ink-muted mb-2">이번 주 설교 본문 · 누가복음 24:44–49</p>
+        <h3 class="text-2xl md:text-[32px] font-bold leading-snug mb-2">선교하시는 하나님</h3>
+        <p class="text-sm md:text-base text-brand-ink-muted mb-7">설교 · 신승욱 담임목사</p>
+        <div class="mt-auto grid grid-cols-3 gap-3 pt-6 border-t border-brand-line">
+          <div>
+            <p class="text-[11px] text-brand-ink-muted mb-1">1부 예배</p>
+            <p class="text-base md:text-lg font-bold">9:00</p>
+          </div>
+          <div>
+            <p class="text-[11px] text-brand-ink-muted mb-1">2부 예배</p>
+            <p class="text-base md:text-lg font-bold">11:00</p>
+          </div>
+          <div>
+            <p class="text-[11px] text-brand-ink-muted mb-1">수요밤예배</p>
+            <p class="text-base md:text-lg font-bold">19:30</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 사이드 카드 2개 -->
+      <div class="flex flex-col gap-5 md:gap-6">
+        <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener"
+           class="group flex-1 bg-brand-accent-2 text-white rounded-2xl p-6 md:p-7 flex flex-col justify-between hover:bg-brand-ink transition-colors">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-accent/25 text-white text-[11px] font-semibold mb-4">
+              <span class="relative flex h-1.5 w-1.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span><span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-accent"></span></span>
+              LIVE
+            </div>
+            <h3 class="text-xl font-bold mb-1.5">생방송으로 함께</h3>
+            <p class="text-sm text-white/65 leading-relaxed">어디서든 예배의 자리에 함께하세요.</p>
+          </div>
+          <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">
+            바로가기 <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          </span>
+        </a>
+        <a href="#visit"
+           class="group flex-1 bg-brand-surface border border-brand-line rounded-2xl p-6 md:p-7 flex flex-col justify-between hover:border-brand-accent transition-colors">
+          <div>
+            <i data-lucide="map-pin" class="w-7 h-7 mb-4 text-brand-accent"></i>
+            <h3 class="text-xl font-bold mb-1.5">오시는 길</h3>
+            <p class="text-sm text-brand-ink-muted leading-relaxed">강서구 가양동 · 9호선 가양역</p>
+          </div>
+          <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-ink">
+            바로가기 <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: 설교 다시보기 ===== -->
+<section class="py-18 md:py-24 bg-brand-surface">
+  <div class="max-w-container mx-auto px-5 md:px-8">
+    <div class="fade-up flex flex-wrap items-end justify-between gap-4 mb-9 md:mb-12">
+      <div>
+        <p class="inline-flex items-center gap-2 text-xs md:text-sm tracking-[0.2em] text-brand-accent font-semibold mb-3">
+          <span class="w-8 h-px bg-brand-accent"></span> 설교 다시보기
+        </p>
+        <h2 class="text-[26px] md:text-[38px] font-bold leading-tight">말씀으로 한 주를</h2>
+      </div>
+      <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-ink hover:text-brand-accent transition-colors">
+        유튜브 채널 전체 보기 <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+
+    <div class="fade-up grid md:grid-cols-5 gap-6 md:gap-8">
+      <!-- Featured -->
+      <a href="https://www.youtube.com/watch?v=ngefkWYxH2A" target="_blank" rel="noopener" class="md:col-span-3 group block">
+        <div class="relative aspect-video rounded-2xl overflow-hidden bg-brand-bg border border-brand-line mb-5">
+          <img src="https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80"
+               alt="이번 주 설교 썸네일 placeholder" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-[60px] h-[60px] rounded-full bg-brand-accent flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <i data-lucide="play" class="w-6 h-6 text-white" style="margin-left:3px;"></i>
+            </div>
+          </div>
+          <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-brand-accent text-white text-[11px] font-semibold">이번 주 · 주일낮예배</span>
+        </div>
+        <p class="text-xs text-brand-ink-muted mb-2">2026.05.17 · 누가복음 24:44–49</p>
+        <h3 class="text-xl md:text-2xl font-bold leading-snug mb-1.5 group-hover:text-brand-accent transition-colors">선교하시는 하나님</h3>
+        <p class="text-sm text-brand-ink-muted">신승욱 담임목사</p>
+      </a>
+
+      <!-- 목록 -->
+      <div class="md:col-span-2 flex flex-col divide-y divide-brand-line border border-brand-line rounded-2xl overflow-hidden bg-brand-bg">
+        <div class="px-5 py-3.5 bg-brand-surface">
+          <p class="text-xs font-semibold tracking-widest text-brand-ink-muted">지난 설교</p>
+        </div>
+        <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" class="group flex items-center gap-4 px-5 py-4 hover:bg-brand-surface transition-colors">
+          <div class="relative flex-shrink-0 w-20 aspect-video rounded-lg overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=200&q=80" alt="설교 썸네일" class="w-full h-full object-cover" />
+            <span class="absolute inset-0 flex items-center justify-center bg-black/20"><i data-lucide="play" class="w-4 h-4 text-white"></i></span>
+          </div>
+          <div class="min-w-0">
+            <p class="text-[11px] text-brand-ink-muted mb-1">5/17 · 주일밤예배</p>
+            <p class="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-brand-accent transition-colors">내가 여기 있나이다 나를 보내소서</p>
+            <p class="text-xs text-brand-ink-muted mt-1">김윤식 목사</p>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" class="group flex items-center gap-4 px-5 py-4 hover:bg-brand-surface transition-colors">
+          <div class="relative flex-shrink-0 w-20 aspect-video rounded-lg overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1473625247510-8ceb1760943f?auto=format&fit=crop&w=200&q=80" alt="설교 썸네일" class="w-full h-full object-cover" />
+            <span class="absolute inset-0 flex items-center justify-center bg-black/20"><i data-lucide="play" class="w-4 h-4 text-white"></i></span>
+          </div>
+          <div class="min-w-0">
+            <p class="text-[11px] text-brand-ink-muted mb-1">5/13 · 수요밤예배</p>
+            <p class="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-brand-accent transition-colors">나의 믿음 없는 것을 도와주소서</p>
+            <p class="text-xs text-brand-ink-muted mt-1">오태희 강도사</p>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 px-5 py-4 text-sm font-semibold text-brand-accent hover:bg-brand-surface transition-colors">
+          설교 전체 보기 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: 우리 공동체 — 경향의 일주일 (시그니처) ===== -->
+<section class="py-18 md:py-24 bg-brand-bg">
+  <div class="max-w-container mx-auto px-5 md:px-8">
+    <div class="fade-up mb-9 md:mb-12">
+      <p class="inline-flex items-center gap-2 text-xs md:text-sm tracking-[0.2em] text-brand-accent font-semibold mb-3">
+        <span class="w-8 h-px bg-brand-accent"></span> OUR COMMUNITY
+      </p>
+      <h2 class="text-[26px] md:text-[38px] font-bold leading-tight mb-3">함께 자라는 경향의 일주일</h2>
+      <p class="text-base text-brand-ink-muted leading-relaxed max-w-2xl">
+        주일의 예배에서 시작해 한 주간 삶의 자리로 이어집니다. 구역모임에서 삶을 나누고,
+        다음 세대를 함께 키우고, 이웃을 섬기는 — 경향교회의 평범한 한 주를 소개합니다.
+      </p>
+    </div>
+
+    <div class="fade-up grid md:grid-cols-3 gap-5 md:gap-6">
+      <!-- 큰 카드 -->
+      <a href="04-care.html" class="group md:row-span-2 relative rounded-2xl overflow-hidden min-h-[280px] md:min-h-0">
+        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80"
+             alt="구역모임 placeholder" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-accent-2/90 via-brand-accent-2/20 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-7 text-white">
+          <span class="inline-flex w-fit items-center px-2.5 py-1 rounded-full bg-white/15 backdrop-blur text-[11px] font-semibold mb-3">구역모임 · 소그룹</span>
+          <h3 class="text-2xl font-bold mb-2">삶을 나누는 자리</h3>
+          <p class="text-sm text-white/75 leading-relaxed">가까운 이웃과 매주 만나 말씀과 삶을 나눕니다.</p>
+        </div>
+      </a>
+      <!-- 작은 카드 1 -->
+      <a href="03-worship.html" class="group relative rounded-2xl overflow-hidden aspect-[16/10] md:aspect-auto">
+        <img src="https://images.unsplash.com/photo-1445445290350-18a3b86e0b5a?auto=format&fit=crop&w=600&q=80"
+             alt="다음 세대 placeholder" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-accent-2/85 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6 text-white">
+          <h3 class="text-xl font-bold mb-1">다음 세대</h3>
+          <p class="text-sm text-white/75">주일학교 · 청년부와 함께 자랍니다.</p>
+        </div>
+      </a>
+      <!-- 작은 카드 2 -->
+      <a href="04-care.html" class="group relative rounded-2xl overflow-hidden aspect-[16/10] md:aspect-auto">
+        <img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?auto=format&fit=crop&w=600&q=80"
+             alt="이웃 섬김 placeholder" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-accent-2/85 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6 text-white">
+          <h3 class="text-xl font-bold mb-1">이웃 섬김</h3>
+          <p class="text-sm text-white/75">가양동 이웃과 함께 나누고 섬깁니다.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: 새가족 환영 — 따뜻한 초대 ===== -->
+<section class="py-18 md:py-24 bg-brand-surface">
+  <div class="max-w-container mx-auto px-5 md:px-8">
+    <div class="fade-up grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+      <div class="relative">
+        <div class="rounded-2xl overflow-hidden aspect-[4/3]">
+          <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=800&q=80"
+               alt="새가족 환영 placeholder" class="w-full h-full object-cover" />
+        </div>
+        <div class="absolute bottom-3 right-3 md:-bottom-5 md:-right-5 bg-brand-accent text-white rounded-2xl px-4 py-3 md:px-6 md:py-4 shadow-xl">
+          <p class="text-[11px] text-white/75 mb-0.5">새가족 환영 모임</p>
+          <p class="text-[15px] md:text-lg font-bold leading-none whitespace-nowrap">매주 주일 오전 10:20</p>
+        </div>
+      </div>
+      <div>
+        <p class="inline-flex items-center gap-2 text-xs md:text-sm tracking-[0.2em] text-brand-accent font-semibold mb-3">
+          <span class="w-8 h-px bg-brand-accent"></span> FOR NEWCOMERS
+        </p>
+        <h2 class="text-[26px] md:text-[38px] font-bold leading-tight mb-5">처음 오셨나요?</h2>
+        <p class="text-base text-brand-ink-muted leading-relaxed mb-7">
+          교회가 낯설어도 괜찮아요. 어떤 모습이든 그대로 오세요.
+          연령별 안내부터 학습·세례까지, 천천히 함께 걸어가겠습니다.
+        </p>
+        <ul class="space-y-3.5 mb-8">
+          <li class="flex items-center gap-3.5">
+            <span class="w-9 h-9 rounded-full bg-brand-accent/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="hand-heart" class="w-4.5 h-4.5 text-brand-accent" style="width:18px;height:18px;"></i>
+            </span>
+            <span class="text-[15px]">예배에 함께하고, 환영의 자리에서 인사 나눠요</span>
+          </li>
+          <li class="flex items-center gap-3.5">
+            <span class="w-9 h-9 rounded-full bg-brand-accent/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="users" class="w-4.5 h-4.5 text-brand-accent" style="width:18px;height:18px;"></i>
+            </span>
+            <span class="text-[15px]">연령·상황에 맞는 모임으로 연결해 드려요</span>
+          </li>
+          <li class="flex items-center gap-3.5">
+            <span class="w-9 h-9 rounded-full bg-brand-accent/10 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="message-circle" class="w-4.5 h-4.5 text-brand-accent" style="width:18px;height:18px;"></i>
+            </span>
+            <span class="text-[15px]">궁금한 점은 언제든 편하게 물어보세요</span>
+          </li>
+        </ul>
+        <a href="04-care.html"
+           class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-brand-accent text-white font-semibold hover:bg-brand-accent/90 transition-colors shadow-lg">
+          새가족 등록 안내 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: 생방송 — 따뜻한 다크 ===== -->
+<section class="py-18 md:py-24 bg-brand-accent-2 text-white">
+  <div class="max-w-container mx-auto px-5 md:px-8 grid md:grid-cols-2 gap-10 md:gap-14 items-center">
+    <div class="fade-up">
+      <p class="inline-flex items-center gap-2 text-xs md:text-sm tracking-[0.2em] text-brand-accent font-semibold mb-4">
+        <span class="w-8 h-px bg-brand-accent"></span> LIVE &amp; REPLAY
+      </p>
+      <h2 class="text-[26px] md:text-[40px] font-bold leading-tight mb-5">
+        예배의 자리,<br />어디서든 함께합니다
+      </h2>
+      <p class="text-base text-white/70 leading-relaxed mb-8 max-w-lg">
+        주일 1·2부와 수요·금요예배를 실시간으로 송출합니다.
+        지난 예배 다시보기도 같은 곳에서 보실 수 있어요.
+      </p>
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-brand-accent text-white font-semibold hover:bg-brand-accent/90 transition-colors">
+          <i data-lucide="video" class="w-4 h-4"></i> 지금 생방송 보기
+        </a>
+        <a href="03-worship.html"
+           class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/20 transition-colors">
+          예배 시간표
+        </a>
+      </div>
+    </div>
+    <div class="fade-up">
+      <a href="https://www.youtube.com/watch?v=ngefkWYxH2A" target="_blank" rel="noopener" class="block group">
+        <div class="relative aspect-video rounded-2xl overflow-hidden bg-black/40 border border-white/10">
+          <img src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=900&q=80"
+               alt="생방송 썸네일 placeholder" class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity" />
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-brand-accent flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <i data-lucide="play" class="w-7 h-7 md:w-9 md:h-9 text-white" style="margin-left:3px;"></i>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur text-white text-[11px] font-medium">
+            <i data-lucide="calendar" class="w-3 h-3"></i> 다음 생방송 · 5/24 (주일) 11:00
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION: 오시는 길 ===== -->
+<section id="visit" class="py-18 md:py-24 bg-brand-bg">
+  <div class="max-w-container mx-auto px-5 md:px-8">
+    <div class="fade-up mb-9 md:mb-12">
+      <p class="inline-flex items-center gap-2 text-xs md:text-sm tracking-[0.2em] text-brand-accent font-semibold mb-3">
+        <span class="w-8 h-px bg-brand-accent"></span> VISIT US
+      </p>
+      <h2 class="text-[26px] md:text-[38px] font-bold leading-tight">오시는 길</h2>
+    </div>
+    <div class="fade-up grid md:grid-cols-5 gap-6 md:gap-8">
+      <div class="md:col-span-3 relative aspect-[4/3] md:aspect-auto md:min-h-[380px] rounded-2xl overflow-hidden bg-brand-surface border border-brand-line">
+        <div class="absolute inset-0 flex items-center justify-center z-10">
+          <div class="text-center">
+            <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-brand-accent text-white flex items-center justify-center shadow-lg"><i data-lucide="map-pin" class="w-7 h-7"></i></div>
+            <p class="text-sm font-semibold">서울 강서구 가양동</p>
+            <p class="text-xs text-brand-ink-muted mt-1">[지도 placeholder — 카카오/네이버맵 임베드 예정]</p>
+          </div>
+        </div>
+        <div class="absolute inset-0 opacity-30" style="background-image:linear-gradient(#ECE5DA 1px,transparent 1px),linear-gradient(90deg,#ECE5DA 1px,transparent 1px);background-size:40px 40px;"></div>
+      </div>
+      <div class="md:col-span-2 flex flex-col gap-4">
+        <div class="bg-brand-surface border border-brand-line rounded-2xl p-6">
+          <div class="flex items-center gap-2.5 mb-2"><i data-lucide="map-pin" class="w-5 h-5 text-brand-accent"></i><p class="text-sm font-semibold tracking-wider text-brand-ink-muted">주소</p></div>
+          <p class="text-base font-semibold leading-snug pl-7.5" style="padding-left:30px;">서울특별시 강서구 가양동<br />[정확한 도로명 주소 placeholder]</p>
+        </div>
+        <div class="bg-brand-surface border border-brand-line rounded-2xl p-6">
+          <div class="flex items-center gap-2.5 mb-2"><i data-lucide="phone" class="w-5 h-5 text-brand-accent"></i><p class="text-sm font-semibold tracking-wider text-brand-ink-muted">전화</p></div>
+          <p class="text-base font-semibold" style="padding-left:30px;">02-2668-6633</p>
+        </div>
+        <div class="bg-brand-surface border border-brand-line rounded-2xl p-6">
+          <div class="flex items-center gap-2.5 mb-2"><i data-lucide="train" class="w-5 h-5 text-brand-accent"></i><p class="text-sm font-semibold tracking-wider text-brand-ink-muted">대중교통</p></div>
+          <p class="text-sm text-brand-ink-muted leading-relaxed" style="padding-left:30px;">지하철 9호선 가양역 [번 출구] 도보 N분<br />버스 [정류장명] · [번호]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== D안 FOOTER: 따뜻한 ===== -->
+<footer class="bg-brand-accent-2 text-white/80">
+  <div class="max-w-container mx-auto px-5 md:px-8 py-14 md:py-18">
+    <div class="grid md:grid-cols-12 gap-10 md:gap-8">
+      <div class="md:col-span-4">
+        <div class="flex items-center gap-2.5 mb-5">
+          <div class="w-9 h-9 rounded-full bg-brand-accent flex items-center justify-center"><span class="text-white font-bold text-base leading-none">경</span></div>
+          <div class="leading-tight"><p class="text-base font-bold text-white">경향교회</p><p class="text-[10px] tracking-[0.18em] text-white/55">SINCE 1973 · KYUNGHYANG CHURCH</p></div>
+        </div>
+        <p class="text-sm text-white/60 leading-relaxed mb-5">하나님의 사랑 안에서<br />함께 자라는 공동체.</p>
+        <p class="text-xs text-brand-accent font-semibold tracking-wider mb-1">2026 슬로건</p>
+        <p class="text-sm text-white/80 mb-6">"네 입을 크게 열라 내가 채우리라" <span class="text-white/45">— 시편 81:10</span></p>
+        <div class="flex items-center gap-2">
+          <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" aria-label="YouTube" class="w-9 h-9 rounded-full bg-white/10 hover:bg-brand-accent flex items-center justify-center transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-full bg-white/10 hover:bg-brand-accent flex items-center justify-center transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+          <a href="https://www.facebook.com/ghpc1/" target="_blank" rel="noopener" aria-label="Facebook" class="w-9 h-9 rounded-full bg-white/10 hover:bg-brand-accent flex items-center justify-center transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+      <div class="md:col-span-2">
+        <p class="text-xs tracking-[0.2em] text-white/45 font-semibold mb-4">MENU</p>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="02-intro.html" class="hover:text-white transition-colors">교회소개</a></li>
+          <li><a href="03-worship.html" class="hover:text-white transition-colors">예배와 교육</a></li>
+          <li><a href="04-care.html" class="hover:text-white transition-colors">목양과 사역</a></li>
+          <li><a href="05-activity.html" class="hover:text-white transition-colors">교회 활동</a></li>
+          <li><a href="04-care.html" class="text-brand-accent font-semibold">새가족 →</a></li>
+        </ul>
+      </div>
+      <div class="md:col-span-3">
+        <p class="text-xs tracking-[0.2em] text-white/45 font-semibold mb-4">QUICK LINKS</p>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">온라인 헌금</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">e-행정</a></li>
+          <li><a href="05-activity.html" class="hover:text-white transition-colors">이번 주 주보</a></li>
+          <li><a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener" class="hover:text-white transition-colors">생방송 보기</a></li>
+        </ul>
+      </div>
+      <div class="md:col-span-3">
+        <p class="text-xs tracking-[0.2em] text-white/45 font-semibold mb-4">CONTACT</p>
+        <ul class="space-y-2.5 text-sm leading-relaxed">
+          <li class="flex items-start gap-2"><i data-lucide="map-pin" class="w-4 h-4 mt-0.5 text-brand-accent flex-shrink-0"></i><span>서울특별시 강서구 가양동<br />[도로명 주소 placeholder]</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="phone" class="w-4 h-4 mt-0.5 text-brand-accent flex-shrink-0"></i><span>02-2668-6633</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="mail" class="w-4 h-4 mt-0.5 text-brand-accent flex-shrink-0"></i><span>info@ghpc.or.kr</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-white/40">
+      <p>© 2026 경향교회 (Kyunghyang Church). All rights reserved.</p>
+      <div class="flex items-center gap-4">
+        <a href="#" class="hover:text-white transition-colors">개인정보처리방침</a>
+        <span class="text-white/20">·</span>
+        <a href="#" class="hover:text-white transition-colors">이용약관</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== Go & Grow 플로팅 ===== -->
+<div id="gng-popup"
+     class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 w-[260px] sm:w-80 bg-brand-surface rounded-2xl shadow-xl border border-brand-line overflow-hidden">
+  <button id="gng-close" class="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/5 hover:bg-black/10 text-brand-ink flex items-center justify-center transition-colors z-10" aria-label="캠페인 닫기">
+    <i data-lucide="x" class="w-4 h-4"></i>
+  </button>
+  <div class="aspect-[16/9] bg-brand-accent-2 relative overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80" alt="Go & Grow 캠페인 placeholder" class="absolute inset-0 w-full h-full object-cover opacity-60" />
+    <div class="absolute inset-0 bg-gradient-to-t from-brand-accent-2/95 via-brand-accent-2/40 to-transparent"></div>
+    <div class="absolute bottom-3 left-4">
+      <p class="text-xs text-brand-accent font-semibold tracking-widest mb-1">2026 한해 캠페인</p>
+      <p class="text-white text-xl font-bold leading-none">Go &amp; Grow</p>
+    </div>
+  </div>
+  <div class="p-4">
+    <p class="text-sm text-brand-ink-muted leading-relaxed mb-3">"네 입을 크게 열라 내가 채우리라". 함께 나아가고, 함께 자라는 한 해.</p>
+    <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-accent hover:text-brand-accent/80 transition-colors">
+      자세히 보기 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+    </a>
+  </div>
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    if (window.scrollY > 60) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+  document.getElementById('menu-open')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('menu-close')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('hidden');
+    document.body.style.overflow = '';
+  });
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold:0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+  document.getElementById('gng-close')?.addEventListener('click', () => document.getElementById('gng-popup')?.remove());
+</script>
+</body>
+</html>
