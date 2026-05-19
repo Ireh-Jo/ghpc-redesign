@@ -136,8 +136,9 @@ prototypes/                      시안 산물 동결 (수정 금지)
 
 ## 메모
 
-- 현재 작업자: 이레 (단독 개발)
-- 콘텐츠 운영: 미디어팀 2명
-- 디자이너 협업: 미정 (Figma만 vs Figma+AI 도구 — 안건 2-2 참조)
+- 현재 작업자: 이레 (단독 개발 — 디자인 시스템·시안·구현 주도)
+- 콘텐츠 운영: 미디어팀 2명 (IT 친숙도 낮음 — 어드민 옵션 B 자체 제작 확정)
+- 디자이너 협업: 박정민·장진경 — 비주얼 자산(사진·일러스트) + 시안 HTML 리뷰 역할 (Figma 미사용, `context/features/design-workflow.md`)
+- AI 도구: Cursor / v0 / Claude Code **권장 활용** (일정 압축 위해)
 - 도메인: https://www.ghpc.or.kr/ (.or.kr 유지)
 - 공식 유튜브: https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg
