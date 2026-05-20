@@ -407,14 +407,25 @@
 
     <div class="fade-up grid md:grid-cols-3 gap-5 md:gap-6">
       <!-- 큰 카드 -->
-      <a href="04-care.html" class="group md:row-span-2 relative rounded-2xl overflow-hidden min-h-[280px] md:min-h-0">
-        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80"
-             alt="구역모임 placeholder" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-accent-2/90 via-brand-accent-2/20 to-transparent"></div>
-        <div class="absolute inset-0 flex flex-col justify-end p-7 text-white">
-          <span class="inline-flex w-fit items-center px-2.5 py-1 rounded-full bg-brand-support/40 backdrop-blur text-[11px] font-semibold mb-3">구역모임 · 소그룹</span>
-          <h3 class="text-2xl font-bold mb-2">삶을 나누는 자리</h3>
-          <p class="text-sm text-white/75 leading-relaxed">가까운 이웃과 매주 만나 말씀과 삶을 나눕니다.</p>
+      <a href="04-care.html" class="group md:row-span-2 relative rounded-2xl overflow-hidden min-h-[280px] md:min-h-0 bg-brand-accent-2 text-white">
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-brand-support/30 rounded-full blur-3xl pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
+        <div class="absolute -bottom-24 -left-16 w-56 h-56 bg-brand-accent/25 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative h-full flex flex-col justify-between p-7 md:p-8">
+          <div>
+            <span class="inline-flex w-fit items-center px-2.5 py-1 rounded-full bg-brand-support/40 backdrop-blur text-[11px] font-semibold mb-7">구역모임 · 소그룹</span>
+            <h3 class="text-[28px] md:text-[32px] font-bold leading-[1.2] mb-4">삶을 나누는<br/>자리</h3>
+            <p class="text-[15px] text-white/85 leading-relaxed">
+              가까운 이웃과 매주 만나<br/>말씀과 삶을 나눕니다.
+            </p>
+          </div>
+
+          <div class="flex items-center justify-between pt-5 border-t border-white/15">
+            <span class="inline-flex items-center gap-2 text-[12px] text-white/70">
+              <i data-lucide="users-round" class="w-4 h-4"></i> 함께 자라는 자리
+            </span>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-white/70 group-hover:translate-x-1 group-hover:text-white transition-all"></i>
+          </div>
         </div>
       </a>
       <!-- 작은 카드 1 -->
