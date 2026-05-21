@@ -4,16 +4,16 @@
 <!--
   경향교회 1차 시안 — F안 "미니멀 디스플레이형"
   레퍼런스: knock-church.com (두드림교회)
-  특징: 다크 풀블리드 헤로 + 큰 한영 혼용 디스플레이 타이포
+  특징: 다크 풀블리드 헤로 + 큰 한글 디스플레이 타이포
         / 라운드·그림자 최소 (미니멀)
         / 모바일 우선 — 시원시원한 위계
         / 경향 로고 파랑은 액센트로 절제 사용
   Design System: prototypes/_archive/context/01-design-system.md
-  Updated: 2026-05-20
+  Updated: 2026-05-21
 -->
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>경향교회 — Free to Worship (F안)</title>
+<title>경향교회 — 자유로이, 예배하라 (F안)</title>
 <meta name="description" content="경향교회 홈페이지 개편 1차 시안 — F안 두드림교회 스타일" />
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -96,24 +96,24 @@
   <div class="max-w-container mx-auto px-5 md:px-10 h-16 md:h-20 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-3">
       <div class="flex flex-col leading-none">
-        <span class="text-base md:text-lg font-bold tracking-tight text-white">KYUNGHYANG</span>
-        <span class="text-[10px] tracking-[0.32em] text-white/55 font-medium mt-0.5">CHURCH · 경향교회</span>
+        <span class="text-base md:text-lg font-bold tracking-tight text-white">경향교회</span>
+        <span class="text-[10px] tracking-[0.32em] text-white/55 font-medium mt-0.5">1973년부터 · 세계를 품은 교회</span>
       </div>
     </a>
 
     <nav class="hidden lg:flex items-center gap-8">
-      <a href="02-intro.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">ABOUT</a>
-      <a href="03-worship.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">WORSHIP</a>
-      <a href="04-care.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">MINISTRY</a>
-      <a href="05-activity.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">NEWS</a>
-      <a href="04-care.html" class="nav-line active text-[13px] tracking-widest font-bold text-white hover:text-white">NEW HERE?</a>
+      <a href="02-intro.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">교회소개</a>
+      <a href="03-worship.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">예배와 교육</a>
+      <a href="04-care.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">목양과 사역</a>
+      <a href="05-activity.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">교회 활동</a>
+      <a href="04-care.html" class="nav-line active text-[13px] tracking-widest font-bold text-white hover:text-white">새가족</a>
     </nav>
 
     <div class="hidden lg:flex items-center gap-4">
       <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener"
          class="inline-flex items-center gap-2 text-[12px] tracking-widest font-medium text-white">
         <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full bg-brand-accent opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-brand-accent"></span></span>
-        LIVE
+        생방송
       </a>
     </div>
     <button id="menu-open" class="lg:hidden text-white p-2 -mr-2" aria-label="메뉴 열기">
@@ -126,20 +126,20 @@
 <div id="mobile-menu" class="fixed inset-0 z-[60] bg-brand-ink overflow-y-auto hidden text-white">
   <div class="px-5 h-16 flex items-center justify-between border-b border-white/10">
     <div class="flex flex-col leading-none">
-      <span class="text-base font-bold tracking-tight">KYUNGHYANG</span>
-      <span class="text-[10px] tracking-[0.32em] text-white/55 mt-0.5">CHURCH</span>
+      <span class="text-base font-bold tracking-tight">경향교회</span>
+      <span class="text-[10px] tracking-[0.32em] text-white/55 mt-0.5">1973년부터</span>
     </div>
     <button id="menu-close" class="p-2 -mr-2 text-white" aria-label="메뉴 닫기"><i data-lucide="x" class="w-7 h-7"></i></button>
   </div>
   <nav class="px-5 py-10 flex flex-col">
-    <a href="02-intro.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">ABOUT<br /><span class="text-base font-normal text-white/55 tracking-normal">교회소개</span></a>
-    <a href="03-worship.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">WORSHIP<br /><span class="text-base font-normal text-white/55 tracking-normal">예배와 교육</span></a>
-    <a href="04-care.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">MINISTRY<br /><span class="text-base font-normal text-white/55 tracking-normal">목양과 사역</span></a>
-    <a href="05-activity.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">NEWS<br /><span class="text-base font-normal text-white/55 tracking-normal">교회 활동</span></a>
-    <a href="04-care.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight text-brand-accent">NEW HERE?<br /><span class="text-base font-normal text-brand-accent/70 tracking-normal">새가족</span></a>
+    <a href="02-intro.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">교회소개<br /><span class="text-base font-normal text-white/55 tracking-normal">우리 교회 이야기</span></a>
+    <a href="03-worship.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">예배와 교육<br /><span class="text-base font-normal text-white/55 tracking-normal">예배 시간 · 부서</span></a>
+    <a href="04-care.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">목양과 사역<br /><span class="text-base font-normal text-white/55 tracking-normal">구역 · 평생교육원</span></a>
+    <a href="05-activity.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight">교회 활동<br /><span class="text-base font-normal text-white/55 tracking-normal">일정 · 주보 · 소식</span></a>
+    <a href="04-care.html" class="py-5 border-b border-white/10 text-3xl font-bold leading-tight text-brand-accent">새가족<br /><span class="text-base font-normal text-brand-accent/70 tracking-normal">처음 오셨나요?</span></a>
     <div class="mt-10 flex flex-col gap-3">
-      <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-5 py-4 btn-square bg-brand-accent text-white font-semibold tracking-widest text-sm">WATCH LIVE</a>
-      <a href="04-care.html" class="inline-flex items-center justify-center gap-2 px-5 py-4 btn-square border border-white/30 text-white font-semibold tracking-widest text-sm">NEW HERE</a>
+      <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-5 py-4 btn-square bg-brand-accent text-white font-semibold tracking-widest text-sm">생방송 보기</a>
+      <a href="04-care.html" class="inline-flex items-center justify-center gap-2 px-5 py-4 btn-square border border-white/30 text-white font-semibold tracking-widest text-sm">새가족 등록</a>
     </div>
   </nav>
 </div>
@@ -158,13 +158,13 @@
 
   <!-- 좌상단 미니 라벨 -->
   <div class="relative max-w-container mx-auto px-5 md:px-10 w-full pt-24 md:pt-32">
-    <p class="text-white/70 text-[11px] md:text-xs tracking-[0.4em] font-medium hero-mark">— SINCE 1973</p>
+    <p class="text-white/70 text-[11px] md:text-xs tracking-[0.4em] font-medium hero-mark">— 1973년부터</p>
   </div>
 
   <!-- 헤로 중앙: 큰 디스플레이 타이틀 -->
   <div class="relative flex-1 max-w-container mx-auto px-5 md:px-10 w-full flex flex-col justify-center text-white">
-    <h1 class="display-xl text-white mb-2 md:mb-3">FREE TO<br />WORSHIP.</h1>
-    <p class="display-md text-white/85 font-light mb-8 md:mb-10">자유로이, 함께 예배하라.</p>
+    <h1 class="display-xl text-white mb-2 md:mb-3">자유로이,<br />예배하라.</h1>
+    <p class="display-md text-white/85 font-light mb-8 md:mb-10">함께, 자유로이.</p>
     <p class="max-w-md text-[15px] md:text-lg text-white/70 leading-relaxed">
       "네 입을 크게 열라 내가 채우리라"<br class="hidden md:block" />
       <span class="text-white/50">— 시편 81:10</span>
@@ -177,20 +177,20 @@
       <div class="md:col-span-2 flex items-center gap-3">
         <span class="relative flex h-2 w-2 mt-0.5"><span class="animate-ping absolute inline-flex h-full w-full bg-brand-accent opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-brand-accent"></span></span>
         <div class="leading-tight">
-          <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">NEXT SERVICE</p>
-          <p class="text-sm md:text-base font-bold">5/24 SUN · 11:00</p>
+          <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">다음 예배</p>
+          <p class="text-sm md:text-base font-bold">5/24 주일 · 11:00</p>
         </div>
       </div>
       <div class="text-right md:text-left leading-tight">
-        <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">1ST</p>
+        <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">1부</p>
         <p class="text-sm md:text-base font-bold">9:00</p>
       </div>
       <div class="text-right md:text-left leading-tight hidden md:block">
-        <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">2ND</p>
+        <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">2부</p>
         <p class="text-sm md:text-base font-bold">11:00</p>
       </div>
       <div class="text-right leading-tight">
-        <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">WED</p>
+        <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">수요</p>
         <p class="text-sm md:text-base font-bold">19:30</p>
       </div>
     </div>
@@ -202,12 +202,12 @@
   <div class="max-w-container mx-auto px-5 md:px-10">
     <div class="fade-up mb-12 md:mb-16 flex flex-wrap items-end justify-between gap-6">
       <div>
-        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-accent font-bold mb-4">— THIS SUNDAY</p>
+        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-accent font-bold mb-4">— 이번 주</p>
         <h2 class="display-lg">이번 주<br />말씀.</h2>
       </div>
       <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener"
          class="inline-flex items-center gap-2 text-[12px] tracking-[0.25em] font-bold text-brand-ink hover:text-brand-accent transition-colors">
-        ALL SERMONS <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+        전체 설교 <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
       </a>
     </div>
 
@@ -222,33 +222,33 @@
               <i data-lucide="play" class="w-7 h-7 text-white" style="margin-left:3px;"></i>
             </div>
           </div>
-          <span class="absolute top-4 left-4 px-3 py-1.5 btn-square bg-white text-brand-ink text-[10px] tracking-[0.2em] font-bold">SUNDAY · MAIN</span>
+          <span class="absolute top-4 left-4 px-3 py-1.5 btn-square bg-white text-brand-ink text-[10px] tracking-[0.2em] font-bold">주일 · 대예배</span>
         </div>
-        <p class="text-[11px] tracking-[0.25em] text-brand-ink-muted font-bold mb-3">2026.05.17 · LUKE 24:44–49</p>
+        <p class="text-[11px] tracking-[0.25em] text-brand-ink-muted font-bold mb-3">2026.05.17 · 누가복음 24:44–49</p>
         <h3 class="display-md mb-3 group-hover:text-brand-accent transition-colors">선교하시는 하나님</h3>
-        <p class="text-base text-brand-ink-muted">신승욱 담임목사 · Senior Pastor</p>
+        <p class="text-base text-brand-ink-muted">신승욱 담임목사</p>
       </a>
 
       <!-- 사이드 미니멀 리스트 -->
       <div class="md:col-span-4 flex flex-col">
-        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-ink-muted font-bold mb-5 pb-3 border-b-2 border-brand-ink">— PAST SERMONS</p>
+        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-ink-muted font-bold mb-5 pb-3 border-b-2 border-brand-ink">— 지난 설교</p>
         <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" class="group block py-5 border-b border-brand-line hover:bg-white px-2 -mx-2 transition-colors">
-          <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-2">5/17 · SUN PM</p>
+          <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-2">5/17 · 주일 오후</p>
           <h4 class="text-lg font-bold leading-snug mb-1.5 group-hover:text-brand-accent transition-colors">내가 여기 있나이다<br />나를 보내소서</h4>
           <p class="text-sm text-brand-ink-muted">김윤식 목사</p>
         </a>
         <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" class="group block py-5 border-b border-brand-line hover:bg-white px-2 -mx-2 transition-colors">
-          <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-2">5/13 · WED PM</p>
+          <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-2">5/13 · 수요 저녁</p>
           <h4 class="text-lg font-bold leading-snug mb-1.5 group-hover:text-brand-accent transition-colors">나의 믿음 없는 것을<br />도와주소서</h4>
           <p class="text-sm text-brand-ink-muted">오태희 강도사</p>
         </a>
         <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" class="group block py-5 border-b border-brand-line hover:bg-white px-2 -mx-2 transition-colors">
-          <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-2">5/10 · SUN AM</p>
+          <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-2">5/10 · 주일 오전</p>
           <h4 class="text-lg font-bold leading-snug mb-1.5 group-hover:text-brand-accent transition-colors">두려워하지 말라</h4>
           <p class="text-sm text-brand-ink-muted">신승욱 담임목사</p>
         </a>
         <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 text-[12px] tracking-[0.25em] font-bold text-brand-accent self-start">
-          MORE <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          더보기 <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
       </div>
     </div>
@@ -261,11 +261,11 @@
        alt="" class="absolute inset-0 w-full h-full object-cover opacity-25" />
   <div class="absolute inset-0 bg-gradient-to-b from-brand-ink/60 via-brand-ink/40 to-brand-ink/90"></div>
   <div class="relative max-w-container mx-auto px-5 md:px-10 text-center">
-    <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-accent font-bold mb-6 md:mb-8 fade-up">— 2026 SLOGAN</p>
+    <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-accent font-bold mb-6 md:mb-8 fade-up">— 2026년 표어</p>
     <h2 class="display-lg max-w-5xl mx-auto mb-6 md:mb-8 fade-up">
       "네 입을 크게<br />열라 내가 채우리라"
     </h2>
-    <p class="text-base md:text-xl text-white/65 fade-up">시편 81:10 · GO &amp; GROW</p>
+    <p class="text-base md:text-xl text-white/65 fade-up">시편 81:10 · Go &amp; Grow</p>
   </div>
 </section>
 
@@ -273,7 +273,7 @@
 <section class="py-20 md:py-32 bg-brand-bg">
   <div class="max-w-container mx-auto px-5 md:px-10">
     <div class="fade-up mb-12 md:mb-16 max-w-3xl">
-      <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-accent font-bold mb-4">— WHO WE ARE</p>
+      <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-accent font-bold mb-4">— 우리는</p>
       <h2 class="display-lg mb-6">함께 자라는<br />공동체.</h2>
       <p class="text-base md:text-lg text-brand-ink-muted leading-relaxed">
         세계를 품은 교회. 1973년부터 한 자리에서 예배하며,
@@ -283,27 +283,27 @@
 
     <div class="fade-up grid md:grid-cols-3 gap-px bg-brand-line border border-brand-line">
       <div class="bg-brand-bg p-8 md:p-10 flex flex-col">
-        <span class="text-[10px] tracking-[0.4em] text-brand-accent font-bold mb-8">01 — WORSHIP</span>
+        <span class="text-[10px] tracking-[0.4em] text-brand-accent font-bold mb-8">01 — 예배</span>
         <h3 class="text-2xl md:text-3xl font-bold leading-tight mb-3">자유로이,<br />함께 예배.</h3>
         <p class="text-sm text-brand-ink-muted leading-relaxed mb-6">주일 1·2부와 수요·금요예배. 어떤 형태든, 자유로이 예배합니다.</p>
         <a href="03-worship.html" class="mt-auto inline-flex items-center gap-1.5 text-[12px] tracking-[0.25em] font-bold text-brand-ink hover:text-brand-accent transition-colors">
-          MORE <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          자세히 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
       <div class="bg-brand-bg p-8 md:p-10 flex flex-col">
-        <span class="text-[10px] tracking-[0.4em] text-brand-support font-bold mb-8">02 — COMMUNITY</span>
+        <span class="text-[10px] tracking-[0.4em] text-brand-support font-bold mb-8">02 — 공동체</span>
         <h3 class="text-2xl md:text-3xl font-bold leading-tight mb-3">삶을 나누는<br />자리.</h3>
         <p class="text-sm text-brand-ink-muted leading-relaxed mb-6">구역모임과 소그룹에서, 가까운 이웃과 매주 만나 말씀과 삶을 나눕니다.</p>
         <a href="04-care.html" class="mt-auto inline-flex items-center gap-1.5 text-[12px] tracking-[0.25em] font-bold text-brand-ink hover:text-brand-accent transition-colors">
-          MORE <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          자세히 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
       <div class="bg-brand-bg p-8 md:p-10 flex flex-col">
-        <span class="text-[10px] tracking-[0.4em] text-brand-accent font-bold mb-8">03 — MISSION</span>
+        <span class="text-[10px] tracking-[0.4em] text-brand-accent font-bold mb-8">03 — 사명</span>
         <h3 class="text-2xl md:text-3xl font-bold leading-tight mb-3">세계를 품은<br />사명.</h3>
         <p class="text-sm text-brand-ink-muted leading-relaxed mb-6">가양동 이웃부터 땅끝까지. 한 사람을 세우는 일에 함께합니다.</p>
         <a href="05-activity.html" class="mt-auto inline-flex items-center gap-1.5 text-[12px] tracking-[0.25em] font-bold text-brand-ink hover:text-brand-accent transition-colors">
-          MORE <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          자세히 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
     </div>
@@ -317,7 +317,7 @@
   <div class="absolute inset-0 bg-gradient-to-r from-brand-ink/85 via-brand-ink/55 to-transparent"></div>
   <div class="relative max-w-container mx-auto px-5 md:px-10">
     <div class="max-w-2xl">
-      <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-accent font-bold mb-6 fade-up">— NEW HERE?</p>
+      <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-accent font-bold mb-6 fade-up">— 처음 오셨나요?</p>
       <h2 class="display-xl mb-6 md:mb-8 fade-up">처음 오신<br />당신을<br />환영합니다.</h2>
       <p class="text-base md:text-xl text-white/75 leading-relaxed mb-10 fade-up max-w-xl">
         교회가 낯설어도 괜찮습니다. 어떤 모습이든 그대로 오세요.
@@ -326,11 +326,11 @@
       <div class="flex flex-wrap items-center gap-3 fade-up">
         <a href="04-care.html"
            class="inline-flex items-center gap-2 px-7 py-4 btn-square bg-brand-accent text-white font-bold tracking-widest text-sm hover:bg-white hover:text-brand-ink transition-colors">
-          NEW HERE <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          새가족 등록 <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
         <a href="02-intro.html"
            class="inline-flex items-center gap-2 px-7 py-4 btn-square border border-white/40 text-white font-bold tracking-widest text-sm hover:bg-white/10 transition-colors">
-          ABOUT US
+          교회 소개
         </a>
       </div>
     </div>
@@ -344,7 +344,7 @@
 
       <!-- LIVE -->
       <div class="bg-brand-bg p-8 md:p-12 fade-up">
-        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-accent font-bold mb-4">— LIVE &amp; REPLAY</p>
+        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-accent font-bold mb-4">— 생방송 · 다시보기</p>
         <h2 class="display-md mb-5">생방송으로<br />함께.</h2>
         <p class="text-sm md:text-base text-brand-ink-muted leading-relaxed mb-8">주일 1·2부와 수요·금요예배를 실시간으로. 어디서든 예배의 자리에 함께하세요.</p>
         <a href="https://www.youtube.com/watch?v=ngefkWYxH2A" target="_blank" rel="noopener" class="block group">
@@ -358,7 +358,7 @@
               </div>
             </div>
             <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2 py-1 btn-square bg-white text-brand-ink text-[10px] tracking-[0.2em] font-bold">
-              NEXT · 5/24 SUN 11:00
+              다음 · 5/24 주일 11:00
             </div>
           </div>
         </a>
@@ -366,7 +366,7 @@
 
       <!-- VISIT -->
       <div id="visit" class="bg-brand-bg p-8 md:p-12 fade-up">
-        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-support font-bold mb-4">— VISIT US</p>
+        <p class="text-[11px] md:text-xs tracking-[0.4em] text-brand-support font-bold mb-4">— 오시는 길</p>
         <h2 class="display-md mb-5">오시는<br />길.</h2>
         <p class="text-sm md:text-base text-brand-ink-muted leading-relaxed mb-8">서울 강서구 가양동. 9호선 가양역 도보 N분.</p>
 
@@ -382,15 +382,15 @@
 
         <div class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
           <div>
-            <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-1.5">ADDRESS</p>
+            <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-1.5">주소</p>
             <p class="font-semibold leading-snug">서울 강서구 가양동<br />[도로명 주소]</p>
           </div>
           <div>
-            <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-1.5">PHONE</p>
+            <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-1.5">전화</p>
             <p class="font-semibold">02-2668-6633</p>
           </div>
           <div class="col-span-2">
-            <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-1.5">TRANSIT</p>
+            <p class="text-[10px] tracking-[0.3em] text-brand-ink-muted font-bold mb-1.5">교통</p>
             <p class="text-brand-ink-muted leading-relaxed">9호선 가양역 [번 출구] 도보 N분</p>
           </div>
         </div>
@@ -406,37 +406,37 @@
 
     <!-- 큰 워드마크 -->
     <div class="border-b border-white/10 pb-12 md:pb-16 mb-10 md:mb-14">
-      <h2 class="display-xl text-white mb-3">KYUNGHYANG.</h2>
-      <p class="text-sm md:text-base text-white/55 tracking-widest">SINCE 1973 · THE CHURCH WITH A GLOBAL VISION</p>
+      <h2 class="display-xl text-white mb-3">경향교회.</h2>
+      <p class="text-sm md:text-base text-white/55 tracking-widest">1973년부터 · 세계를 품은 교회</p>
     </div>
 
     <div class="grid md:grid-cols-12 gap-10 md:gap-8 mb-12">
       <div class="md:col-span-5">
-        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— 2026 SLOGAN</p>
+        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— 2026년 표어</p>
         <p class="text-xl md:text-2xl font-bold text-white leading-snug mb-2">"네 입을 크게 열라<br />내가 채우리라"</p>
-        <p class="text-sm text-white/50">시편 81:10 · GO &amp; GROW</p>
+        <p class="text-sm text-white/50">시편 81:10 · Go &amp; Grow</p>
       </div>
       <div class="md:col-span-2">
-        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— MENU</p>
+        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— 메뉴</p>
         <ul class="space-y-2.5 text-sm">
-          <li><a href="02-intro.html" class="hover:text-white transition-colors">ABOUT</a></li>
-          <li><a href="03-worship.html" class="hover:text-white transition-colors">WORSHIP</a></li>
-          <li><a href="04-care.html" class="hover:text-white transition-colors">MINISTRY</a></li>
-          <li><a href="05-activity.html" class="hover:text-white transition-colors">NEWS</a></li>
-          <li><a href="04-care.html" class="text-brand-accent font-semibold">NEW HERE →</a></li>
+          <li><a href="02-intro.html" class="hover:text-white transition-colors">교회소개</a></li>
+          <li><a href="03-worship.html" class="hover:text-white transition-colors">예배와 교육</a></li>
+          <li><a href="04-care.html" class="hover:text-white transition-colors">목양과 사역</a></li>
+          <li><a href="05-activity.html" class="hover:text-white transition-colors">교회 활동</a></li>
+          <li><a href="04-care.html" class="text-brand-accent font-semibold">새가족 →</a></li>
         </ul>
       </div>
       <div class="md:col-span-2">
-        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— LINKS</p>
+        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— 바로가기</p>
         <ul class="space-y-2.5 text-sm">
           <li><a href="#" class="hover:text-white transition-colors">온라인 헌금</a></li>
           <li><a href="#" class="hover:text-white transition-colors">e-행정</a></li>
           <li><a href="05-activity.html" class="hover:text-white transition-colors">이번 주 주보</a></li>
-          <li><a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener" class="hover:text-white transition-colors">LIVE</a></li>
+          <li><a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener" class="hover:text-white transition-colors">생방송</a></li>
         </ul>
       </div>
       <div class="md:col-span-3">
-        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— CONTACT</p>
+        <p class="text-[11px] tracking-[0.4em] text-white/45 font-bold mb-4">— 연락처</p>
         <ul class="space-y-2.5 text-sm leading-relaxed">
           <li>서울특별시 강서구 가양동<br />[도로명 주소]</li>
           <li>02-2668-6633</li>
@@ -451,7 +451,7 @@
     </div>
 
     <div class="pt-6 border-t border-white/10 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-white/40">
-      <p>© 2026 KYUNGHYANG CHURCH. All rights reserved.</p>
+      <p>© 2026 경향교회. All rights reserved.</p>
       <div class="flex items-center gap-4">
         <a href="#" class="hover:text-white transition-colors">개인정보처리방침</a>
         <span class="text-white/15">·</span>
@@ -471,14 +471,14 @@
     <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80" alt="Go & Grow 캠페인 placeholder" class="absolute inset-0 w-full h-full object-cover opacity-55" />
     <div class="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/40 to-transparent"></div>
     <div class="absolute bottom-3 left-4 right-4">
-      <p class="text-[10px] tracking-[0.35em] text-brand-accent font-bold mb-1">2026 CAMPAIGN</p>
-      <p class="text-white text-2xl font-bold leading-none">GO &amp; GROW.</p>
+      <p class="text-[10px] tracking-[0.35em] text-brand-accent font-bold mb-1">2026 캠페인</p>
+      <p class="text-white text-2xl font-bold leading-none">Go &amp; Grow.</p>
     </div>
   </div>
   <div class="p-4">
     <p class="text-sm text-white/70 leading-relaxed mb-3">"네 입을 크게 열라 내가 채우리라" — 함께 나아가는 한 해.</p>
     <a href="#" class="inline-flex items-center gap-1.5 text-[12px] tracking-[0.25em] font-bold text-brand-accent">
-      MORE <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+      자세히 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
     </a>
   </div>
 </div>
