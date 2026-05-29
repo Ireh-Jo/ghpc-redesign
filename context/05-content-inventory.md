@@ -7,13 +7,26 @@
 
 | 항목 | 값 |
 |---|---|
-| 이름 | 경향교회 |
+| 이름 (국문) | 경향교회 |
+| 이름 (영문) | **GYUNG-HYANG PRESBYTERIAN CHURCH** (대문자, 하이픈 포함) |
+| 영문 약식 | GYUNG-HYANG (로고·콤팩트 영역에서만) |
 | 위치 | 서울시 강서구 가양 |
 | 담임목사 | 신승욱 목사 |
 | 설립 | 1973년 (2023년 50주년 — 로고 "since 1973" 기준) |
 | 도메인 | https://www.ghpc.or.kr/ |
 | 공식 유튜브 | https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg |
 | 2026 슬로건 | "네 입을 크게 열라 내가 채우리라" (시편 81:10) |
+
+### 영문 표기 규칙 — 단일 출처
+
+- **정식 표기:** `GYUNG-HYANG PRESBYTERIAN CHURCH` (전부 대문자, "GYUNG"과 "HYANG" 사이 **하이픈 필수**)
+- **약식 표기:** `GYUNG-HYANG` — 헤더 로고·푸터 등 폭이 좁은 영역에서만. 본문/저작권/메타 태그에는 정식 표기 사용
+- **금지 표기:** `KYUNGHYANG`, `KYUNG-HYANG`, `Gyunghyang`, `GyungHyang`, `Kyung Hyang` 등 — K 시작·하이픈 누락·대소문자 혼용 전부 금지
+- **국문 병기 예:** `경향교회 (GYUNG-HYANG PRESBYTERIAN CHURCH)` — 괄호 안에 정식 표기, 국문이 앞
+- **저작권 표기:** `© 2026 경향교회 (GYUNG-HYANG PRESBYTERIAN CHURCH). All rights reserved.`
+- **적용 범위:** 푸터·헤더 로고·`<meta>` 태그(og:site_name 등)·이메일 서명·외부 노출 모든 위치. 국문이 우선이지만 영문이 노출되는 곳에선 위 규칙 강제
+
+> 코드 상수로 둘 경우 권장 키: `BRAND_EN_FULL = 'GYUNG-HYANG PRESBYTERIAN CHURCH'`, `BRAND_EN_SHORT = 'GYUNG-HYANG'`. 문자열 리터럴을 여기저기 흩뿌리지 말 것.
 
 ## 메인 `/`
 
@@ -107,7 +120,7 @@
 | 메뉴 링크 | 교회소개 / 예배와 교육 / 목양과 사역 / 교회 활동 / 새가족 |
 | 외부 링크 | 온라인 헌금 (외부) / e-행정 (외부) / 주보 PDF |
 | SNS | 유튜브·인스타·페이스북 |
-| 하단 | © 2026 경향교회. All rights reserved. \| 개인정보처리방침 \| 이용약관 |
+| 하단 | © 2026 경향교회 (GYUNG-HYANG PRESBYTERIAN CHURCH). All rights reserved. \| 개인정보처리방침 \| 이용약관 |
 
 ## 카피 톤 가이드
 

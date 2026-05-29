@@ -32,6 +32,7 @@
 12. **시안 자산 직접 import·복붙 금지.** `prototypes/` 코드를 production 코드로 옮길 때는 디자인 토큰·접근성·성능 재검증.
 13. **빌드 도구 우회 금지.** `next.config.js`의 `eslint.ignoreDuringBuilds` / `typescript.ignoreBuildErrors` true로 두지 말 것.
 14. **`any` 남발 금지.** zod 추론·Supabase 생성 타입 우선 (`guardrails/01-code-quality.md`).
+15. **교회명 영문 표기 임의 변형 금지.** 정식은 `GYUNG-HYANG PRESBYTERIAN CHURCH`(대문자·하이픈 필수), 약식은 `GYUNG-HYANG`. `KYUNGHYANG` / `KYUNG-HYANG` / `Gyunghyang` 등 K 시작·하이픈 누락·대소문자 혼용 전부 금지. 단일 출처: `context/05-content-inventory.md` 「영문 표기 규칙」.
 
 ## 작업 중단 트리거
 
