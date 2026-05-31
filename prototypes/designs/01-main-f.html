@@ -2,19 +2,19 @@
 <html lang="ko" class="scroll-smooth">
 <head>
 <!--
-  경향교회 1차 시안 — F안 "미니멀 디스플레이형"
-  레퍼런스: knock-church.com (두드림교회)
+  경향교회 1차 시안 — 미니멀형 "디스플레이 타이포"
+  레퍼런스: knock-church.com (두드림교회) + 경향교회 공식 로고 (logo_2022.png)
   특징: 다크 풀블리드 헤로 + 큰 한글 디스플레이 타이포
         / 라운드·그림자 최소 (미니멀)
         / 모바일 우선 — 시원시원한 위계
-        / 경향 로고 파랑은 액센트로 절제 사용
+        / 로고 파랑(#00428D)은 액센트로 절제 · 다크 위 미세 라벨엔 녹색(#009B73)
   Design System: prototypes/_archive/context/01-design-system.md
-  Updated: 2026-05-21
+  Updated: 2026-05-31
 -->
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>경향교회 — 자유로이, 예배하라 (F안)</title>
-<meta name="description" content="경향교회 홈페이지 개편 1차 시안 — F안 두드림교회 스타일" />
+<title>경향교회 — 자유로이, 예배하라 (미니멀형)</title>
+<meta name="description" content="경향교회 홈페이지 개편 1차 시안 — 미니멀형 (디스플레이 타이포)" />
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" as="style" crossorigin
@@ -29,8 +29,8 @@
         colors: {
           brand: {
             bg:'#FAFAFA', surface:'#FFFFFF', ink:'#0E1116',
-            'ink-muted':'#6B7280', accent:'#1A5AA8', 'accent-2':'#0E1116',
-            support:'#2E7D5F', line:'#E5E7EB'
+            'ink-muted':'#6B7280', accent:'rgb(var(--c-accent) / <alpha-value>)', 'accent-2':'#0E1116',
+            support:'rgb(var(--c-support) / <alpha-value>)', line:'#E5E7EB'
           }
         },
         maxWidth: { container:'1280px' }
@@ -39,10 +39,21 @@
   };
 </script>
 <style>
+  /* 색상 팔레트 — 버튼으로 전환 (시연용). 기본: 공식 로고 블루 + 녹색 서브 */
+  :root { --c-accent: 0 66 141; --c-support: 0 155 115; }
+  #palette-switch .sw { transition:transform .15s ease, box-shadow .15s ease; }
+  #palette-switch .sw[aria-pressed="true"] { box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(0,0,0,.28); transform:scale(1.06); }
   body { font-family:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif; }
   /* 두드림 스타일 — 미니멀 다크 헤로 */
   .hero-overlay {
     background:linear-gradient(180deg,rgba(14,17,22,.35) 0%,rgba(14,17,22,.55) 60%,rgba(14,17,22,.92) 100%);
+  }
+  /* 스크롤 시 헤더 — 라이트 섹션 위에서도 흰 메뉴가 보이도록 다크 솔리드 */
+  #site-header { transition:background-color .3s ease, border-color .3s ease; }
+  #site-header.scrolled {
+    background-color:rgba(14,17,22,.92);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08);
   }
   .fade-up { opacity:0; transform:translateY(14px); transition:opacity .8s ease-out,transform .8s ease-out; }
   .fade-up.visible { opacity:1; transform:translateY(0); }
@@ -75,11 +86,11 @@
   .nav-line { position:relative; }
   .nav-line:hover::after, .nav-line:focus-visible::after {
     content:''; position:absolute; left:0; right:0; bottom:-2px;
-    height:2px; background:#1A5AA8;
+    height:2px; background:rgb(var(--c-support));
   }
   .nav-line.active::after {
     content:''; position:absolute; left:0; right:0; bottom:-2px;
-    height:2px; background:#1A5AA8;
+    height:2px; background:rgb(var(--c-support));
   }
 
   /* 두드림처럼 직각 버튼 */
@@ -112,7 +123,7 @@
     <div class="hidden lg:flex items-center gap-4">
       <a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener"
          class="inline-flex items-center gap-2 text-[12px] tracking-widest font-medium text-white">
-        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full bg-brand-accent opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-brand-accent"></span></span>
+        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full bg-brand-support opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-brand-support"></span></span>
         생방송
       </a>
     </div>
@@ -175,7 +186,7 @@
   <div class="relative w-full border-t border-white/15 backdrop-blur-sm">
     <div class="max-w-container mx-auto px-5 md:px-10 py-4 md:py-5 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-6 text-white">
       <div class="md:col-span-2 flex items-center gap-3">
-        <span class="relative flex h-2 w-2 mt-0.5"><span class="animate-ping absolute inline-flex h-full w-full bg-brand-accent opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-brand-accent"></span></span>
+        <span class="relative flex h-2 w-2 mt-0.5"><span class="animate-ping absolute inline-flex h-full w-full bg-brand-support opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-brand-support"></span></span>
         <div class="leading-tight">
           <p class="text-[10px] tracking-[0.3em] text-white/55 font-medium">다음 예배</p>
           <p class="text-sm md:text-base font-bold">5/24 주일 · 11:00</p>
@@ -261,7 +272,7 @@
        alt="" class="absolute inset-0 w-full h-full object-cover opacity-25" />
   <div class="absolute inset-0 bg-gradient-to-b from-brand-ink/60 via-brand-ink/40 to-brand-ink/90"></div>
   <div class="relative max-w-container mx-auto px-5 md:px-10 text-center">
-    <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-accent font-bold mb-6 md:mb-8 fade-up">— 2026년 표어</p>
+    <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-support font-bold mb-6 md:mb-8 fade-up">— 2026년 표어</p>
     <h2 class="display-lg max-w-5xl mx-auto mb-6 md:mb-8 fade-up">
       "네 입을 크게<br />열라 내가 채우리라"
     </h2>
@@ -317,7 +328,7 @@
   <div class="absolute inset-0 bg-gradient-to-r from-brand-ink/85 via-brand-ink/55 to-transparent"></div>
   <div class="relative max-w-container mx-auto px-5 md:px-10">
     <div class="max-w-2xl">
-      <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-accent font-bold mb-6 fade-up">— 처음 오셨나요?</p>
+      <p class="text-[11px] md:text-xs tracking-[0.5em] text-brand-support font-bold mb-6 fade-up">— 처음 오셨나요?</p>
       <h2 class="display-xl mb-6 md:mb-8 fade-up">처음 오신<br />당신을<br />환영합니다.</h2>
       <p class="text-base md:text-xl text-white/75 leading-relaxed mb-10 fade-up max-w-xl">
         교회가 낯설어도 괜찮습니다. 어떤 모습이든 그대로 오세요.
@@ -423,7 +434,7 @@
           <li><a href="03-worship.html" class="hover:text-white transition-colors">예배와 교육</a></li>
           <li><a href="04-care.html" class="hover:text-white transition-colors">목양과 사역</a></li>
           <li><a href="05-activity.html" class="hover:text-white transition-colors">교회 활동</a></li>
-          <li><a href="04-care.html" class="text-brand-accent font-semibold">새가족 →</a></li>
+          <li><a href="04-care.html" class="text-brand-support font-semibold">새가족 →</a></li>
         </ul>
       </div>
       <div class="md:col-span-2">
@@ -461,6 +472,16 @@
   </div>
 </footer>
 
+<!-- ===== 색상 팔레트 스위처 (시연용) ===== -->
+<div id="palette-switch" class="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-40 flex items-center gap-2.5 bg-white/95 backdrop-blur rounded-full shadow-xl border border-black/5 pl-3 pr-2.5 py-2">
+  <span class="text-[11px] font-semibold text-gray-500 inline-flex items-center gap-1"><i data-lucide="palette" class="w-3.5 h-3.5"></i> 색상</span>
+  <div class="flex items-center gap-1.5">
+    <button class="sw w-6 h-6 rounded-full" data-pal="blue"  style="background:#00428D" aria-label="블루" title="블루 (기본)" aria-pressed="true"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="green" style="background:#009B73" aria-label="그린" title="그린 (따뜻)" aria-pressed="false"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="navy"  style="background:#13315C" aria-label="네이비" title="네이비 (클래식)" aria-pressed="false"></button>
+  </div>
+</div>
+
 <!-- ===== Go & Grow 플로팅 (미니멀 직각) ===== -->
 <div id="gng-popup"
      class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 w-[260px] sm:w-[300px] bg-brand-ink text-white border border-white/10 overflow-hidden">
@@ -471,13 +492,13 @@
     <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80" alt="Go & Grow 캠페인 placeholder" class="absolute inset-0 w-full h-full object-cover opacity-55" />
     <div class="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/40 to-transparent"></div>
     <div class="absolute bottom-3 left-4 right-4">
-      <p class="text-[10px] tracking-[0.35em] text-brand-accent font-bold mb-1">2026 캠페인</p>
+      <p class="text-[10px] tracking-[0.35em] text-brand-support font-bold mb-1">2026 캠페인</p>
       <p class="text-white text-2xl font-bold leading-none">Go &amp; Grow.</p>
     </div>
   </div>
   <div class="p-4">
     <p class="text-sm text-white/70 leading-relaxed mb-3">"네 입을 크게 열라 내가 채우리라" — 함께 나아가는 한 해.</p>
-    <a href="#" class="inline-flex items-center gap-1.5 text-[12px] tracking-[0.25em] font-bold text-brand-accent">
+    <a href="#" class="inline-flex items-center gap-1.5 text-[12px] tracking-[0.25em] font-bold text-brand-support">
       자세히 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
     </a>
   </div>
@@ -485,6 +506,13 @@
 
 <script>
   if (window.lucide) lucide.createIcons();
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    if (window.scrollY > 80) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
   document.getElementById('menu-open')?.addEventListener('click', () => {
     document.getElementById('mobile-menu').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -498,6 +526,21 @@
   }, { threshold:0.12 });
   document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
   document.getElementById('gng-close')?.addEventListener('click', () => document.getElementById('gng-popup')?.remove());
+
+  // 색상 팔레트 스위처 — accent만 전환(블루/그린/네이비), support(녹색)은 대비 위해 고정
+  const PALS = { blue:'0 66 141', green:'0 155 115', navy:'19 49 92' };
+  function applyPalette(name){
+    const v = PALS[name] || PALS.blue;
+    document.documentElement.style.setProperty('--c-accent', v);
+    document.querySelectorAll('#palette-switch .sw').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.pal === name ? 'true' : 'false'));
+    try { localStorage.setItem('ghpc-palette', name); } catch(e){}
+  }
+  let saved = 'blue';
+  try { saved = localStorage.getItem('ghpc-palette') || 'blue'; } catch(e){}
+  applyPalette(saved);
+  document.querySelectorAll('#palette-switch .sw').forEach(b =>
+    b.addEventListener('click', () => applyPalette(b.dataset.pal)));
 </script>
 </body>
 </html>

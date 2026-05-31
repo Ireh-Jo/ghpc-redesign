@@ -2,17 +2,18 @@
 <html lang="ko" class="scroll-smooth">
 <head>
 <!--
-  경향교회 1차 시안 — C안 "포털형 (사랑의교회 스타일)"
-  레퍼런스: sarang.org
-  특징: 유틸리티 바 + GNB 2단 헤더 / 컴팩트 배너 헤로 / 퀵메뉴 아이콘 그리드(시그니처)
+  경향교회 1차 시안 — 포털형 "사랑의교회 스타일"
+  레퍼런스: sarang.org + 경향교회 공식 로고 (logo_2022.png)
+  특징: 로고 파랑 주색(#00428D) + 녹색 서브 포인트(#009B73)
+        / 유틸리티 바 + GNB 2단 헤더 / 컴팩트 배너 헤로 / 퀵메뉴 아이콘 그리드(시그니처)
         / 탭형 공지 게시판 / 정보 밀집 모듈 그리드 / 패밀리사이트 푸터
   Design System: prototypes/_archive/context/01-design-system.md
-  Updated: 2026-05-19
+  Updated: 2026-05-31
 -->
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>경향교회 — 오신 것을 환영합니다 (C안)</title>
-<meta name="description" content="경향교회 홈페이지 개편 1차 시안 — C안 포털형" />
+<title>경향교회 — 오신 것을 환영합니다 (포털형)</title>
+<meta name="description" content="경향교회 홈페이지 개편 1차 시안 — 포털형 (사랑의교회 스타일)" />
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" as="style" crossorigin
@@ -27,7 +28,8 @@
         colors: {
           brand: {
             bg:'#F2F5F9', surface:'#FFFFFF', ink:'#1A2A44',
-            'ink-muted':'#5C6A82', accent:'#1257A0', 'accent-2':'#0B1A30', line:'#D8E0EC'
+            'ink-muted':'#5C6A82', accent:'rgb(var(--c-accent) / <alpha-value>)', 'accent-2':'#0B1A30',
+            support:'rgb(var(--c-support) / <alpha-value>)', line:'#D8E0EC'
           }
         },
         maxWidth: { container:'1200px' }
@@ -36,6 +38,10 @@
   };
 </script>
 <style>
+  /* 색상 팔레트 — 버튼으로 전환 (시연용). 기본: 공식 로고 블루 + 녹색 서브 */
+  :root { --c-accent: 0 66 141; --c-support: 0 155 115; }
+  #palette-switch .sw { transition:transform .15s ease, box-shadow .15s ease; }
+  #palette-switch .sw[aria-pressed="true"] { box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(0,0,0,.28); transform:scale(1.06); }
   body { font-family:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif; }
   .fade-up { opacity:0; transform:translateY(14px); transition:opacity .55s ease-out,transform .55s ease-out; }
   .fade-up.visible { opacity:1; transform:translateY(0); }
@@ -45,7 +51,7 @@
     opacity:0; visibility:hidden; transform:translateY(-6px);
     transition:opacity .18s ease-out,transform .18s ease-out,visibility .18s;
   }
-  .tab-btn.active { color:#1257A0; border-color:#1257A0; }
+  .tab-btn.active { color:rgb(var(--c-accent)); border-color:rgb(var(--c-accent)); }
 </style>
 </head>
 <body class="bg-brand-bg text-brand-ink antialiased">
@@ -221,8 +227,8 @@
         <span class="text-xs md:text-[13px] font-semibold">예배 안내</span>
       </a>
       <a href="04-care.html" class="group flex flex-col items-center text-center gap-2.5 p-3 rounded-lg hover:bg-brand-bg transition-colors">
-        <span class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-brand-accent/10 flex items-center justify-center group-hover:bg-brand-accent transition-colors">
-          <i data-lucide="user-plus" class="w-5 h-5 md:w-6 md:h-6 text-brand-accent group-hover:text-white transition-colors"></i>
+        <span class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-brand-support/10 flex items-center justify-center group-hover:bg-brand-support transition-colors">
+          <i data-lucide="user-plus" class="w-5 h-5 md:w-6 md:h-6 text-brand-support group-hover:text-white transition-colors"></i>
         </span>
         <span class="text-xs md:text-[13px] font-semibold">새가족 등록</span>
       </a>
@@ -450,7 +456,7 @@
             <div class="absolute inset-0 flex flex-col justify-center px-5 text-white">
               <p class="text-[11px] tracking-widest text-white/65 font-semibold mb-1">FOR NEWCOMERS</p>
               <p class="text-lg font-bold mb-0.5">처음 오셨나요?</p>
-              <span class="inline-flex items-center gap-1 text-xs font-semibold text-brand-accent group-hover:text-white transition-colors">새가족 등록 안내 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+              <span class="inline-flex items-center gap-1 text-xs font-semibold text-brand-support group-hover:text-white transition-colors">새가족 등록 안내 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
             </div>
           </div>
         </a>
@@ -602,7 +608,7 @@
       <div class="md:col-span-2">
         <p class="text-xs font-semibold text-white/45 mb-3">바로가기</p>
         <ul class="space-y-2 text-sm">
-          <li><a href="04-care.html" class="text-brand-accent font-semibold hover:text-white transition-colors">새가족 등록</a></li>
+          <li><a href="04-care.html" class="text-brand-support font-semibold hover:text-white transition-colors">새가족 등록</a></li>
           <li><a href="05-activity.html" class="hover:text-white transition-colors">이번 주 주보</a></li>
           <li><a href="#" class="hover:text-white transition-colors">온라인 헌금</a></li>
           <li><a href="https://www.youtube.com/channel/UCpPEfMA_nBf1koFnjyKu1pg/live" target="_blank" rel="noopener" class="hover:text-white transition-colors">생방송 보기</a></li>
@@ -627,6 +633,16 @@
     </div>
   </div>
 </footer>
+
+<!-- ===== 색상 팔레트 스위처 (시연용) ===== -->
+<div id="palette-switch" class="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-40 flex items-center gap-2.5 bg-white/95 backdrop-blur rounded-full shadow-xl border border-black/5 pl-3 pr-2.5 py-2">
+  <span class="text-[11px] font-semibold text-gray-500 inline-flex items-center gap-1"><i data-lucide="palette" class="w-3.5 h-3.5"></i> 색상</span>
+  <div class="flex items-center gap-1.5">
+    <button class="sw w-6 h-6 rounded-full" data-pal="blue"  style="background:#00428D" aria-label="블루" title="블루 (기본)" aria-pressed="true"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="green" style="background:#009B73" aria-label="그린" title="그린 (따뜻)" aria-pressed="false"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="navy"  style="background:#13315C" aria-label="네이비" title="네이비 (클래식)" aria-pressed="false"></button>
+  </div>
+</div>
 
 <!-- ===== Go & Grow 플로팅 ===== -->
 <div id="gng-popup"
@@ -674,6 +690,21 @@
   }, { threshold:0.1 });
   document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
   document.getElementById('gng-close')?.addEventListener('click', () => document.getElementById('gng-popup')?.remove());
+
+  // 색상 팔레트 스위처 — accent만 전환(블루/그린/네이비), support(녹색)은 대비 위해 고정
+  const PALS = { blue:'0 66 141', green:'0 155 115', navy:'19 49 92' };
+  function applyPalette(name){
+    const v = PALS[name] || PALS.blue;
+    document.documentElement.style.setProperty('--c-accent', v);
+    document.querySelectorAll('#palette-switch .sw').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.pal === name ? 'true' : 'false'));
+    try { localStorage.setItem('ghpc-palette', name); } catch(e){}
+  }
+  let saved = 'blue';
+  try { saved = localStorage.getItem('ghpc-palette') || 'blue'; } catch(e){}
+  applyPalette(saved);
+  document.querySelectorAll('#palette-switch .sw').forEach(b =>
+    b.addEventListener('click', () => applyPalette(b.dataset.pal)));
 </script>
 </body>
 </html>

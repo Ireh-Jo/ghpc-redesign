@@ -2,19 +2,19 @@
 <html lang="ko" class="scroll-smooth">
 <head>
 <!--
-  경향교회 1차 시안 — E안 "공식 컬러 정합형"
-  레퍼런스: 경향교회 공식 로고 (logo_2022.png)
-  특징: 로고 파랑 주색(#1A5AA8) + 녹색 서브 포인트(#2E7D5F)
+  경향교회 1차 시안 — 환영형 "공식 컬러 정합형"
+  레퍼런스: Grace Community Church("Welcome") + 경향교회 공식 로고 (logo_2022.png)
+  특징: 로고 파랑 주색(#00428D) + 녹색 서브 포인트(#009B73) — 로고 PNG에서 직접 추출한 정확한 값
         / 풀블리드 사진 헤로 + 따뜻한 환영 멘트
         / 헤로 직하 퀵메뉴 아이콘 그리드
         / 사진+텍스트 교차 + 부드러운 라운드(xl)
   Design System: prototypes/_archive/context/01-design-system.md
-  Updated: 2026-05-20
+  Updated: 2026-05-31
 -->
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>경향교회 — 오신 것을 환영합니다 (E안)</title>
-<meta name="description" content="경향교회 홈페이지 개편 1차 시안 — E안 공식 컬러 정합형" />
+<title>경향교회 — 오신 것을 환영합니다 (환영형)</title>
+<meta name="description" content="경향교회 홈페이지 개편 1차 시안 — 환영형 (공식 컬러 정합)" />
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" as="style" crossorigin
@@ -29,8 +29,8 @@
         colors: {
           brand: {
             bg:'#F4F8FC', surface:'#FFFFFF', ink:'#0E2A4F',
-            'ink-muted':'#5C6E85', accent:'#1A5AA8', 'accent-2':'#0E2A4F',
-            support:'#2E7D5F', line:'#DCE4EE'
+            'ink-muted':'#5C6E85', accent:'rgb(var(--c-accent) / <alpha-value>)', 'accent-2':'#0E2A4F',
+            support:'rgb(var(--c-support) / <alpha-value>)', line:'#DCE4EE'
           }
         },
         maxWidth: { container:'1200px' }
@@ -39,6 +39,10 @@
   };
 </script>
 <style>
+  /* 색상 팔레트 — 버튼으로 전환 (시연용). 기본: 공식 로고 블루 + 녹색 서브 */
+  :root { --c-accent: 0 66 141; --c-support: 0 155 115; }
+  #palette-switch .sw { transition:transform .15s ease, box-shadow .15s ease; }
+  #palette-switch .sw[aria-pressed="true"] { box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(0,0,0,.28); transform:scale(1.06); }
   body { font-family:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif; }
   .hero-overlay {
     background:linear-gradient(180deg,rgba(14,42,79,.28) 0%,rgba(14,42,79,.38) 50%,rgba(14,42,79,.78) 100%);
@@ -54,7 +58,7 @@
     box-shadow:0 1px 0 rgba(14,42,79,.08);
   }
   #site-header.scrolled .h-text  { color:#0E2A4F; }
-  #site-header.scrolled .h-text:hover { color:#1A5AA8; }
+  #site-header.scrolled .h-text:hover { color:rgb(var(--c-accent)); }
   #site-header.scrolled .h-sub   { color:#5C6E85; }
   #site-header.scrolled .h-divider { border-color:#DCE4EE; }
   #site-header.scrolled .h-burger { color:#0E2A4F; }
@@ -67,7 +71,7 @@
   }
 
   /* 녹색 서브 포인트 — 가는 라인·작은 라벨에만 사용 (서브로 절제) */
-  .support-line { background:linear-gradient(90deg,#2E7D5F 0%,#1A5AA8 100%); }
+  .support-line { background:linear-gradient(90deg,rgb(var(--c-support)) 0%,rgb(var(--c-accent)) 100%); }
 </style>
 </head>
 <body class="bg-brand-bg text-brand-ink antialiased">
@@ -643,6 +647,16 @@
   </div>
 </footer>
 
+<!-- ===== 색상 팔레트 스위처 (시연용) ===== -->
+<div id="palette-switch" class="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-40 flex items-center gap-2.5 bg-white/95 backdrop-blur rounded-full shadow-xl border border-black/5 pl-3 pr-2.5 py-2">
+  <span class="text-[11px] font-semibold text-gray-500 inline-flex items-center gap-1"><i data-lucide="palette" class="w-3.5 h-3.5"></i> 색상</span>
+  <div class="flex items-center gap-1.5">
+    <button class="sw w-6 h-6 rounded-full" data-pal="blue"  style="background:#00428D" aria-label="블루" title="블루 (기본)" aria-pressed="true"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="green" style="background:#009B73" aria-label="그린" title="그린 (따뜻)" aria-pressed="false"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="navy"  style="background:#13315C" aria-label="네이비" title="네이비 (클래식)" aria-pressed="false"></button>
+  </div>
+</div>
+
 <!-- ===== Go & Grow 플로팅 ===== -->
 <div id="gng-popup"
      class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 w-[260px] sm:w-80 bg-brand-surface rounded-2xl shadow-xl border border-brand-line overflow-hidden">
@@ -687,6 +701,21 @@
   }, { threshold:0.12 });
   document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
   document.getElementById('gng-close')?.addEventListener('click', () => document.getElementById('gng-popup')?.remove());
+
+  // 색상 팔레트 스위처 — accent만 전환(블루/그린/네이비), support(녹색)은 대비 위해 고정
+  const PALS = { blue:'0 66 141', green:'0 155 115', navy:'19 49 92' };
+  function applyPalette(name){
+    const v = PALS[name] || PALS.blue;
+    document.documentElement.style.setProperty('--c-accent', v);
+    document.querySelectorAll('#palette-switch .sw').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.pal === name ? 'true' : 'false'));
+    try { localStorage.setItem('ghpc-palette', name); } catch(e){}
+  }
+  let saved = 'blue';
+  try { saved = localStorage.getItem('ghpc-palette') || 'blue'; } catch(e){}
+  applyPalette(saved);
+  document.querySelectorAll('#palette-switch .sw').forEach(b =>
+    b.addEventListener('click', () => applyPalette(b.dataset.pal)));
 </script>
 </body>
 </html>
