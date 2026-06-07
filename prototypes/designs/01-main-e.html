@@ -654,6 +654,7 @@
     <button class="sw w-6 h-6 rounded-full" data-pal="blue"  style="background:#00428D" aria-label="블루" title="블루 (기본)" aria-pressed="true"></button>
     <button class="sw w-6 h-6 rounded-full" data-pal="green" style="background:#009B73" aria-label="그린" title="그린 (따뜻)" aria-pressed="false"></button>
     <button class="sw w-6 h-6 rounded-full" data-pal="navy"  style="background:#13315C" aria-label="네이비" title="네이비 (클래식)" aria-pressed="false"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="red"   style="background:#9E2233" aria-label="버건디" title="버건디 (로고 레드)" aria-pressed="false"></button>
   </div>
 </div>
 
@@ -703,7 +704,7 @@
   document.getElementById('gng-close')?.addEventListener('click', () => document.getElementById('gng-popup')?.remove());
 
   // 색상 팔레트 스위처 — accent만 전환(블루/그린/네이비), support(녹색)은 대비 위해 고정
-  const PALS = { blue:'0 66 141', green:'0 155 115', navy:'19 49 92' };
+  const PALS = { blue:'0 66 141', green:'0 155 115', navy:'19 49 92', red:'158 34 51' };
   function applyPalette(name){
     const v = PALS[name] || PALS.blue;
     document.documentElement.style.setProperty('--c-accent', v);

@@ -28,7 +28,7 @@
         colors: {
           brand: {
             bg:'#F6F3EE', surface:'#FFFFFF', ink:'#2B2823',
-            'ink-muted':'#8A8276', accent:'#009B73', 'accent-2':'#234034', line:'#E6E1D8'
+            'ink-muted':'#8A8276', accent:'rgb(var(--c-accent) / <alpha-value>)', 'accent-2':'#234034', line:'#E6E1D8'
           }
         },
         maxWidth: { container:'1180px' }
@@ -37,6 +37,10 @@
   };
 </script>
 <style>
+  /* 색상 팔레트 — 버튼으로 전환 (시연용). 기본: 그린(로고 녹색) */
+  :root { --c-accent: 0 155 115; }
+  #palette-switch .sw { transition:transform .15s ease, box-shadow .15s ease; }
+  #palette-switch .sw[aria-pressed="true"] { box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(0,0,0,.28); transform:scale(1.06); }
   body { font-family:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif; }
   .hero-veil { background:linear-gradient(180deg,rgba(28,32,28,.34) 0%,rgba(28,32,28,.20) 45%,rgba(28,32,28,.62) 100%); }
   .fade-up { opacity:0; transform:translateY(22px); transition:opacity .8s ease-out,transform .8s ease-out; }
@@ -48,10 +52,10 @@
     box-shadow:0 1px 0 rgba(0,0,0,.05);
   }
   #site-header.scrolled .h-link  { color:#2B2823; }
-  #site-header.scrolled .h-link:hover { color:#009B73; }
+  #site-header.scrolled .h-link:hover { color:rgb(var(--c-accent)); }
   #site-header.scrolled .h-logo  { color:#2B2823; }
   #site-header.scrolled .h-logo-sub { color:#8A8276; }
-  #site-header.scrolled .h-pill  { background:#009B73; color:#fff; border-color:#009B73; }
+  #site-header.scrolled .h-pill  { background:rgb(var(--c-accent)); color:#fff; border-color:rgb(var(--c-accent)); }
   #site-header.scrolled .h-burger { color:#2B2823; }
 
   .nav-item:hover .dropdown,
@@ -477,6 +481,17 @@
   </div>
 </div>
 
+<!-- ===== 색상 팔레트 스위처 (시연용 · 블루·그린·네이비·버건디) ===== -->
+<div id="palette-switch" class="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-40 flex items-center gap-2.5 bg-white/95 backdrop-blur rounded-full shadow-xl border border-black/5 pl-3 pr-2.5 py-2">
+  <span class="text-[11px] font-semibold text-gray-500 inline-flex items-center gap-1"><i data-lucide="palette" class="w-3.5 h-3.5"></i> 색상</span>
+  <div class="flex items-center gap-1.5">
+    <button class="sw w-6 h-6 rounded-full" data-pal="blue"  style="background:#00428D" aria-label="블루" title="블루 (로고)" aria-pressed="false"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="green" style="background:#009B73" aria-label="그린" title="그린 (로고)" aria-pressed="true"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="navy"  style="background:#13315C" aria-label="네이비" title="네이비 (클래식)" aria-pressed="false"></button>
+    <button class="sw w-6 h-6 rounded-full" data-pal="red"   style="background:#9E2233" aria-label="버건디" title="버건디 (로고 레드)" aria-pressed="false"></button>
+  </div>
+</div>
+
 <script>
   if (window.lucide) lucide.createIcons();
   const header = document.getElementById('site-header');
@@ -499,6 +514,21 @@
   }, { threshold:0.12 });
   document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
   document.getElementById('gng-close')?.addEventListener('click', () => document.getElementById('gng-popup')?.remove());
+
+  // 색상 팔레트 스위처 — accent 전환(블루/그린/네이비/버건디). 기본: 그린(로고 녹색)
+  const PALS = { blue:'0 66 141', green:'0 155 115', navy:'19 49 92', red:'158 34 51' };
+  function applyPalette(name){
+    const v = PALS[name] || PALS.green;
+    document.documentElement.style.setProperty('--c-accent', v);
+    document.querySelectorAll('#palette-switch .sw').forEach(b =>
+      b.setAttribute('aria-pressed', b.dataset.pal === name ? 'true' : 'false'));
+    try { localStorage.setItem('ghpc-palette', name); } catch(e){}
+  }
+  let saved = 'green';
+  try { saved = localStorage.getItem('ghpc-palette') || 'green'; } catch(e){}
+  applyPalette(saved);
+  document.querySelectorAll('#palette-switch .sw').forEach(b =>
+    b.addEventListener('click', () => applyPalette(b.dataset.pal)));
 </script>
 </body>
 </html>
