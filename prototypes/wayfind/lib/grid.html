@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  html,body{margin:0;background:#fff}
+  #s{display:block}
+  .gl{stroke:#ff00aa;stroke-width:0.7;opacity:.4}
+  .gl5{stroke:#0066ff;stroke-width:1.6;opacity:.75}
+  .gt{font:18px monospace;fill:#d000a0;font-weight:bold}
+  .gt5{font:22px monospace;fill:#0044cc;font-weight:bold}
+</style></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <image id="bg" x="0" y="0"/>
+  <g id="grid"></g>
+</svg>
+<script>
+const q=new URLSearchParams(location.search);
+const f=q.get('f')||'B1';
+// 기본 좌표계: 지하 2097x1190, 지상 841x595
+const big=!f.startsWith('F');
+const W=big?2097.64:841.89, H=big?1190.55:595.276;
+const step=big?100:50;
+const zoom=parseFloat(q.get('z')||(big?'1':'2.5'));
+const svg=document.getElementById('s');
+svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+svg.setAttribute('width', W*zoom);
+svg.setAttribute('height', H*zoom);
+document.getElementById('bg').setAttribute('href','../svg/'+f+'.svg');
+document.getElementById('bg').setAttribute('width',W);
+document.getElementById('bg').setAttribute('height',H);
+const g=document.getElementById('grid'),NS="http://www.w3.org/2000/svg";
+function ln(x1,y1,x2,y2,c){const l=document.createElementNS(NS,'line');l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);l.setAttribute('class',c);g.appendChild(l);}
+function tx(x,y,t,c){const e=document.createElementNS(NS,'text');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('class',c);e.textContent=t;g.appendChild(e);}
+for(let x=0;x<=W;x+=step){const major=x%500===0;ln(x,0,x,H,major?'gl5':'gl');if(major){tx(x+2,20,x,'gt5');tx(x+2,H-6,x,'gt5');}}
+for(let y=0;y<=H;y+=step){const major=y%500===0;ln(0,y,W,y,major?'gl5':'gl');if(major){tx(4,y-4,y,'gt5');tx(W-70,y-4,y,'gt5');}}
+// 100단위 보조 라벨
+for(let x=0;x<=W;x+=100){if(x%500)tx(x+1,40,x,'gt');}
+for(let y=0;y<=H;y+=100){if(y%500)tx(4,y+16,y,'gt');}
+</script></body></html>

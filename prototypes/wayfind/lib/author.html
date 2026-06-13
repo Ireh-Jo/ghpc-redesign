@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  html,body{margin:0;background:#fff}
+  #s{display:block}
+  .node{fill:#0066ff;stroke:#fff;stroke-width:1.5}
+  .nlab{font:13px monospace;fill:#0044cc;font-weight:bold}
+  .edge{stroke:#0066ff;stroke-width:3;opacity:.55}
+  .edge.stairs{stroke:#16a34a}
+  .edge.elevator{stroke:#e11d48}
+  .door{fill:#ff8c00;stroke:#fff;stroke-width:1.5}
+  .area{fill:rgba(225,29,72,.28);stroke:#e11d48;stroke-width:2}
+  .rlab{font:12px sans-serif;fill:#15803d;font-weight:bold}
+  .xfer{fill:none;stroke:#e11d48;stroke-width:2.5;stroke-dasharray:5 3}
+  .xlab{font:12px sans-serif;fill:#be123c;font-weight:bold}
+</style></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+<script src="../data/B1.js"></script>
+<script>
+const q=new URLSearchParams(location.search);
+const F=window.FLOOR_B1;
+const z=parseFloat(q.get('z')||'1.3');
+const NS="http://www.w3.org/2000/svg";
+const [,,W,H]=F.viewBox;
+const svg=document.getElementById('s');
+const vb=(q.get('vb')||`0 0 ${W} ${H}`).split(/[ ,]+/).map(Number);
+svg.setAttribute('viewBox',vb.join(' '));
+svg.setAttribute('width',1100); svg.setAttribute('height',1100*vb[3]/vb[2]);
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+// 배경
+const img=el('image',{x:0,y:0,width:W,height:H}); img.setAttribute('href','../'+F.svg); svg.appendChild(img);
+// 좌표 그리드
+const gg=el('g',{}); svg.appendChild(gg);
+for(let x=0;x<=W;x+=100){const maj=x%500===0;const l=el('line',{x1:x,y1:0,x2:x,y2:H,stroke:maj?'#0066ff':'#ff66cc','stroke-width':maj?1.2:0.5,opacity:maj?.6:.3});gg.appendChild(l);
+  const t=el('text',{x:x+1,y:18,fill:maj?'#0044cc':'#cc3399','font-size':maj?16:11,'font-weight':'bold','font-family':'monospace'});t.textContent=x;gg.appendChild(t);}
+for(let y=0;y<=H;y+=100){const maj=y%500===0;const l=el('line',{x1:0,y1:y,x2:W,y2:y,stroke:maj?'#0066ff':'#ff66cc','stroke-width':maj?1.2:0.5,opacity:maj?.6:.3});gg.appendChild(l);
+  const t=el('text',{x:2,y:y+14,fill:maj?'#0044cc':'#cc3399','font-size':maj?16:11,'font-weight':'bold','font-family':'monospace'});t.textContent=y;gg.appendChild(t);}
+// edges
+for(const [a,b,type] of F.edges){const p=F.nodes[a],q2=F.nodes[b];
+  svg.appendChild(el('line',{x1:p[0],y1:p[1],x2:q2[0],y2:q2[1],class:'edge '+type}));}
+// rooms: area(클릭영역) + door
+for(const r of F.rooms){
+  if(r.area){const a=r.area; let shp;
+    if(a.rect)shp=el('rect',{x:a.rect[0],y:a.rect[1],width:a.rect[2],height:a.rect[3],class:'area'});
+    else if(a.circle)shp=el('circle',{cx:a.circle[0],cy:a.circle[1],r:a.circle[2],class:'area'});
+    else if(a.poly)shp=el('polygon',{points:a.poly.map(p=>p.join(',')).join(' '),class:'area'});
+    if(shp)svg.appendChild(shp);
+    const c=a.rect?[a.rect[0]+a.rect[2]/2,a.rect[1]+a.rect[3]/2]:a.circle?[a.circle[0],a.circle[1]]:[a.poly[0][0],a.poly[0][1]];
+    const t=el('text',{x:c[0],y:c[1],class:'rlab','text-anchor':'middle'}); t.textContent=r.name; svg.appendChild(t);
+  }
+  if(r.door){svg.appendChild(el('circle',{cx:r.door[0],cy:r.door[1],r:6,class:'door'}));}
+}
+// nodes
+for(const k in F.nodes){const n=F.nodes[k];
+  svg.appendChild(el('circle',{cx:n[0],cy:n[1],r:7,class:'node'}));
+  const t=el('text',{x:n[0]+9,y:n[1]-7,class:'nlab'}); t.textContent=k; svg.appendChild(t);}
+// transfers
+for(const x of F.transfers){const n=x.at;
+  svg.appendChild(el('rect',{x:n[0]-13,y:n[1]-13,width:26,height:26,class:'xfer'}));
+  const t=el('text',{x:n[0]+16,y:n[1]+4,class:'xlab'}); t.textContent=x.kind==='elevator'?'EV':'계단'; svg.appendChild(t);}
+</script></body></html>

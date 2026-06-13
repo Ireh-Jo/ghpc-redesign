@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body>
+<div id="host" style="position:absolute;left:-99999px"></div>
+<script>
+const f=new URLSearchParams(location.search).get('f')||'B1';
+window.__ready=false;
+fetch('../svg/'+f+'.svg').then(r=>r.text()).then(t=>{
+  document.getElementById('host').innerHTML=t;
+  window.__svg=document.querySelector('#host svg');
+  window.__ready=true;
+});
+// 호출용: 색상별 path bbox 추출
+window.probe=function(){
+  const svg=window.__svg, paths=[...svg.querySelectorAll('path')];
+  const out=[];
+  for(const p of paths){
+    let b; try{b=p.getBBox();}catch(e){continue;}
+    const fill=(p.getAttribute('fill')||p.style.fill||'').toLowerCase();
+    out.push({fill, x:Math.round(b.x), y:Math.round(b.y), w:Math.round(b.width), h:Math.round(b.height)});
+  }
+  return out;
+};
+// 색상 히스토그램(면적 큰 채움색만)
+window.fills=function(minArea){
+  const o=window.probe(), m={};
+  for(const p of o){const a=p.w*p.h; if(a<(minArea||3000))continue; (m[p.fill]=m[p.fill]||{n:0,area:0}); m[p.fill].n++; m[p.fill].area+=a;}
+  return Object.entries(m).map(([k,v])=>({fill:k,count:v.n})).sort((a,b)=>b.count-a.count);
+};
+</script></body></html>

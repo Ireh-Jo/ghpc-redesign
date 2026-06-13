@@ -13,6 +13,7 @@
 | `video-embed.md` | 유튜브 / 기존 미디어 서버 영상 임베드 | draft |
 | `form-handling.md` | 신청·등록 폼 공통 처리 (검증·전송·알림·동의) | draft |
 | `bulletin-pdf.md` | 주보 PDF 업로드·표시 (Supabase Storage) | draft |
+| `wayfinding.md` | 실내 길찾기 (5개 층, 프로토타입 완성) | locked (레퍼런스: `prototypes/wayfind/`) |
 
 ## feature .md frontmatter 템플릿
 

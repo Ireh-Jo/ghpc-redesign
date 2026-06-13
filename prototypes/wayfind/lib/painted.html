@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body>
+<canvas id="c"></canvas>
+<script src="../data/B1.js"></script>
+<script>
+// 사용자가 핑크로 칠한 보행경로(B1painted.png, 1:1 viewBox) 분석.
+const cv=document.getElementById('c'), ctx=cv.getContext('2d',{willReadFrequently:true});
+let W,H,D; window.__ready=false;
+const im=new Image();
+im.onload=()=>{ W=im.width; H=im.height; cv.width=W; cv.height=H; ctx.drawImage(im,0,0);
+  D=ctx.getImageData(0,0,W,H).data; window.__ready=true; };
+im.src='B1painted.png';
+function at(x,y){const i=(Math.round(y)*W+Math.round(x))*4;return [D[i],D[i+1],D[i+2],D[i+3]];}
+// 핑크 판정 (마젠타 계열: R높음, G낮음, B중간높음)
+window.isPink=function(x,y){const p=at(x,y); return p[0]>200&&p[1]<150&&p[2]>150&&(p[0]-p[1])>80;};
+window.sample=function(pts){return JSON.stringify(pts.map(p=>[p[0],p[1],at(p[0],p[1])]));};
+// 그래프 오버레이 + 핑크 위 여부
+window.drawGraph=function(){const F=window.FLOOR_B1;
+  ctx.strokeStyle='#0a7d2c';ctx.lineWidth=3;
+  for(const [a,b] of F.edges){const p=F.nodes[a],q=F.nodes[b];if(!p||!q)continue;ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();}
+  ctx.font='13px monospace';
+  for(const k in F.nodes){const n=F.nodes[k];const ok=window.isPink(n[0],n[1]);
+    ctx.fillStyle=ok?'#0033cc':'#ff0000';ctx.beginPath();ctx.arc(n[0],n[1],6,0,7);ctx.fill();
+    ctx.fillStyle='#000';ctx.fillText(k,n[0]+7,n[1]-4);}
+  return 'drawn';};
+// 노드 핑크 검사
+window.checkNodes=function(){const F=window.FLOOR_B1,bad={};for(const k in F.nodes){if(!window.isPink(F.nodes[k][0],F.nodes[k][1]))bad[k]=F.nodes[k];}return JSON.stringify(bad);};
+// 핑크 마스크를 셀 그리드로 추출 → base64 packed bits (자동 경로망용)
+window.extractMask=function(C){
+  const gw=Math.ceil(W/C), gh=Math.ceil(H/C);
+  const bits=new Uint8Array(gw*gh);
+  for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){
+    let hit=false;
+    for(let y=gy*C;y<Math.min(H,gy*C+C)&&!hit;y+=2)for(let x=gx*C;x<Math.min(W,gx*C+C)&&!hit;x+=2){
+      if(window.isPink(x,y))hit=true;}
+    bits[gy*gw+gx]=hit?1:0;}
+  // pack to bytes → base64
+  const bytes=new Uint8Array(Math.ceil(bits.length/8));
+  for(let i=0;i<bits.length;i++)if(bits[i])bytes[i>>3]|=(1<<(i&7));
+  let bin=''; for(const b of bytes)bin+=String.fromCharCode(b);
+  return JSON.stringify({C:C, gw:gw, gh:gh, count:bits.reduce((a,b)=>a+b,0), b64:btoa(bin)});
+};
+// 핑크 마스크를 그리드로 ASCII 덤프 (구조 파악)
+window.dump=function(x0,y0,x1,y1,step){let s='';for(let y=y0;y<y1;y+=step){let line=y+': ';for(let x=x0;x<x1;x+=step){line+=window.isPink(x,y)?'P':(at(x,y)[3]<70?'·':(at(x,y)[0]+at(x,y)[1]+at(x,y)[2]<150?'#':'o'));}s+=line+'\n';}return s;};
+</script></body></html>

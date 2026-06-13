@@ -34,3 +34,10 @@ out/
 *.log
 *.tmp
 /tmp/
+
+# 길찾기 원본 도면 (.ai 대용량 — 로컬 보관, 커밋 금지)
+prototypes/wayfind/plans/*.ai
+
+# 임시 분석용 (사용자 핑크경로 렌더)
+prototypes/wayfind/lib/B1painted.png
+prototypes/wayfind/walk/_src/
