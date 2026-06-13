@@ -21,7 +21,7 @@ window.FLOOR_B1 = {
     { id:'elev_blue',   kind:'elevator', at:[910,750],  label:'중앙 엘리베이터' },
     { id:'elev_cyan',   kind:'elevator', at:[220,235],  label:'북서 엘리베이터' },
     { id:'stair_gray',  kind:'stairs',   at:[195,130],  label:'북서 계단' },
-    { id:'stair_purple',kind:'stairs',   at:[1390,300], label:'북동 계단' },
+    { id:'stair_purple',kind:'stairs',   at:[1450,388], label:'북동 계단' }, // 계단 발치(식당측 복도)에 부착. [1390,300]은 비전홀 둘레 고립 stroke에 snap돼 식당↔이 계단이 1420비용 우회였음
     { id:'stair_orange',kind:'stairs',   at:[910,650],  label:'중앙 계단' },
     { id:'stair_green', kind:'stairs',   at:[690,490],  label:'중앙서 계단' },
     { id:'stair_pink',  kind:'stairs',   at:[1190,1000],label:'남측 계단' },

@@ -12,7 +12,7 @@ window.FLOOR_F2 = {
 
   transfers: [
     { id:'elev_blue',   kind:'elevator', at:[136,346], label:'엘리베이터' },
-    { id:'stair_purple',kind:'stairs',   at:[446,68],  label:'북동 계단' },
+    { id:'stair_purple',kind:'stairs',   at:[460,92],  label:'북동 계단' }, // 계단발치(트리니티·남자화장실측 복도)에 부착. [446,68]은 고립 stub에 snap돼 룸에서 도달 불가였음
     { id:'stair_orange',kind:'stairs',   at:[157,300], label:'중앙 계단' },
   ],
 

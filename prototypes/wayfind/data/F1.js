@@ -14,7 +14,7 @@ window.FLOOR_F1 = {
   // green(좌측 최외곽)은 건물 밖으로 나가는 외부계단이라 내부 층간이동에서 제외.
   transfers: [
     { id:'elev_blue',   kind:'elevator', at:[229,350], label:'엘리베이터' },
-    { id:'stair_purple',kind:'stairs',   at:[507,100], label:'북동 계단' },
+    { id:'stair_purple',kind:'stairs',   at:[530,98], label:'북동 계단' }, // 트리니티홀 북동(반대쪽) 입구측 계단발치에 부착. [507,100]은 고립 stub에 snap돼 룸에서 도달 불가였음
     { id:'stair_orange',kind:'stairs',   at:[221,307], label:'중앙 계단' },
   ],
 

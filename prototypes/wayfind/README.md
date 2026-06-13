@@ -34,13 +34,15 @@ prototypes/wayfind/
 ├── svg/
 │   └── B1.svg ~ F2.svg 배경 도면(현위치·F1라벨 삭제본 .ai 변환). 화면 표시용.
 ├── walk/
-│   ├── B1.png ~ F2.png 핑크 보행경로 마스크 (도면 1:1). 라우팅 입력. ★커밋함
-│   └── _src/*.pdf       경로 원본 PDF 백업 (gitignore)
-├── plans/*.ai          최초 원본 도면 (gitignore, 로컬 보관)
-└── lib/{grid,author,probe,autorect,painted}.html   ← 개발 도구(좌표·영역·경로 검출). 운영 불필요.
+│   └── B1.png ~ F2.png 핑크 보행경로 마스크 (도면 1:1). 라우팅 입력. ★커밋함
+└── lib/{grid,author,probe,autorect}.html   ← 개발 도구(좌표·영역 검출). 런타임/배포 불필요, 유지보수용.
 ```
 
+> **편집 원본은 레포에 없음 — 작업자 로컬 백업에 보관.**
+> 도면 원본 `.ai`(SVG 배경의 출처)와 보행경로 원본 PDF(walk PNG의 출처)는 용량(13.5MB)·소스 보호 차원에서 레포·배포에서 제외. 도면/경로를 **수정할 때만** 로컬 백업에서 꺼내 §4 워크플로(`.ai`→`pdftocairo`→svg, PDF→`pdftoppm`→walk PNG)로 재생성 후 결과물(svg/png)만 다시 넣는다.
+
 서버: `.claude/launch.json` 의 `wayfind` = `python3 -m http.server 8777`. **반드시 서버로 열 것**(file:// 안 됨).
+배포 자산 = `index.html` + `lib/wayfind.js` + `data/` + `svg/` + `walk/*.png` 만. (`lib/*.html` 도구는 배포 불필요.)
 
 ---
 
@@ -159,3 +161,4 @@ wf.showFloor('B1'); wf.setMode('stairs'); wf.pick('B1','B143'); // 클릭 시뮬
 - 거리(m)는 추정 축척(scaleMPerPx=0.03). 실측 시 보정.
 - F2 트리니티홀·만나의집은 도면상 채움 없음(void) → area 수동 지정.
 - walk PNG 안의 다른 핑크(예: 주석 핑크 동그라미)는 경로로 오검출될 수 있음 → 경로 PDF엔 핑크는 길만.
+- **transfer `at`·room `door` 좌표는 "방과 이어진" 핑크 stroke에 snap돼야 함.** 계단 옆에 핑크 얼룩(고립 stroke)이 따로 있으면 거기에 snap돼서 경로가 우회하거나(예: 북동계단 1420비용 우회) 아예 안 잡힘(예: 옛 제1교육실 입구). 좌표 바꿀 땐 발치의 *복도와 연결된* 핑크 셀에 붙이고, 인접 방끼리 라우팅해 검증.
