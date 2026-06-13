@@ -127,7 +127,7 @@ wf.showFloor('B1'); wf.setMode('stairs'); wf.pick('B1','B143'); // 클릭 시뮬
 | `stair_pink` | 계단 | B1·B2·B3 |
 | `stair_purple` | 계단 | F2·F1·B1·B2 |
 | `stair_orange` | 계단 | F2·F1·B1·B2 |
-| `stair_green` | 계단 | F1·B1·B2 |
+| `stair_green` | 계단 | B1·B2 (F1쪽은 건물 밖 외부계단이라 내부 층간이동 제외) |
 
 `order` 상 인접 층끼리만 연결되므로(F2-F1-B1-B2-B3), 한 샤프트가 여러 층에 있으면 연쇄 연결된다.
 

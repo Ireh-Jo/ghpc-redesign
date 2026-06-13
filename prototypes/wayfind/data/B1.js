@@ -31,7 +31,7 @@ window.FLOOR_B1 = {
   rooms: [
     { code:'B141', name:'직원식당', door:[460,360],  sel:true, area:{rect:[404,124,124,234]} },
     { code:'B142', name:'주방',     muted:true },
-    { code:'B143', name:'식당',     door:[1000,360], sel:true, area:{rect:[760,124,832,234]} },
+    { code:'B143', name:'식당',     doors:[[1000,360],[1450,360]], sel:true, area:{rect:[760,124,832,234]} }, // 우측 입구 추가=북동(purple)계단 바로옆 → F1·B2 이동 시 인접 계단 활용
     { code:'B134', name:'공조실',   muted:true },
     { code:'B133', name:'예단실',   door:[1640,520], sel:true,
       area:{poly:[[1718,406],[1608,472],[1646,538],[1668,572],[1776,506],[1738,440]]} },

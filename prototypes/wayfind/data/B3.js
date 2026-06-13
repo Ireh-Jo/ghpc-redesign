@@ -15,8 +15,8 @@ window.FLOOR_B3 = {
   ],
 
   rooms: [
-    { code:'B342', name:'헬스실',   door:[490,296], sel:true, area:{rect:[385,235,210,122]} },
-    { code:'B371', name:'우성체육관', door:[610,500], sel:true, area:{rect:[134,426,489,581]} },
+    { code:'B342', name:'헬스실',   door:[490,360], sel:true, area:{rect:[385,235,210,122]} }, // 입구=아래쪽(기존[490,296] 좌측위 오인)
+    { code:'B371', name:'우성체육관', door:[378,426], sel:true, area:{rect:[134,426,489,581]} }, // 입구=위쪽 중앙(기존[610,500] 오른쪽 오인)
     { code:'B312', name:'경향복지재단', door:[907,789], sel:true, area:{rect:[872,752,70,74]} },
     { code:'B322', name:'제10교육실', door:[867,981], sel:true, area:{rect:[757,878,220,207]} },
     { code:'WCBN', name:'남자화장실', wc:'m', door:[417,159], sel:true, area:{rect:[378,124,78,70]} },
