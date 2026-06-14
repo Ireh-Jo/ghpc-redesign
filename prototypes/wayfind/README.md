@@ -98,6 +98,9 @@ window.FLOOR_B1 = {
 
 ### C. 배경 도면 교체 (현위치 등 수정 시)
 `.ai`에서 수정 → `pdftocairo -svg "<층>.ai" svg/<층>.svg`. viewBox 동일하면 좌표 그대로 유효.
+> **재변환 후 SVGO 재실행 필수.** pdftocairo 출력은 장황(층당 ~400~500K) → 무손실 최적화로 ~66%↓. `removeViewBox`는 꺼서 좌표계 보존:
+> `npx svgo@3 -f svg -o svg --multipass` + config `{plugins:[{name:'preset-default',params:{overrides:{removeViewBox:false}}}]}`. (안 돌리면 자산이 다시 1.4MB로 불어남.)
+> 프로덕션(Vercel/Next)은 gzip/brotli 자동 → SVG가 추가로 ~22%로 압축됨(코드 0). 진입 지연의 큰 부분은 dev `http.server`가 미압축이라 생기는 것.
 
 ---
 
