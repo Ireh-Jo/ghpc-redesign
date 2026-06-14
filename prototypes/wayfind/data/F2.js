@@ -17,7 +17,7 @@ window.FLOOR_F2 = {
   ],
 
   rooms: [
-    { code:'F101', name:'트리니티홀', doors:[[450,360],[450,520],[470,200]], sel:true, hall:true, area:{rect:[440,150,560,560]} },
+    { code:'F101', name:'트리니티홀', doors:[[450,360],[450,520],[470,200]], sel:true, hall:true, area:{poly:[[572,58],[1008,310],[756,746],[320,494]]} }, // 기존 rect[440,150,560,560]을 좌5%이동+우10%·하10% 컷 후 중심기준 30° 우회전(방 기울기 정합)
     { code:'F102', name:'만나의 집 2층', door:[210,510], sel:true, area:{rect:[130,455,165,110]} },
     { code:'WCFN', name:'남자화장실', wc:'m', door:[367,262], sel:true, area:{rect:[330,211,74,103]} },
     { code:'WCFY', name:'여자화장실', wc:'f', door:[307,384], sel:true, area:{rect:[270,332,74,105]} },
