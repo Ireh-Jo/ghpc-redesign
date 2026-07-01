@@ -98,6 +98,26 @@
 
   @keyframes hero-mark { 0%,100%{opacity:.5;} 50%{opacity:1;} }
   .hero-mark { animation:hero-mark 2.2s ease-in-out infinite; }
+
+  /* ===== 메가메뉴 (사랑의교회식 전체 펼침 · 다크 미니멀) ===== */
+  #mega-menu {
+    background:rgba(14,17,22,.97);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    opacity:0; visibility:hidden; transform:translateY(-6px);
+    transition:opacity .25s ease, transform .25s ease, visibility .25s;
+  }
+  #site-header.mega-open #mega-menu { opacity:1; visibility:visible; transform:translateY(0); }
+  /* 패널 열리면 상단 바도 다크 솔리드로 (헤로 위 투명 상태여도) */
+  #site-header.mega-open {
+    background-color:rgba(14,17,22,.97);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  /* 현재 가리키는 상위 메뉴 강조 인디케이터 */
+  .nav-line.mega-active::after {
+    content:''; position:absolute; left:0; right:0; bottom:-2px;
+    height:2px; background:rgb(var(--c-support));
+  }
 </style>
 </head>
 <body class="bg-brand-bg text-brand-ink antialiased">
@@ -113,11 +133,11 @@
     </a>
 
     <nav class="hidden lg:flex items-center gap-8">
-      <a href="02-intro.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">교회소개</a>
-      <a href="03-worship.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">예배와 교육</a>
-      <a href="04-care.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">목양과 사역</a>
-      <a href="05-activity.html" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">교회 활동</a>
-      <a href="04-care.html" class="nav-line active text-[13px] tracking-widest font-bold text-white hover:text-white">새가족</a>
+      <a href="02-intro.html" data-mega="intro" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">교회소개</a>
+      <a href="03-worship.html" data-mega="worship" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">예배와 교육</a>
+      <a href="04-care.html" data-mega="care" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">목양과 사역</a>
+      <a href="05-activity.html" data-mega="activity" class="nav-line text-[13px] tracking-widest font-medium text-white hover:text-white">교회 활동</a>
+      <a href="04-care.html" data-mega="newfamily" class="nav-line active text-[13px] tracking-widest font-bold text-white hover:text-white">새가족</a>
     </nav>
 
     <div class="hidden lg:flex items-center gap-4">
@@ -130,6 +150,76 @@
     <button id="menu-open" class="lg:hidden text-white p-2 -mr-2" aria-label="메뉴 열기">
       <i data-lucide="menu" class="w-7 h-7"></i>
     </button>
+  </div>
+
+  <!-- ===== 메가메뉴 (사랑의교회식 · 전체 폭 트리 펼침) — 데스크탑 전용 ===== -->
+  <div id="mega-menu" class="hidden lg:block absolute inset-x-0 top-full">
+    <div class="max-w-container mx-auto px-5 md:px-10 py-9 grid grid-cols-5 gap-x-8 gap-y-4 text-white">
+
+      <!-- 교회소개 -->
+      <div data-col="intro">
+        <a href="02-intro.html" class="block text-sm font-bold tracking-widest text-white pb-3 mb-4 border-b border-white/15 hover:text-brand-support transition-colors">교회소개</a>
+        <ul class="space-y-2.5 text-[13px]">
+          <li><a href="02-intro.html#greeting" class="text-white/65 hover:text-brand-support transition-colors">인사말</a></li>
+          <li><a href="02-intro.html#vision" class="text-white/65 hover:text-brand-support transition-colors">비전 · 신학 노선</a></li>
+          <li><a href="02-intro.html#history" class="text-white/65 hover:text-brand-support transition-colors">교회 역사</a></li>
+          <li><a href="02-intro.html#people" class="text-white/65 hover:text-brand-support transition-colors">섬기는 사람들</a></li>
+          <li><a href="02-intro.html#info" class="text-white/65 hover:text-brand-support transition-colors">교회 정보 · 시설</a></li>
+          <li><a href="02-intro.html#qna" class="text-white/65 hover:text-brand-support transition-colors">새신자 Q&amp;A</a></li>
+        </ul>
+      </div>
+
+      <!-- 예배와 교육 -->
+      <div data-col="worship">
+        <a href="03-worship.html" class="block text-sm font-bold tracking-widest text-white pb-3 mb-4 border-b border-white/15 hover:text-brand-support transition-colors">예배와 교육</a>
+        <ul class="space-y-2.5 text-[13px]">
+          <li><a href="03-worship.html#times" class="text-white/65 hover:text-brand-support transition-colors">예배 시간표</a></li>
+          <li><a href="03-worship.html#live" class="text-white/65 hover:text-brand-support transition-colors">생방송 · 예배 실황</a></li>
+          <li><a href="03-worship.html#special" class="text-white/65 hover:text-brand-support transition-colors">특별순서 · 특송</a></li>
+          <li><a href="03-worship.html#kids" class="text-white/65 hover:text-brand-support transition-colors">주일학교</a></li>
+          <li><a href="03-worship.html#youth" class="text-white/65 hover:text-brand-support transition-colors">중 · 고 · 대학부</a></li>
+          <li><a href="03-worship.html#young-adult" class="text-white/65 hover:text-brand-support transition-colors">청년회</a></li>
+        </ul>
+      </div>
+
+      <!-- 목양과 사역 -->
+      <div data-col="care">
+        <a href="04-care.html" class="block text-sm font-bold tracking-widest text-white pb-3 mb-4 border-b border-white/15 hover:text-brand-support transition-colors">목양과 사역</a>
+        <ul class="space-y-2.5 text-[13px]">
+          <li><a href="04-care.html#newfamily" class="text-white/65 hover:text-brand-support transition-colors">새가족 안내</a></li>
+          <li><a href="04-care.html#district" class="text-white/65 hover:text-brand-support transition-colors">구역모임</a></li>
+          <li><a href="04-care.html#senior" class="text-white/65 hover:text-brand-support transition-colors">경향시니어스쿨</a></li>
+          <li><a href="04-care.html#academy" class="text-white/65 hover:text-brand-support transition-colors">평생교육원</a></li>
+          <li><a href="04-care.html#ministry" class="text-white/65 hover:text-brand-support transition-colors">선교 · 사역</a></li>
+        </ul>
+      </div>
+
+      <!-- 교회 활동 -->
+      <div data-col="activity">
+        <a href="05-activity.html" class="block text-sm font-bold tracking-widest text-white pb-3 mb-4 border-b border-white/15 hover:text-brand-support transition-colors">교회 활동</a>
+        <ul class="space-y-2.5 text-[13px]">
+          <li><a href="05-activity.html#calendar" class="text-white/65 hover:text-brand-support transition-colors">교회 일정</a></li>
+          <li><a href="05-activity.html#bulletin" class="text-white/65 hover:text-brand-support transition-colors">주보</a></li>
+          <li><a href="05-activity.html#news" class="text-white/65 hover:text-brand-support transition-colors">교회 소식</a></li>
+          <li><a href="05-activity.html#weekly" class="text-white/65 hover:text-brand-support transition-colors">경향의 일주일</a></li>
+        </ul>
+      </div>
+
+      <!-- 새가족 (강조 — 녹색) -->
+      <div data-col="newfamily">
+        <a href="04-care.html" class="block text-sm font-bold tracking-widest text-brand-support pb-3 mb-4 border-b border-brand-support/30 hover:text-white transition-colors">새가족</a>
+        <ul class="space-y-2.5 text-[13px]">
+          <li><a href="04-care.html#welcome" class="text-white/65 hover:text-brand-support transition-colors">처음 오셨나요?</a></li>
+          <li><a href="04-care.html#register" class="text-white/65 hover:text-brand-support transition-colors">새가족 등록</a></li>
+          <li><a href="04-care.html#education" class="text-white/65 hover:text-brand-support transition-colors">새가족 교육 · 학습</a></li>
+          <li><a href="04-care.html#guide" class="text-white/65 hover:text-brand-support transition-colors">예배 안내</a></li>
+        </ul>
+        <a href="04-care.html" class="mt-5 inline-flex items-center gap-1.5 text-[12px] tracking-[0.2em] font-bold text-brand-support">
+          등록하기 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+
+    </div>
   </div>
 </header>
 
@@ -514,6 +604,36 @@
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive:true });
+
+  // ===== 메가메뉴 (사랑의교회식 전체 펼침) — 데스크탑 hover/focus =====
+  const mqDesktop = window.matchMedia('(min-width:1024px)');
+  const navLinks = header.querySelectorAll('nav a[data-mega]');
+  function setActiveCol(key){
+    navLinks.forEach(l => l.classList.toggle('mega-active', l.dataset.mega === key));
+  }
+  function openMega(key){
+    if (!mqDesktop.matches) return;
+    header.classList.add('mega-open');
+    if (key) setActiveCol(key);
+  }
+  function closeMega(){
+    header.classList.remove('mega-open');
+    navLinks.forEach(l => l.classList.remove('mega-active'));
+  }
+  // 헤더 전체 영역에 마우스가 있으면 패널 유지, 벗어나면 닫힘
+  header.addEventListener('mouseenter', () => openMega());
+  header.addEventListener('mouseleave', closeMega);
+  // 특정 상위 메뉴를 가리키면 해당 컬럼 인디케이터 강조
+  navLinks.forEach(l => {
+    l.addEventListener('mouseenter', () => openMega(l.dataset.mega));
+    l.addEventListener('focus', () => openMega(l.dataset.mega));
+  });
+  // 키보드 접근성: 헤더에서 포커스가 완전히 빠지면 닫기 · ESC로 닫기
+  header.addEventListener('focusout', (e) => {
+    if (!header.contains(e.relatedTarget)) closeMega();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMega(); });
+  mqDesktop.addEventListener('change', (e) => { if (!e.matches) closeMega(); });
   document.getElementById('menu-open')?.addEventListener('click', () => {
     document.getElementById('mobile-menu').classList.remove('hidden');
     document.body.style.overflow = 'hidden';

@@ -47,12 +47,16 @@
 
 | 이름 | 상태 | 페이지 | 문서 |
 |---|---|---|---|
-| Container | draft | 전 페이지 | `layout/container.md` |
-| Header | draft | 전 페이지 (sticky GNB) | `layout/header.md` |
-| MobileNav | draft | 전 페이지 (햄버거 풀스크린) | `layout/mobile-nav.md` |
-| Footer | draft | 전 페이지 | `layout/footer.md` |
+| Container | wip | 전 페이지 | `layout/container.md` |
+| Header | wip | 전 페이지 (fixed GNB · 사랑의교회식 메가메뉴 hover 펼침) | `layout/header.md` |
+| MobileNav | wip | 전 페이지 (햄버거 풀스크린) | `layout/mobile-nav.md` |
+| Footer | wip | 전 페이지 | `layout/footer.md` |
 | SectionHeader | draft | 거의 모든 섹션 | `layout/section-header.md` |
 | AnchorNav | draft | 긴 페이지 내 앵커 메뉴 | `layout/anchor-nav.md` |
+
+> **GNB 메뉴 구조 단일 출처: `lib/nav.ts`** (트리 config). 항목·라벨·순서·뎁스는 코드에 박지 않고 이 파일에서 관리.
+> Header는 데스크탑 메가메뉴(전체 폭 5컬럼 트리) + 모바일 풀스크린(MobileNav)을 포함. 비주얼은 2뎁스 고정, 데이터는 트리(children)라 3뎁스 확장은 렌더만 추가.
+> ⚠️ 현재 다크 미니멀 스타일은 **F안 임시 룩** (담임목사 시안 확정 전). 확정 시 `app/globals.css` 토큰·셸 스타일 재정합.
 
 ### Content
 
