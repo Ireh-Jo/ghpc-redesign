@@ -61,6 +61,17 @@ DOM 글루(렌더·애니·팬줌)는 React 컴포넌트로 재작성. 디자인
 - `> DECISION NEEDED:` **주차장(지하 1·2층) 내부 길찾기** — 주차장 도면 미수령. 현재 "주차장(P)"은 목적지(위치 안내)까지만. 도면 수령 후 "층 하나 추가" 방식으로 확장(기존 영향 없음).
 - 거리(m) 실측 축척 보정 (현재 추정 0.03 m/px).
 
-## 컴포넌트 등록 (TODO, 본 개발 착수 시)
+## React 이전 완료 (2026-07-01)
 
-`context/components/00-inventory.md`에 `interactive/floor-map` 등록 필요 (현재 미등록 — 본 개발 시작 시 frontmatter 작성 후 코드).
+`interactive/floor-map` 등록·구현 완료. `context/components/interactive/floor-map.md`가 프리젠테이션(비잠금) 결정의 단일 출처.
+
+| 원본(prototypes/wayfind) | 이전본 |
+|---|---|
+| `data/*.js` | `lib/wayfind/floors.ts` (좌표 1:1 포팅) |
+| `lib/wayfind.js` 순수 함수 | `lib/wayfind/engine.ts` |
+| `svg/*.svg` · `walk/*.png` | `public/wayfind/{svg,walk}/*` (그대로 복제) |
+| DOM 글루·팬줌·애니 | `components/interactive/floor-map.tsx` (React, 재작성) |
+| `index.html` UI(컨트롤·범례) | 위 컴포넌트 내부에 브랜드 토큰으로 재스킨 |
+
+배치: `/intro#directions` (`components/layout/sub-page.tsx`의 `overrides` prop으로 주입). 메인 페이지의 "건물 내 길찾기" 버튼(`content/MapEmbed`)이 여기로 링크.
+프로토타입 원본(`prototypes/wayfind/`)은 동결 보관 — 수정하지 않음. 좌표 변경이 필요하면 README §4 워크플로로 원본을 먼저 갱신하고 `lib/wayfind/floors.ts`에 반영.

@@ -62,19 +62,19 @@
 
 | 이름 | 상태 | 페이지 | 문서 |
 |---|---|---|---|
-| HeroVideo | draft | `/` 메인 헤로 | `content/hero-video.md` |
+| HeroVideo | shipped | `/` 메인 헤로 | `content/hero-video.md` |
 | HeroImage | draft | `/intro`, `/worship`, `/care`, `/activity` 서브 헤로 | `content/hero-image.md` |
 | ServiceTimeTable | draft | `/`, `/worship` | `content/service-time-table.md` |
-| SermonCard | draft | `/`, `/worship` 설교 다시보기 | `content/sermon-card.md` |
+| SermonCard | shipped | `/`, `/worship` 설교 다시보기 | `content/sermon-card.md` |
 | YouTubeEmbed | draft | `/intro` 50주년 영상 등 | `content/youtube-embed.md` |
 | BulletinCard | draft | `/activity` 주보 | `content/bulletin-card.md` |
 | NewsCard | draft | `/activity` 교회소식 | `content/news-card.md` |
 | MinistryGridItem | draft | `/care` 사역 6칸 | `content/ministry-grid-item.md` |
 | StaffCard | draft | `/intro` 섬기는 사람들 | `content/staff-card.md` |
 | TimelineItem | draft | `/intro` 역사 | `content/timeline-item.md` |
-| MapEmbed | draft | `/`, `/intro` 오시는 길 | `content/map-embed.md` |
-| WelcomeCTA | draft | `/`, `/care` 새가족 환영 카드 | `content/welcome-cta.md` |
-| CampaignBanner | draft | `/` Go & Grow 배너 | `content/campaign-banner.md` |
+| MapEmbed | shipped | `/`, `/intro` 오시는 길 | `content/map-embed.md` |
+| WelcomeCTA | shipped | `/`, `/care` 새가족 환영 카드 | `content/welcome-cta.md` |
+| CampaignBanner | shipped | `/` Go & Grow 배너 | `content/campaign-banner.md` |
 
 ### Interactive
 
@@ -87,6 +87,7 @@
 | LifelongEduForm | draft | `/care` 평생교육원 | `interactive/lifelong-edu-form.md` |
 | NewsTabs | draft | `/activity` 영상뉴스/소식/교우/교단 탭 | `interactive/news-tabs.md` |
 | ScrollToTop | draft | 전 페이지 | `interactive/scroll-to-top.md` |
+| FloorMap | shipped | `/intro` 오시는 길 · 실내 길찾기 | `interactive/floor-map.md` |
 
 ## 의존성 그래프 시각화 (요약)
 

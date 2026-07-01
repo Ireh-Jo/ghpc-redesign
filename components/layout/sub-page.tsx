@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { Container } from './container';
 import { NAV } from '@/lib/nav';
@@ -7,9 +8,16 @@ import { NAV } from '@/lib/nav';
  * GNB 메뉴 구조(lib/nav.ts)를 단일 출처로, 각 하위 항목을 앵커 섹션으로 렌더.
  * → 메가메뉴/버튼의 #앵커 링크가 전부 해소됨 (404 제거).
  * 실제 콘텐츠는 content 컴포넌트로 순차 교체. (조립도: context/pages/*)
+ * `overrides`로 특정 앵커(hash id)의 placeholder 본문만 실제 콘텐츠로 교체 가능.
  * ⚠️ F안 임시 룩.
  */
-export function SubPage({ sectionKey }: { sectionKey: string }) {
+export function SubPage({
+  sectionKey,
+  overrides,
+}: {
+  sectionKey: string;
+  overrides?: Record<string, ReactNode>;
+}) {
   const section = NAV.find((n) => n.key === sectionKey);
   if (!section) notFound();
 
@@ -35,9 +43,11 @@ export function SubPage({ sectionKey }: { sectionKey: string }) {
           >
             <Container>
               <h2 className="mb-3 text-2xl font-bold md:text-3xl">{child.label}</h2>
-              <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
-                준비 중입니다. 콘텐츠는 순차적으로 채워집니다.
-              </p>
+              {(id && overrides?.[id]) ?? (
+                <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
+                  준비 중입니다. 콘텐츠는 순차적으로 채워집니다.
+                </p>
+              )}
             </Container>
           </section>
         );
