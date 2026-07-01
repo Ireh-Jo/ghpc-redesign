@@ -70,15 +70,15 @@ export function Header() {
     >
       <Container className="flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="flex items-center" aria-label="경향교회 홈">
-          {/* 다크 헤더용 흰색 모노 처리(brightness-0 invert). 임시 —
-             디자인팀 다크 배경용 화이트 로고(SVG) 받으면 필터 제거하고 교체. */}
+          {/* 컬러 원본 로고. 다크 헤더에선 글자가 잘 안 보임 —
+             디자인팀 다크 배경용(화이트/SVG) 로고 받으면 교체 예정. */}
           <Image
             src="/logo.png"
             alt="경향교회"
             width={965}
             height={329}
             priority
-            className="h-9 w-auto brightness-0 invert md:h-11"
+            className="h-9 w-auto md:h-11"
           />
         </Link>
 
