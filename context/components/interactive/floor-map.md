@@ -44,6 +44,7 @@ components/interactive/floor-map.tsx   React 글루 (렌더·팬줌·애니·상
 4. 이동수단 토글 → 경로 있으면 해당 수단으로 재계산
 5. 층 탭 클릭 / 핀치·휠 줌 / 드래그 팬
 6. "다시 선택" 버튼 → `reset()`
+7. **검색** — 상단 입력창에 방 이름 입력(부분일치, 5개 층 전체 대상) → 목록에서 클릭(또는 Enter=첫 결과) → 해당 층으로 전환 + `pick()` 동일 동작. 클릭 없이도 길찾기 진입 가능(2026-07-01 추가, 비잠금 프리젠테이션 기능— 잠긴 데이터/알고리즘엔 영향 없음).
 
 ## 프리젠테이션 결정 (본 개발에서 새로 정함 — 비잠금 영역)
 
@@ -55,7 +56,8 @@ components/interactive/floor-map.tsx   React 글루 (렌더·팬줌·애니·상
   - 경로 선 = `brand-accent` 위에 `brand-surface` 케이싱(흰 테두리) — 얇은 선이라 면적 영향 미미
   - 호버 = `brand-ink`의 6% 틴트
 - **버튼·패널 = `.btn-square`**(2px 라운드) — 사이트 전역 다크 미니멀 톤과 통일. 라운드 사용 안 함(원 마커·dot 제외)
-- **아이콘 = lucide-react만**: 엘리베이터=`ArrowUpDown`, 계단=`Footprints`, 최단=`Zap`, 초기화=`RotateCcw`, 줌=`ZoomIn`/`ZoomOut`/`Maximize2`
+- **아이콘 = lucide-react만**: 엘리베이터=`ArrowUpDown`, 계단=`Footprints`, 최단=`Zap`, 초기화=`RotateCcw`, 검색=`Search`, 줌=`ZoomIn`/`ZoomOut`, 지도 원래대로=`Scan`(2026-07-01: `Maximize2`는 "전체화면"으로 오인되기 쉬워 교체)
+- **지도 fit** — `<svg>`를 뷰포트 100%(h-full w-full) + `preserveAspectRatio="xMidYMid meet"`로 내부 레터박스. 이전엔 `width:100%;height:auto`로 그려 뷰포트보다 콘텐츠가 커지는 종횡비 불일치가 있었음(확대/축소 후 하단이 잘리는 버그) → 팬 클램프(`clampPan`)가 뷰포트 크기를 그대로 신뢰할 수 있게 됨. 줌 버튼도 `window` 중심이 아니라 지도 뷰포트 자체의 중심으로 확대/축소하도록 수정.
 - **모션**: 경로 그리기 dash 애니메이션 유지하되 `prefers-reduced-motion: reduce`면 애니메이션 생략(즉시 표시) — `context/design/06-motion.md` 필수 대응 항목
 - **접근성**: 방 클릭영역 `role="button"` + `tabIndex` + `aria-label`(방 이름) + 키보드 Enter/Space 선택. 층 도면 `<svg role="img" aria-label>`
 - **터치**: 모바일 70% 비중(README §목적) — 컨트롤 버튼 높이 ≥44px, pinch-zoom 유지

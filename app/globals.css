@@ -60,6 +60,17 @@
   }
 }
 
+/* prefers-reduced-motion 전역 대응 (context/design/06-motion.md 필수 항목) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ─────────────────────────────────────────────────────────────────
    F안 임시 룩 유틸 (시안 룩 · 담임목사 확정 후 정식 토큰과 정합 재검토).
    락된 타입 스케일(context/design/02-typography.md)과 별개의 디스플레이 스케일.

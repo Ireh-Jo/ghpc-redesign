@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUpDown, Footprints, Maximize2, RotateCcw, Zap, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowUpDown, Footprints, RotateCcw, Scan, Search, X, Zap, ZoomIn, ZoomOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { buildGraph, dijkstra, loadMask, nearestCell, simplify } from '@/lib/wayfind/engine';
 import { FLOORS, FLOOR_ORDER } from '@/lib/wayfind/floors';
@@ -45,6 +45,7 @@ export function FloorMap() {
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [query, setQuery] = useState('');
 
   const graphRef = useRef<Graph | null>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
@@ -63,6 +64,16 @@ export function FloorMap() {
     for (const f of FLOORS) for (const r of f.rooms) if (r.code) map.set(key(f.id, r.code), { floor: f, room: r });
     return map;
   }, []);
+
+  const searchResults = useMemo(() => {
+    const q = query.trim();
+    if (!q) return [];
+    return FLOORS.flatMap((f) =>
+      f.rooms
+        .filter((r) => r.sel && r.name.includes(q))
+        .map((r) => ({ floorId: f.id, floorLabel: f.label, code: r.code, name: r.name }))
+    ).slice(0, 8);
+  }, [query]);
 
   // 접근성 — 경로 애니메이션은 motion-reduce 대응 필수 (context/design/06-motion.md)
   useEffect(() => {
@@ -119,6 +130,11 @@ export function FloorMap() {
   const resetView = () => {
     zoomState.current = { z: 1, tx: 0, ty: 0 };
     applyTransform();
+  };
+  const zoomButton = (factor: number) => {
+    const rect = viewportRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, zoomState.current.z * factor);
   };
 
   // 팬/줌 — 휠·드래그·핀치 (프로토타입 pointer-event 로직 포팅, 프리젠테이션 비잠금)
@@ -416,6 +432,12 @@ export function FloorMap() {
     setStatus({ kind: 'idle' });
   };
 
+  const selectViaSearch = (result: { floorId: FloorId; code: string }) => {
+    setFloorId(result.floorId);
+    pick(result.floorId, result.code);
+    setQuery('');
+  };
+
   const roomState = (fid: FloorId, code: string): RoomState => {
     const k = key(fid, code);
     if (k === start) return 'start';
@@ -425,6 +447,62 @@ export function FloorMap() {
 
   return (
     <div className="border border-brand-line bg-brand-surface">
+      {/* 검색 */}
+      <div className="border-b border-brand-line p-4 md:p-5">
+        <div className="relative">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-ink-muted"
+            strokeWidth={1.5}
+          />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setQuery('');
+              if (e.key === 'Enter' && searchResults[0]) {
+                e.preventDefault();
+                selectViaSearch(searchResults[0]);
+              }
+            }}
+            placeholder="방·시설 이름으로 검색 (예: 비전홀, 식당)"
+            aria-label="방·시설 검색"
+            className="h-11 w-full border border-brand-line bg-brand-surface pl-9 pr-9 text-[13px] text-brand-ink placeholder:text-brand-ink-muted focus:border-brand-ink focus:outline-none"
+          />
+          {query && (
+            <button
+              type="button"
+              aria-label="검색어 지우기"
+              onClick={() => setQuery('')}
+              className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center text-brand-ink-muted transition-colors duration-200 hover:text-brand-ink"
+            >
+              <X className="h-4 w-4" strokeWidth={1.5} />
+            </button>
+          )}
+          {query && (
+            <ul className="absolute inset-x-0 top-full z-10 mt-1 border border-brand-line bg-brand-surface shadow-sm">
+              {searchResults.length === 0 ? (
+                <li className="px-4 py-2.5 text-[13px] text-brand-ink-muted">검색 결과가 없습니다.</li>
+              ) : (
+                searchResults.map((r) => (
+                  <li key={`${r.floorId}:${r.code}`}>
+                    <button
+                      type="button"
+                      onClick={() => selectViaSearch(r)}
+                      aria-label={`검색결과: ${r.name} (${r.floorLabel})`}
+                      className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-[13px] text-brand-ink transition-colors duration-200 hover:bg-brand-bg"
+                    >
+                      <span>{r.name}</span>
+                      <span className="text-[11px] text-brand-ink-muted">{r.floorLabel}</span>
+                    </button>
+                  </li>
+                ))
+              )}
+            </ul>
+          )}
+        </div>
+      </div>
+
       {/* 컨트롤 바 */}
       <div className="flex flex-wrap items-center gap-3 border-b border-brand-line p-4 md:p-5">
         <span className="text-[11px] font-bold tracking-[0.3em] text-brand-ink-muted">이동수단</span>
@@ -493,42 +571,47 @@ export function FloorMap() {
             지도를 불러오지 못했습니다. 새로고침해 주세요.
           </div>
         )}
-        <div ref={panzoomRef} style={{ transformOrigin: '0 0' }} className={cn(!ready && 'invisible')}>
+        <div
+          ref={panzoomRef}
+          style={{ transformOrigin: '0 0' }}
+          className={cn('h-full w-full', !ready && 'invisible')}
+        >
           {FLOORS.map((floor) => {
             const [, , w, h] = floor.viewBox;
             return (
-              <div key={floor.id} style={{ display: floor.id === floorId ? 'block' : 'none' }}>
-                <div
-                  className="flex items-center justify-center"
+              <div
+                key={floor.id}
+                style={{ display: floor.id === floorId ? 'block' : 'none' }}
+                className="h-full w-full"
+              >
+                <svg
+                  viewBox={`0 0 ${w} ${h}`}
+                  preserveAspectRatio="xMidYMid meet"
+                  className="block h-full w-full"
                   style={floor.display ? { transform: `scale(${floor.display})` } : undefined}
+                  role="img"
+                  aria-label={`${floor.label} 도면`}
                 >
-                  <svg
-                    viewBox={`0 0 ${w} ${h}`}
-                    className="block h-auto w-full"
-                    role="img"
-                    aria-label={`${floor.label} 도면`}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element -- SVG 배경은 <image>로 지도 씬그래프에 삽입(README §7) */}
-                    <image href={floor.svg} x={0} y={0} width={w} height={h} />
-                    <g>
-                      {floor.rooms
-                        .filter((r) => r.sel)
-                        .map((r) => (
-                          <RoomHotspot key={r.code} floorId={floor.id} room={r} state={roomState(floor.id, r.code)} onPick={pick} />
-                        ))}
-                    </g>
-                    <g
-                      ref={(el) => {
-                        routesRef.current[floor.id] = el;
-                      }}
-                    />
-                    <g
-                      ref={(el) => {
-                        markersRef.current[floor.id] = el;
-                      }}
-                    />
-                  </svg>
-                </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- SVG 배경은 <image>로 지도 씬그래프에 삽입(README §7) */}
+                  <image href={floor.svg} x={0} y={0} width={w} height={h} />
+                  <g>
+                    {floor.rooms
+                      .filter((r) => r.sel)
+                      .map((r) => (
+                        <RoomHotspot key={r.code} floorId={floor.id} room={r} state={roomState(floor.id, r.code)} onPick={pick} />
+                      ))}
+                  </g>
+                  <g
+                    ref={(el) => {
+                      routesRef.current[floor.id] = el;
+                    }}
+                  />
+                  <g
+                    ref={(el) => {
+                      markersRef.current[floor.id] = el;
+                    }}
+                  />
+                </svg>
               </div>
             );
           })}
@@ -537,9 +620,9 @@ export function FloorMap() {
         {/* 줌 컨트롤 */}
         <div className="absolute bottom-3 right-3 flex flex-col gap-1.5">
           {[
-            { icon: ZoomIn, label: '확대', onClick: () => zoomAt(window.innerWidth / 2, window.innerHeight / 2, zoomState.current.z * 1.4) },
-            { icon: ZoomOut, label: '축소', onClick: () => zoomAt(window.innerWidth / 2, window.innerHeight / 2, zoomState.current.z / 1.4) },
-            { icon: Maximize2, label: '원래대로', onClick: resetView },
+            { icon: ZoomIn, label: '확대', onClick: () => zoomButton(1.4) },
+            { icon: ZoomOut, label: '축소', onClick: () => zoomButton(1 / 1.4) },
+            { icon: Scan, label: '지도 원래대로', onClick: resetView },
           ].map(({ icon: Icon, label, onClick }) => (
             <button
               key={label}

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { Container } from './container';
+import { AnchorNav } from './anchor-nav';
 import { NAV } from '@/lib/nav';
 
 /**
@@ -9,6 +10,8 @@ import { NAV } from '@/lib/nav';
  * → 메가메뉴/버튼의 #앵커 링크가 전부 해소됨 (404 제거).
  * 실제 콘텐츠는 content 컴포넌트로 순차 교체. (조립도: context/pages/*)
  * `overrides`로 특정 앵커(hash id)의 placeholder 본문만 실제 콘텐츠로 교체 가능.
+ * 섹션이 길어지는 것에 대한 대응은 아코디언이 아니라 sticky `AnchorNav`(섹션 바로가기) —
+ * 이유는 context/components/layout/anchor-nav.md 참조.
  * ⚠️ F안 임시 룩.
  */
 export function SubPage({
@@ -21,6 +24,13 @@ export function SubPage({
   const section = NAV.find((n) => n.key === sectionKey);
   if (!section) notFound();
 
+  const anchorItems = (section.children ?? [])
+    .map((child) => ({
+      id: child.href.includes('#') ? child.href.split('#')[1] : undefined,
+      label: child.label,
+    }))
+    .filter((item): item is { id: string; label: string } => !!item.id);
+
   return (
     <>
       {/* 서브 헤로 (다크) — fixed 헤더 높이만큼 pt 보정 */}
@@ -32,6 +42,8 @@ export function SubPage({
           <h1 className="display-lg text-white">{section.label}</h1>
         </Container>
       </section>
+
+      <AnchorNav items={anchorItems} />
 
       {section.children?.map((child) => {
         const id = child.href.includes('#') ? child.href.split('#')[1] : undefined;
