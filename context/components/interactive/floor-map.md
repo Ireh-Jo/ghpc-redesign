@@ -58,6 +58,7 @@ components/interactive/floor-map.tsx   React 글루 (렌더·팬줌·애니·상
 - **버튼·패널 = `.btn-square`**(2px 라운드) — 사이트 전역 다크 미니멀 톤과 통일. 라운드 사용 안 함(원 마커·dot 제외)
 - **아이콘 = lucide-react만**: 엘리베이터=`ArrowUpDown`, 계단=`Footprints`, 최단=`Zap`, 초기화=`RotateCcw`, 검색=`Search`, 줌=`ZoomIn`/`ZoomOut`, 지도 원래대로=`Scan`(2026-07-01: `Maximize2`는 "전체화면"으로 오인되기 쉬워 교체)
 - **지도 fit** — `<svg>`를 뷰포트 100%(h-full w-full) + `preserveAspectRatio="xMidYMid meet"`로 내부 레터박스. 이전엔 `width:100%;height:auto`로 그려 뷰포트보다 콘텐츠가 커지는 종횡비 불일치가 있었음(확대/축소 후 하단이 잘리는 버그) → 팬 클램프(`clampPan`)가 뷰포트 크기를 그대로 신뢰할 수 있게 됨. 줌 버튼도 `window` 중심이 아니라 지도 뷰포트 자체의 중심으로 확대/축소하도록 수정.
+- **층별 배율(`floor.display`) 폐기(2026-07-01)** — contain-fit으로 바꾼 뒤엔 각 층이 자기 종횡비대로 박스에 꽉 차므로, 프로토타입에서 넘어온 지상층 0.7배 보정(`context/features/wayfinding.md` 참조)이 오히려 지상층을 과하게 작게 만들었음 → `lib/wayfind/types.ts`·`floors.ts`에서 `display` 필드 완전 제거. 지상(1.41:1)·지하(1.76:1) 도면의 종횡비 차이로 인한 약간의 여백 차이는 남지만(왜곡 없이 완전 통일은 좌표 정합상 불가), 체감 크기 차이는 크게 줄었음.
 - **모션**: 경로 그리기 dash 애니메이션 유지하되 `prefers-reduced-motion: reduce`면 애니메이션 생략(즉시 표시) — `context/design/06-motion.md` 필수 대응 항목
 - **접근성**: 방 클릭영역 `role="button"` + `tabIndex` + `aria-label`(방 이름) + 키보드 Enter/Space 선택. 층 도면 `<svg role="img" aria-label>`
 - **터치**: 모바일 70% 비중(README §목적) — 컨트롤 버튼 높이 ≥44px, pinch-zoom 유지

@@ -16,7 +16,6 @@ export const FLOOR_F2: FloorData = {
   viewBox: [0, 0, 841.89, 595.276],
   walk: '/wayfind/walk/F2.png',
   cell: 8,
-  display: 0.7,
   transfers: [
     { id: 'elev_blue', kind: 'elevator', at: [136, 346], label: '엘리베이터' },
     { id: 'stair_purple', kind: 'stairs', at: [460, 92], label: '북동 계단' },
@@ -56,7 +55,6 @@ export const FLOOR_F1: FloorData = {
   viewBox: [0, 0, 841.89, 595.276],
   walk: '/wayfind/walk/F1.png',
   cell: 8,
-  display: 0.7,
   transfers: [
     { id: 'elev_blue', kind: 'elevator', at: [229, 350], label: '엘리베이터' },
     { id: 'stair_purple', kind: 'stairs', at: [530, 98], label: '북동 계단' },

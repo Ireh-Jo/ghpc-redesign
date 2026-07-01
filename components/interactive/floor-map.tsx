@@ -588,7 +588,6 @@ export function FloorMap() {
                   viewBox={`0 0 ${w} ${h}`}
                   preserveAspectRatio="xMidYMid meet"
                   className="block h-full w-full"
-                  style={floor.display ? { transform: `scale(${floor.display})` } : undefined}
                   role="img"
                   aria-label={`${floor.label} 도면`}
                 >

@@ -46,8 +46,6 @@ export type FloorData = {
   walk: string;
   /** 격자 셀 px, 기본 12 */
   cell?: number;
-  /** 화면 표시 배율 (지상층 0.7) */
-  display?: number;
   transfers: Transfer[];
   rooms: Room[];
 };
