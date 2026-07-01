@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Container } from './container';
@@ -56,6 +57,7 @@ export function Header() {
   };
 
   return (
+    <>
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
@@ -67,11 +69,17 @@ export function Header() {
       onMouseLeave={closeMega}
     >
       <Container className="flex h-16 items-center justify-between md:h-20">
-        <Link href="/" className="flex flex-col leading-none">
-          <span className="text-base font-bold tracking-tight text-white md:text-lg">경향교회</span>
-          <span className="mt-0.5 text-[10px] font-medium tracking-[0.32em] text-white/55">
-            1973년부터 · 세계를 품은 교회
-          </span>
+        <Link href="/" className="flex items-center" aria-label="경향교회 홈">
+          {/* 다크 헤더용 흰색 모노 처리(brightness-0 invert). 임시 —
+             디자인팀 다크 배경용 화이트 로고(SVG) 받으면 필터 제거하고 교체. */}
+          <Image
+            src="/logo.png"
+            alt="경향교회"
+            width={965}
+            height={329}
+            priority
+            className="h-9 w-auto brightness-0 invert md:h-11"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -168,8 +176,10 @@ export function Header() {
           ))}
         </Container>
       </div>
-
-      <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
     </header>
+
+    {/* MobileNav는 header 밖에 — header의 backdrop-filter가 fixed 기준을 가로채지 않도록 */}
+    <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
+    </>
   );
 }
