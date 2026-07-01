@@ -35,6 +35,7 @@ export const NAV: NavSection[] = [
       { label: '교회 역사', href: '/intro#history' },
       { label: '섬기는 사람들', href: '/intro#people' },
       { label: '교회 정보 · 시설', href: '/intro#info' },
+      { label: '오시는 길 · 실내 길찾기', href: '/intro#directions' },
       { label: '새신자 Q&A', href: '/intro#qna' },
     ],
   },

@@ -24,16 +24,19 @@ depends-on:
 > ⚠️ **F안 임시 룩** — 다크 미니멀·blue·square 는 담임목사 시안 확정 전 잠정.
 >    락된 무드/색(`context/design/00-mood.md`·`01-color.md`)과 충돌 지점은 확정 시 정합.
 
-## 현재 구현 상태 (스캐폴드 1차)
+## 현재 구현 상태 (스캐폴드 2차 — 전 섹션 인라인 이식 완료)
+
+> 모든 섹션 `app/(site)/page.tsx`에 인라인 구현. 다음 리팩터: content 컴포넌트로 분리.
+> 콘텐츠·이미지는 placeholder (unsplash). 영상은 디자인팀 제작 전까지 정지 이미지.
 
 | 섹션 | 상태 | 비고 |
 |---|---|---|
-| 헤로 | ✅ 인라인 구현 | `content/HeroVideo` 컴포넌트로 추출 예정. 현재 placeholder 이미지 + 그라데이션 오버레이 |
-| 이번 주 말씀 | ⬜ placeholder | `content/SermonCard` 분리 후 |
-| 표어 배너 | ⬜ 미구현 | `content/CampaignBanner` |
-| 공동체 가치 3 | ⬜ 미구현 | 컴포넌트 방향 재검토 |
-| 새가족 환영 | ⬜ 미구현 | `content/WelcomeCTA` |
-| LIVE + 오시는 길 | ⬜ 미구현 | `content/MapEmbed` + LIVE 카드 |
+| 헤로 | ✅ 인라인 구현 | `content/HeroVideo` 추출 예정. placeholder 이미지 + 그라데이션 오버레이 |
+| 이번 주 말씀 | ✅ 인라인 구현 | `content/SermonCard` 분리 예정. 메인 영상 + 지난 설교 리스트 |
+| 표어 배너 | ✅ 인라인 구현 | `content/CampaignBanner`. 다크 + solid 오버레이 |
+| 공동체 가치 3 | ✅ 인라인 구현 | gap-px 보더 그리드. 컴포넌트 방향 재검토 여지 |
+| 새가족 환영 | ✅ 인라인 구현 | `content/WelcomeCTA`. 다크 임팩트 |
+| LIVE + 오시는 길 | ✅ 인라인 구현 | 2컬럼(`content/MapEmbed`+LIVE). **건물 내 길찾기** 진입점 포함 (→ wayfinding) |
 
 ## 데이터 소스 (예정)
 
