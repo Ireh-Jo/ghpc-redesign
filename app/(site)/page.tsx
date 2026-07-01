@@ -45,14 +45,26 @@ const VALUES = [
 export default function HomePage() {
   return (
     <>
-      {/* ── 헤로 (다크 풀블리드) ── */}
-      <section className="relative flex min-h-[640px] flex-col overflow-hidden bg-brand-ink md:h-screen">
-        {/* TODO: content/HeroVideo 컴포넌트로 교체 (데스크탑 영상 / 모바일 이미지) */}
+      {/* ── 헤로 (다크 풀블리드) — 높이는 섹션이 고정, 미디어는 object-cover로 채움 ── */}
+      <section className="relative flex h-[100svh] max-h-[1000px] min-h-[640px] flex-col overflow-hidden bg-brand-ink md:h-screen">
+        {/* TODO: content/HeroVideo 컴포넌트로 추출. 영상 src는 임시(프로토타입 URL) — 디자인팀 제작본으로 교체. */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          poster="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1920&q=80"
+          className="absolute inset-0 hidden h-full w-full object-cover md:block"
+        >
+          <source src="https://gts.ac.kr/UserData/gtshp/Layouts/gtshp_Layout/Images/20250605.mp4" type="video/mp4" />
+        </video>
+        {/* 모바일 — 데이터/배터리 고려해 정지 이미지 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1920&q=80"
+          src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1080&q=80"
           alt="햇살 아래 두 팔을 벌린 실루엣 — 경향교회 헤로 배경 (임시)"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover md:hidden"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-ink/35 via-brand-ink/55 to-brand-ink/95" />
 
