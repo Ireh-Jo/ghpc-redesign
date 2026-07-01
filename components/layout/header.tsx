@@ -42,6 +42,19 @@ export function Header() {
 
   const isSolid = scrolled || megaOpen;
 
+  // 메가메뉴는 데스크탑(lg) 전용 hover. 모바일이거나 모바일 메뉴가 열려 있으면 비활성화
+  // (MobileNav가 header의 자식이라, 가드 없으면 모바일에서 hover 시 megaOpen 토글 → 배경 깜빡임)
+  const openMega = () => {
+    if (mobileOpen) return;
+    if (typeof window !== 'undefined' && window.matchMedia('(min-width:1024px)').matches) {
+      setMegaOpen(true);
+    }
+  };
+  const closeMega = () => {
+    setMegaOpen(false);
+    setActiveKey(null);
+  };
+
   return (
     <header
       className={cn(
@@ -50,11 +63,8 @@ export function Header() {
           ? 'bg-brand-ink/95 backdrop-blur-md border-b border-white/10'
           : 'border-b border-transparent'
       )}
-      onMouseEnter={() => setMegaOpen(true)}
-      onMouseLeave={() => {
-        setMegaOpen(false);
-        setActiveKey(null);
-      }}
+      onMouseEnter={openMega}
+      onMouseLeave={closeMega}
     >
       <Container className="flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="flex flex-col leading-none">
