@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,8 +9,13 @@ import { NAV, LIVE_URL } from '@/lib/nav';
 /**
  * 모바일 풀스크린 메뉴 (다크). 햄버거에서 열림.
  * 데스크탑 메가메뉴와 동일한 lib/nav.ts 구조를 1뎁스 아코디언 없이 평면 노출.
+ * dialog 시맨틱 + 포커스 트랩 — 열리면 닫기 버튼으로 포커스, 닫히면 연 요소로 복귀.
  */
 export function MobileNav({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+  const restoreRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     return () => {
@@ -18,8 +23,49 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
     };
   }, [open]);
 
+  // lg 이상으로 리사이즈되면 닫기 — 오버레이는 lg:hidden으로 사라지는데 body 스크롤 잠금만 남는 문제 방지
+  useEffect(() => {
+    if (!open) return;
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const onChange = () => {
+      if (mq.matches) onClose();
+    };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open) return;
+    restoreRef.current = document.activeElement as HTMLElement | null;
+    closeBtnRef.current?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !panelRef.current) return;
+      const focusables = panelRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      restoreRef.current?.focus();
+    };
+  }, [open]);
+
   return (
     <div
+      ref={panelRef}
+      id="mobile-nav"
+      role="dialog"
+      aria-modal="true"
+      aria-label="전체 메뉴"
       className={cn(
         'fixed inset-0 z-[60] overflow-y-auto bg-brand-ink text-white lg:hidden',
         open ? 'block' : 'hidden'
@@ -27,7 +73,13 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
     >
       <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
         <span className="text-base font-bold tracking-tight">경향교회</span>
-        <button type="button" className="-mr-2 p-2 text-white" aria-label="메뉴 닫기" onClick={onClose}>
+        <button
+          ref={closeBtnRef}
+          type="button"
+          className="-mr-2 p-2 text-white"
+          aria-label="메뉴 닫기"
+          onClick={onClose}
+        >
           <X className="h-7 w-7" />
         </button>
       </div>

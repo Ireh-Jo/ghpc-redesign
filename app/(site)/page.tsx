@@ -186,6 +186,8 @@ export default function HomePage() {
                   <img
                     src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=900&q=80"
                     alt="생방송 썸네일 (임시)"
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover opacity-85 transition-opacity group-hover:opacity-100"
                   />
                   <div className="absolute inset-0 flex items-center justify-center">

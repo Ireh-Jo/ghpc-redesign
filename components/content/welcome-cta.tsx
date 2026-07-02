@@ -27,7 +27,14 @@ export function WelcomeCTA({
   return (
     <section className="relative overflow-hidden bg-brand-ink py-24 text-white md:py-40">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={imageSrc} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-35" />
+      <img
+        src={imageSrc}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover opacity-35"
+      />
       <div className="absolute inset-0 bg-brand-ink/70" />
       <div className="relative mx-auto w-full max-w-container px-5 md:px-8">
         <div className="max-w-2xl">

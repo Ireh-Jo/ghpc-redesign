@@ -391,7 +391,9 @@ export function FloorMap() {
         setFloorId(segs[i].floor);
         if (!reducedMotion) await sleep(300);
         if (runToken.current !== token) return;
-        total += await drawSegment(segs[i].floor, segs[i].pts, floorScale(byFloor[segs[i].floor]), reducedMotion);
+        const fScale = floorScale(byFloor[segs[i].floor]);
+        // 층별 도면 축척이 달라(지하 2097px vs 지상 841px) B1 기준 px로 정규화 후 합산
+        total += (await drawSegment(segs[i].floor, segs[i].pts, fScale, reducedMotion)) / fScale;
         if (i < segs.length - 1) {
           setStatus({ kind: 'transit', via: segs[i + 1].viaType ?? 'corridor', floorLabel: byFloor[segs[i + 1].floor].label });
           if (!reducedMotion) await sleep(900);
@@ -438,6 +440,7 @@ export function FloorMap() {
   };
 
   const selectViaSearch = (result: { floorId: FloorId; code: string }) => {
+    if (animating) return; // pick()이 무시될 상황이면 층 전환도 하지 않음 (반쪽 동작 방지)
     setFloorId(result.floorId);
     pick(result.floorId, result.code);
     setQuery('');
@@ -673,7 +676,8 @@ function StatusText({ status }: { status: Status }) {
     case 'transit':
       return (
         <span>
-          {status.via === 'elevator' ? '엘리베이터' : '계단'}로 {status.floorLabel} 이동 중…
+          {status.via === 'elevator' ? '엘리베이터로' : status.via === 'stairs' ? '계단으로' : '통로로'}{' '}
+          {status.floorLabel} 이동 중…
         </span>
       );
     case 'no-route':

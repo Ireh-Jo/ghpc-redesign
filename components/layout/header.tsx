@@ -67,6 +67,10 @@ export function Header() {
       )}
       onMouseEnter={openMega}
       onMouseLeave={closeMega}
+      onBlur={(e) => {
+        // 키보드 탭아웃으로 포커스가 헤더 밖으로 나가면 메가메뉴 닫기 (focusout 버블링)
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) closeMega();
+      }}
     >
       <Container className="flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="flex items-center" aria-label="경향교회 홈">
@@ -92,6 +96,8 @@ export function Header() {
                 setMegaOpen(true);
                 setActiveKey(item.key);
               }}
+              aria-expanded={megaOpen}
+              aria-controls="mega-menu"
               className={cn(
                 'relative py-1 text-[13px] tracking-widest text-white transition-colors',
                 item.highlight ? 'font-bold' : 'font-medium',
@@ -123,6 +129,8 @@ export function Header() {
           type="button"
           className="-mr-2 p-2 text-white lg:hidden"
           aria-label="메뉴 열기"
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-nav"
           onClick={() => setMobileOpen(true)}
         >
           <Menu className="h-7 w-7" />
@@ -131,6 +139,7 @@ export function Header() {
 
       {/* ── 메가메뉴 패널 (데스크탑) ── */}
       <div
+        id="mega-menu"
         className={cn(
           'absolute inset-x-0 top-full hidden bg-brand-ink/95 backdrop-blur-md transition-all duration-200 lg:block',
           megaOpen

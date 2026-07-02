@@ -52,6 +52,8 @@ export function SermonCard({
               <img
                 src={featuredThumbnailSrc}
                 alt="이번 주 설교 썸네일 (임시)"
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover opacity-95 transition-all duration-500 group-hover:scale-[1.02] group-hover:opacity-100"
               />
               <div className="absolute inset-0 flex items-center justify-center">
@@ -74,7 +76,7 @@ export function SermonCard({
             </p>
             {pastSermons.map((s) => (
               <a
-                key={s.date}
+                key={`${s.date}-${s.title}`}
                 href={youtubeUrl}
                 target="_blank"
                 rel="noopener"

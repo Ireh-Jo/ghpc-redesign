@@ -130,35 +130,75 @@ function allowed(type: EdgeType, mode: Mode) {
   return type === mode;
 }
 
-/** 다익스트라 (이동수단 필터). transfer 간선엔 환승 패널티(60)를 더한다. */
-export function dijkstra(G: Graph, s: string, t: string, mode: Mode): PathResult | null {
-  const dis: Record<string, number> = {};
-  const prev: Record<string, [string, EdgeType]> = {};
-  const Q = new Set(Object.keys(G.adj));
-  if (!Q.has(s) || !Q.has(t)) return null;
-  for (const k of Q) dis[k] = Infinity;
-  dis[s] = 0;
-  while (Q.size) {
-    let u: string | null = null;
-    let best = Infinity;
-    for (const k of Q) {
-      if (dis[k] < best) {
-        best = dis[k];
-        u = k;
+/** 이진 최소힙 (다익스트라용). Set 전체 선형 스캔 O(V²) → O(E log V) — 결과 경로는 동일(최단). */
+class MinHeap {
+  private d: number[] = [];
+  private ids: string[] = [];
+  get size() {
+    return this.d.length;
+  }
+  push(dist: number, id: string) {
+    const { d, ids } = this;
+    let i = d.length;
+    d.push(dist);
+    ids.push(id);
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (d[p] <= d[i]) break;
+      [d[p], d[i]] = [d[i], d[p]];
+      [ids[p], ids[i]] = [ids[i], ids[p]];
+      i = p;
+    }
+  }
+  pop(): [number, string] {
+    const { d, ids } = this;
+    const top: [number, string] = [d[0], ids[0]];
+    const ld = d.pop()!;
+    const lid = ids.pop()!;
+    if (d.length) {
+      d[0] = ld;
+      ids[0] = lid;
+      let i = 0;
+      for (;;) {
+        const l = i * 2 + 1;
+        const r = l + 1;
+        let m = i;
+        if (l < d.length && d[l] < d[m]) m = l;
+        if (r < d.length && d[r] < d[m]) m = r;
+        if (m === i) break;
+        [d[m], d[i]] = [d[i], d[m]];
+        [ids[m], ids[i]] = [ids[i], ids[m]];
+        i = m;
       }
     }
-    if (u === null || u === t) break;
-    Q.delete(u);
+    return top;
+  }
+}
+
+/** 다익스트라 (이동수단 필터). transfer 간선엔 환승 패널티(60)를 더한다. */
+export function dijkstra(G: Graph, s: string, t: string, mode: Mode): PathResult | null {
+  if (!(s in G.adj) || !(t in G.adj)) return null;
+  const dis: Record<string, number> = { [s]: 0 };
+  const prev: Record<string, [string, EdgeType]> = {};
+  const done = new Set<string>();
+  const heap = new MinHeap();
+  heap.push(0, s);
+  while (heap.size) {
+    const [du, u] = heap.pop();
+    if (done.has(u)) continue; // 갱신 전 낡은 엔트리 (lazy deletion)
+    if (u === t) break;
+    done.add(u);
     for (const [v, w, type] of G.adj[u]) {
-      if (!Q.has(v) || !allowed(type, mode)) continue;
-      const nd = dis[u] + w + (type !== 'corridor' ? 60 : 0);
-      if (nd < dis[v]) {
+      if (done.has(v) || !allowed(type, mode)) continue;
+      const nd = du + w + (type !== 'corridor' ? 60 : 0);
+      if (nd < (dis[v] ?? Infinity)) {
         dis[v] = nd;
         prev[v] = [u, type];
+        heap.push(nd, v);
       }
     }
   }
-  if (dis[t] === Infinity) return null;
+  if (dis[t] === undefined || dis[t] === Infinity) return null;
   const path: PathResult['path'] = [];
   let c: string | undefined = t;
   while (c !== undefined) {

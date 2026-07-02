@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 /**
@@ -36,22 +39,43 @@ export function HeroVideo({
   mobileImageAlt: string;
   serviceTimes: HeroServiceTime[];
 }) {
+  // display:none(hidden)은 리소스 다운로드를 막지 못함 — 영상은 md 이상 + 모션 허용일 때만
+  // 마운트해서 모바일 데이터/배터리를 보호하고 prefers-reduced-motion을 존중한다.
+  const [playVideo, setPlayVideo] = useState(false);
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 768px)');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setPlayVideo(desktop.matches && !reduce.matches);
+    update();
+    desktop.addEventListener('change', update);
+    reduce.addEventListener('change', update);
+    return () => {
+      desktop.removeEventListener('change', update);
+      reduce.removeEventListener('change', update);
+    };
+  }, []);
+
   return (
     <section className="relative flex h-[100svh] max-h-[1000px] min-h-[640px] flex-col overflow-hidden bg-brand-ink md:h-screen">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-hidden="true"
-        poster={posterSrc}
-        className="absolute inset-0 hidden h-full w-full object-cover md:block"
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
-      {/* 모바일 — 데이터/배터리 고려해 정지 이미지 */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={mobileImageSrc} alt={mobileImageAlt} className="absolute inset-0 h-full w-full object-cover md:hidden" />
+      {/* 베이스 레이어 — <picture>가 뷰포트에 맞는 한 장만 다운로드 (모바일=정지 이미지, 데스크탑=포스터) */}
+      <picture>
+        <source media="(min-width: 768px)" srcSet={posterSrc} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={mobileImageSrc} alt={mobileImageAlt} className="absolute inset-0 h-full w-full object-cover" />
+      </picture>
+      {playVideo && (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          poster={posterSrc}
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      )}
       <div className="absolute inset-0 bg-gradient-to-b from-brand-ink/35 via-brand-ink/55 to-brand-ink/95" />
 
       <div className="relative mx-auto w-full max-w-container px-5 pt-24 md:px-8 md:pt-32">
