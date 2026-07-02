@@ -341,66 +341,70 @@ export function FloorMap() {
     const G = graphRef.current;
     if (!G) return;
     const token = ++runToken.current;
-    const A = roomOf.get(from);
-    const B = roomOf.get(to);
-    if (!A || !B) return;
-    clearRoute();
+    try {
+      const A = roomOf.get(from);
+      const B = roomOf.get(to);
+      if (!A || !B) return;
+      clearRoute();
 
-    const gA = G.info[A.floor.id];
-    const gB = G.info[B.floor.id];
-    const doorsOf = (r: Room) => r.doors ?? (r.door ? [r.door] : []);
-    let best: ReturnType<typeof dijkstra> = null;
-    let aDoor: Point | null = null;
-    let bDoor: Point | null = null;
-    for (const ad of doorsOf(A.room)) {
-      for (const bd of doorsOf(B.room)) {
-        const sCell = nearestCell(gA, ad);
-        const eCell = nearestCell(gB, bd);
-        if (sCell == null || eCell == null) continue;
-        const res = dijkstra(G, `${A.floor.id}:${sCell}`, `${B.floor.id}:${eCell}`, currentMode);
-        if (res && (!best || res.cost < best.cost)) {
-          best = res;
-          aDoor = ad;
-          bDoor = bd;
+      const gA = G.info[A.floor.id];
+      const gB = G.info[B.floor.id];
+      const doorsOf = (r: Room) => r.doors ?? (r.door ? [r.door] : []);
+      let best: ReturnType<typeof dijkstra> = null;
+      let aDoor: Point | null = null;
+      let bDoor: Point | null = null;
+      for (const ad of doorsOf(A.room)) {
+        for (const bd of doorsOf(B.room)) {
+          const sCell = nearestCell(gA, ad);
+          const eCell = nearestCell(gB, bd);
+          if (sCell == null || eCell == null) continue;
+          const res = dijkstra(G, `${A.floor.id}:${sCell}`, `${B.floor.id}:${eCell}`, currentMode);
+          if (res && (!best || res.cost < best.cost)) {
+            best = res;
+            aDoor = ad;
+            bDoor = bd;
+          }
         }
       }
-    }
-    if (!best || !aDoor || !bDoor) {
-      setStatus({ kind: 'no-route' });
-      return;
-    }
-
-    setAnimating(true);
-    const path = best.path;
-    const segs: { floor: FloorId; pts: Point[]; viaType: EdgeType | null }[] = [];
-    for (const node of path) {
-      const fid = node.id.split(':')[0] as FloorId;
-      if (!segs.length || segs[segs.length - 1].floor !== fid) segs.push({ floor: fid, pts: [], viaType: node.viaType });
-      segs[segs.length - 1].pts.push(G.pos[node.id].slice() as Point);
-    }
-    for (const s of segs) s.pts = simplify(G.info[s.floor], s.pts);
-    segs[0].pts.unshift(aDoor.slice() as Point);
-    segs[segs.length - 1].pts.push(bDoor.slice() as Point);
-    const vmoves = segs.slice(1).map((s) => s.viaType).filter((t): t is EdgeType => !!t && t !== 'corridor');
-
-    drawMarker(A.floor.id, aDoor, 'start', floorScale(A.floor));
-    let total = 0;
-    for (let i = 0; i < segs.length; i++) {
-      if (runToken.current !== token) return;
-      setFloorId(segs[i].floor);
-      if (!reducedMotion) await sleep(300);
-      if (runToken.current !== token) return;
-      total += await drawSegment(segs[i].floor, segs[i].pts, floorScale(byFloor[segs[i].floor]), reducedMotion);
-      if (i < segs.length - 1) {
-        setStatus({ kind: 'transit', via: segs[i + 1].viaType ?? 'corridor', floorLabel: byFloor[segs[i + 1].floor].label });
-        if (!reducedMotion) await sleep(900);
+      if (!best || !aDoor || !bDoor) {
+        setStatus({ kind: 'no-route' });
+        return;
       }
+
+      setAnimating(true);
+      const path = best.path;
+      const segs: { floor: FloorId; pts: Point[]; viaType: EdgeType | null }[] = [];
+      for (const node of path) {
+        const fid = node.id.split(':')[0] as FloorId;
+        if (!segs.length || segs[segs.length - 1].floor !== fid) segs.push({ floor: fid, pts: [], viaType: node.viaType });
+        segs[segs.length - 1].pts.push(G.pos[node.id].slice() as Point);
+      }
+      for (const s of segs) s.pts = simplify(G.info[s.floor], s.pts);
+      segs[0].pts.unshift(aDoor.slice() as Point);
+      segs[segs.length - 1].pts.push(bDoor.slice() as Point);
+      const vmoves = segs.slice(1).map((s) => s.viaType).filter((t): t is EdgeType => !!t && t !== 'corridor');
+
+      drawMarker(A.floor.id, aDoor, 'start', floorScale(A.floor));
+      let total = 0;
+      for (let i = 0; i < segs.length; i++) {
+        if (runToken.current !== token) return;
+        setFloorId(segs[i].floor);
+        if (!reducedMotion) await sleep(300);
+        if (runToken.current !== token) return;
+        total += await drawSegment(segs[i].floor, segs[i].pts, floorScale(byFloor[segs[i].floor]), reducedMotion);
+        if (i < segs.length - 1) {
+          setStatus({ kind: 'transit', via: segs[i + 1].viaType ?? 'corridor', floorLabel: byFloor[segs[i + 1].floor].label });
+          if (!reducedMotion) await sleep(900);
+        }
+      }
+      if (runToken.current !== token) return;
+      drawMarker(B.floor.id, bDoor, 'end', floorScale(B.floor));
+      const meters = Math.max(5, Math.round((total * SCALE_M_PER_PX) / 5) * 5);
+      setStatus({ kind: 'done', fromLabel: A.room.name, toLabel: B.room.name, meters, via: vmoves[0] ?? null });
+    } finally {
+      // 완료·무경로·취소 어느 경로로 끝나든 최신 실행이 animating을 정리 (영구 잠금 방지)
+      if (runToken.current === token) setAnimating(false);
     }
-    if (runToken.current !== token) return;
-    drawMarker(B.floor.id, bDoor, 'end', floorScale(B.floor));
-    const meters = Math.max(5, Math.round((total * SCALE_M_PER_PX) / 5) * 5);
-    setStatus({ kind: 'done', fromLabel: A.room.name, toLabel: B.room.name, meters, via: vmoves[0] ?? null });
-    setAnimating(false);
   };
 
   useEffect(() => {
@@ -425,6 +429,7 @@ export function FloorMap() {
   };
 
   const reset = () => {
+    runToken.current += 1; // 진행 중인 경로 애니메이션 취소
     clearRoute();
     setStart(null);
     setEnd(null);

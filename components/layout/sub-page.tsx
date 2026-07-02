@@ -51,7 +51,7 @@ export function SubPage({
           <section
             key={child.href}
             id={id}
-            className="scroll-mt-24 border-b border-brand-line py-16 md:py-20"
+            className="scroll-mt-32 border-b border-brand-line py-16 md:scroll-mt-36 md:py-20"
           >
             <Container>
               <h2 className="mb-3 text-2xl font-bold md:text-3xl">{child.label}</h2>

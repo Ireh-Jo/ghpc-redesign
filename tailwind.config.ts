@@ -20,6 +20,7 @@ const config: Config = {
           accent: 'rgb(var(--brand-accent) / <alpha-value>)',
           'accent-2': 'rgb(var(--brand-accent-2) / <alpha-value>)',
           support: 'rgb(var(--brand-support) / <alpha-value>)',
+          point: 'rgb(var(--brand-point) / <alpha-value>)',
           line: 'rgb(var(--brand-line) / <alpha-value>)',
         },
         // ── shadcn/ui semantic 토큰 (brand 위에 매핑) ──

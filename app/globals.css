@@ -10,17 +10,16 @@
   :root {
     /* ─────────────────────────────────────────────────────────────
        브랜드 토큰 (rgb 채널 · alpha 지원). 단일 출처: context/design/01-color.md
-       ⚠️ 아래 값은 F안 임시 팔레트 — 담임목사 시안 확정 전.
-          락된 정식값(라이트/네이비/크림슨)과 다름. 확정 시 이 블록만 교체하면
-          전 컴포넌트에 자동 반영(= 색 늦은 바인딩).
+       메인 3색은 2026-07-02 디자이너 확정값 (로고색 톤다운 — 파랑/초록/빨강).
        ───────────────────────────────────────────────────────────── */
-    --brand-bg: 250 250 250;          /* #FAFAFA  (락 정식값: #F8F9FB) */
+    --brand-bg: 250 250 250;          /* #FAFAFA */
     --brand-surface: 255 255 255;     /* #FFFFFF */
-    --brand-ink: 14 17 22;            /* #0E1116  (락 정식값: #18253F navy) */
+    --brand-ink: 14 17 22;            /* #0E1116 */
     --brand-ink-muted: 107 114 128;   /* #6B7280 */
-    --brand-accent: 0 66 141;         /* #00428D blue (락 정식값: #C8252C crimson) */
-    --brand-accent-2: 14 17 22;       /* #0E1116  (락 정식값: #0E1A33) */
-    --brand-support: 0 155 115;       /* #009B73 green (F안 추가 토큰 · 락 미등록) */
+    --brand-accent: 0 45 96;          /* #002D60 파랑 (2026-07-02 확정) */
+    --brand-accent-2: 14 17 22;       /* #0E1116 */
+    --brand-support: 0 99 74;         /* #00634A 초록 (2026-07-02 확정) */
+    --brand-point: 160 7 17;          /* #A00711 빨강 (2026-07-02 확정 · 사용처 미정) */
     --brand-line: 229 231 235;        /* #E5E7EB */
 
     /* ─── shadcn/ui semantic (brand 위 매핑 · 근사 HSL) ───
@@ -31,7 +30,7 @@
     --card-foreground: 220 22% 7%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 22% 7%;
-    --primary: 211 100% 28%;
+    --primary: 212 100% 19%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 14% 96%;
     --secondary-foreground: 220 22% 7%;
@@ -43,7 +42,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 211 100% 28%;
+    --ring: 212 100% 19%;
     --radius: 0.5rem;
   }
 }
