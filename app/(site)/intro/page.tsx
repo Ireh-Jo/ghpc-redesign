@@ -29,6 +29,13 @@ export default function IntroPage() {
   return (
     <SubPage
       sectionKey="intro"
+      // 예시 이미지(unsplash) — 디자인팀 교체 가이드: 본당 내부(따뜻한 조명) 또는 건물 외관
+      // 골든아워. 상세: context/components/content/hero-image.md
+      heroImage={{
+        src: 'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1600&q=80',
+        alt: '따뜻한 조명의 예배당 내부 (예시 이미지)',
+        lead: '1973년부터 가양동에서 — 경향교회의 이야기와 섬기는 사람들을 소개합니다.',
+      }}
       overrides={{
         directions: (
           <div className="space-y-8">

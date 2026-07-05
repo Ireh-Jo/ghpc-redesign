@@ -23,17 +23,22 @@
 
 ## 토큰
 
+> **2026-07-05 뉴트럴 워밍 (잠정 — 디자이너 리뷰 대기):** 무드 1번 "따뜻한 — 차가운 푸른 톤 회피"
+> 정합을 위해 뉴트럴 5종을 쿨 그레이(gray/blue-gray 계열) → **웜 그레이(stone 계열)**로 조정.
+> 메인 3색(파랑·초록·빨강)은 2026-07-02 잠금 그대로. 박정민·장진경 리뷰에서 확정/반려.
+> 이전 값: bg `#FAFAFA` · ink `#0E1116` · ink-muted `#6B7280` · accent-2 `#0E1116` · line `#E5E7EB`
+
 | 토큰 | HEX | 용도 |
 |---|---|---|
-| `--brand-bg` | `#FAFAFA` | 페이지 바탕 (off-white, 거의 흰색) |
+| `--brand-bg` | `#FAF9F7` | 페이지 바탕 (warm off-white) |
 | `--brand-surface` | `#FFFFFF` | 카드·모달·표면 |
-| `--brand-ink` | `#0E1116` | 본문·헤딩 (near-black) |
-| `--brand-ink-muted` | `#6B7280` | 보조 텍스트·라벨·메타 (cool gray) |
+| `--brand-ink` | `#141210` | 본문·헤딩 (warm near-black) |
+| `--brand-ink-muted` | `#78716C` | 보조 텍스트·라벨·메타 (warm gray, stone-500) |
 | `--brand-accent` | `#002D60` | **주조색 (파랑)** — 1차 CTA·링크·강조 |
 | `--brand-support` | `#00634A` | **보조색 (초록)** — eyebrow·LIVE 도트·하이라이트 |
 | `--brand-point` | `#A00711` | **포인트 (빨강)** — 폼 에러·필수 표시 (잠정, 2026-07-05) · 그 외 사용처 미정 (DECISION NEEDED) |
-| `--brand-accent-2` | `#0E1116` | 푸터·다크 섹션 배경 |
-| `--brand-line` | `#E5E7EB` | 보더·디바이더 |
+| `--brand-accent-2` | `#141210` | 푸터·다크 섹션 배경 (= ink) |
+| `--brand-line` | `#E7E5E4` | 보더·디바이더 (warm, stone-200) |
 
 ### 사용 규칙
 
@@ -57,15 +62,15 @@
 /* 실제 정의는 rgb 채널 형식 (alpha 지원) — app/globals.css 참조 */
 @layer base {
   :root {
-    --brand-bg: 250 250 250;        /* #FAFAFA */
+    --brand-bg: 250 249 247;        /* #FAF9F7 warm off-white (2026-07-05 워밍) */
     --brand-surface: 255 255 255;   /* #FFFFFF */
-    --brand-ink: 14 17 22;          /* #0E1116 */
-    --brand-ink-muted: 107 114 128; /* #6B7280 */
+    --brand-ink: 20 18 16;          /* #141210 warm near-black (2026-07-05 워밍) */
+    --brand-ink-muted: 120 113 108; /* #78716C warm gray (2026-07-05 워밍) */
     --brand-accent: 0 45 96;        /* #002D60 파랑 (2026-07-02 확정) */
     --brand-support: 0 99 74;       /* #00634A 초록 (2026-07-02 확정) */
     --brand-point: 160 7 17;        /* #A00711 빨강 (2026-07-02 확정 · 사용처 미정) */
-    --brand-accent-2: 14 17 22;     /* #0E1116 */
-    --brand-line: 229 231 235;      /* #E5E7EB */
+    --brand-accent-2: 20 18 16;     /* #141210 (= ink) */
+    --brand-line: 231 229 228;      /* #E7E5E4 warm (2026-07-05 워밍) */
   }
 }
 ```

@@ -68,7 +68,7 @@
 | 이름 | 상태 | 페이지 | 문서 |
 |---|---|---|---|
 | HeroVideo | shipped | `/` 메인 헤로 | `content/hero-video.md` |
-| HeroImage | draft | `/intro`, `/worship`, `/care`, `/activity` 서브 헤로 | `content/hero-image.md` |
+| HeroImage | wip | `/intro`, `/worship`, `/care`, `/activity`, `/newcomer` 서브 헤로 (unsplash 예시 — 디자인팀 교체 가이드 포함) | `content/hero-image.md` |
 | ServiceTimeTable | draft | `/`, `/worship` | `content/service-time-table.md` |
 | SermonCard | shipped | `/`, `/worship` 설교 다시보기 | `content/sermon-card.md` |
 | YouTubeEmbed | draft | `/intro` 50주년 영상 등 | `content/youtube-embed.md` |

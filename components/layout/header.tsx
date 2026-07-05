@@ -151,7 +151,8 @@ export function Header() {
         id="mega-menu"
         className={cn(
           'absolute inset-x-0 top-full hidden backdrop-blur-md transition-all duration-200 lg:block',
-          dark ? 'bg-brand-ink/95' : 'bg-brand-surface/95 border-b border-brand-line',
+          // 라이트 패널은 불투명 — /95면 뒤 히어로 사진·타이틀이 비쳐 가독성 저하
+          dark ? 'bg-brand-ink/95' : 'bg-brand-surface border-b border-brand-line',
           megaOpen
             ? 'visible translate-y-0 opacity-100'
             : 'invisible -translate-y-1.5 opacity-0'
@@ -188,9 +189,10 @@ export function Header() {
                       href={child.href}
                       className={cn(
                         'transition-colors',
+                        // 라이트 패널에서 ink-muted는 가독성 부족 (2026-07-06 피드백) — 본문 ink 사용
                         dark
                           ? 'text-white/65 hover:text-brand-support'
-                          : 'text-brand-ink-muted hover:text-brand-accent'
+                          : 'text-brand-ink hover:text-brand-accent'
                       )}
                     >
                       {child.label}

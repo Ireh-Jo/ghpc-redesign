@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { Container } from './container';
 import { AnchorNav } from './anchor-nav';
+import { HeroImage } from '@/components/content/hero-image';
 import { NAV } from '@/lib/nav';
 
 /**
@@ -10,15 +11,18 @@ import { NAV } from '@/lib/nav';
  * → 메가메뉴/버튼의 #앵커 링크가 전부 해소됨 (404 제거).
  * 실제 콘텐츠는 content 컴포넌트로 순차 교체. (조립도: context/pages/*)
  * `overrides`로 특정 앵커(hash id)의 placeholder 본문만 실제 콘텐츠로 교체 가능.
+ * `heroImage`가 있으면 사진 분할 히어로(HeroImage), 없으면 텍스트 히어로.
  * 섹션이 길어지는 것에 대한 대응은 아코디언이 아니라 sticky `AnchorNav`(섹션 바로가기) —
  * 이유는 context/components/layout/anchor-nav.md 참조.
  */
 export function SubPage({
   sectionKey,
   overrides,
+  heroImage,
 }: {
   sectionKey: string;
   overrides?: Record<string, ReactNode>;
+  heroImage?: { src: string; alt: string; lead?: string };
 }) {
   const section = NAV.find((n) => n.key === sectionKey);
   if (!section) notFound();
@@ -33,14 +37,23 @@ export function SubPage({
   return (
     <>
       {/* 서브 헤로 (라이트 — 2026-07-05 환영 동선 라이트화) — fixed 헤더 높이만큼 pt 보정 */}
-      <section className="border-b border-brand-line bg-brand-surface pb-14 pt-28 md:pb-20 md:pt-40">
-        <Container>
-          <p className="mb-4 text-[11px] font-bold tracking-[0.4em] text-brand-support md:text-xs">
-            — 경향교회
-          </p>
-          <h1 className="display-lg text-brand-ink">{section.label}</h1>
-        </Container>
-      </section>
+      {heroImage ? (
+        <HeroImage
+          title={section.label}
+          lead={heroImage.lead}
+          imageSrc={heroImage.src}
+          imageAlt={heroImage.alt}
+        />
+      ) : (
+        <section className="border-b border-brand-line bg-brand-surface pb-14 pt-28 md:pb-20 md:pt-40">
+          <Container>
+            <p className="mb-4 text-[11px] font-bold tracking-[0.4em] text-brand-support md:text-xs">
+              — 경향교회
+            </p>
+            <h1 className="display-lg text-brand-ink">{section.label}</h1>
+          </Container>
+        </section>
+      )}
 
       <AnchorNav items={anchorItems} />
 
