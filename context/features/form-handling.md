@@ -116,8 +116,8 @@ export async function submitNewcomer(input: unknown) {
 ## UI 패턴
 
 - 한 화면에 폼만 보여주기 (모달 회피)
-- 필수 표시: `*` 빨간 별
-- 에러 메시지: 필드 바로 아래, brand-accent 컬러
+- 필수 표시: `*` 빨간 별 (`brand-point`)
+- 에러 메시지: 필드 바로 아래, `brand-point` 컬러 (2026-07-05 변경 — 원문 "brand-accent"는 accent가 크림슨이던 시절 지정. 7-02 색 재잠금 후 accent=파랑이라 원래 의도인 빨강 = brand-point로 정정. `design/01-color.md` 잠정 사용처 참조)
 - 제출 중: 버튼 disabled + 스피너
 - 제출 후: 폼 자리에 성공 메시지 카드 (toast 대신 영구 표시)
 

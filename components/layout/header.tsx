@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { ArrowRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Container } from './container';
@@ -13,15 +14,17 @@ import { NAV, LIVE_URL } from '@/lib/nav';
  * 전역 헤더(GNB) + 사랑의교회식 메가메뉴.
  * - 데스크탑: GNB hover 시 전체 폭 패널이 펼쳐지고 5개 메뉴 트리가 한 번에 노출.
  * - 모바일: 햄버거 → 풀스크린 메뉴(MobileNav).
- * - 헤로 위에선 투명, 스크롤·메가 오픈 시 다크 솔리드.
+ * - 톤 분기 (2026-07-05 환영 동선 라이트화): `/`(다크 영상 헤로)만 다크 톤 —
+ *   투명 → 스크롤·메가 오픈 시 다크 솔리드. 서브페이지는 라이트 헤로라 라이트 톤.
  * 메뉴 항목은 lib/nav.ts 단일 출처.
- * ⚠️ 다크 미니멀 비주얼은 F안 임시 룩(담임목사 시안 확정 전).
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  // 메인만 다크 헤로 위에 얹힘 — 나머지는 라이트 배경 위
+  const dark = usePathname() === '/';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -62,7 +65,9 @@ export function Header() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
         isSolid
-          ? 'bg-brand-ink/95 backdrop-blur-md border-b border-white/10'
+          ? dark
+            ? 'bg-brand-ink/95 backdrop-blur-md border-b border-white/10'
+            : 'bg-brand-surface/95 backdrop-blur-md border-b border-brand-line'
           : 'border-b border-transparent'
       )}
       onMouseEnter={openMega}
@@ -74,10 +79,10 @@ export function Header() {
     >
       <Container className="flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="flex items-center" aria-label="경향교회 홈">
-          {/* 컬러 원본 로고. 다크 헤더에선 글자가 잘 안 보임 —
-             디자인팀 다크 배경용(화이트/SVG) 로고 받으면 교체 예정. */}
+          {/* 톤별 로고 스왑 — 다크 헤더(메인)는 흰 글자(logo.png), 라이트는 검정 글자(logo_black.png).
+             디자인팀 SVG 로고 받으면 교체 예정. */}
           <Image
-            src="/logo.png"
+            src={dark ? '/logo.png' : '/logo_black.png'}
             alt="경향교회"
             width={965}
             height={329}
@@ -99,7 +104,8 @@ export function Header() {
               aria-expanded={megaOpen}
               aria-controls="mega-menu"
               className={cn(
-                'relative py-1 text-[13px] tracking-widest text-white transition-colors',
+                'relative py-1 text-[13px] tracking-widest transition-colors',
+                dark ? 'text-white' : 'text-brand-ink',
                 item.highlight ? 'font-bold' : 'font-medium',
                 'after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-brand-support after:transition-transform after:duration-200',
                 activeKey === item.key ? 'after:scale-x-100' : 'after:scale-x-0'
@@ -115,7 +121,10 @@ export function Header() {
             href={LIVE_URL}
             target="_blank"
             rel="noopener"
-            className="inline-flex items-center gap-2 text-[12px] font-medium tracking-widest text-white"
+            className={cn(
+              'inline-flex items-center gap-2 text-[12px] font-medium tracking-widest',
+              dark ? 'text-white' : 'text-brand-ink'
+            )}
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping bg-brand-support opacity-75" />
@@ -127,7 +136,7 @@ export function Header() {
 
         <button
           type="button"
-          className="-mr-2 p-2 text-white lg:hidden"
+          className={cn('-mr-2 p-2 lg:hidden', dark ? 'text-white' : 'text-brand-ink')}
           aria-label="메뉴 열기"
           aria-expanded={mobileOpen}
           aria-controls="mobile-nav"
@@ -141,13 +150,19 @@ export function Header() {
       <div
         id="mega-menu"
         className={cn(
-          'absolute inset-x-0 top-full hidden bg-brand-ink/95 backdrop-blur-md transition-all duration-200 lg:block',
+          'absolute inset-x-0 top-full hidden backdrop-blur-md transition-all duration-200 lg:block',
+          dark ? 'bg-brand-ink/95' : 'bg-brand-surface/95 border-b border-brand-line',
           megaOpen
             ? 'visible translate-y-0 opacity-100'
             : 'invisible -translate-y-1.5 opacity-0'
         )}
       >
-        <Container className="grid grid-cols-5 gap-x-8 gap-y-4 py-9 text-white">
+        <Container
+          className={cn(
+            'grid grid-cols-5 gap-x-8 gap-y-4 py-9',
+            dark ? 'text-white' : 'text-brand-ink'
+          )}
+        >
           {NAV.map((section) => (
             <div key={section.key}>
               <Link
@@ -155,8 +170,13 @@ export function Header() {
                 className={cn(
                   'mb-4 block border-b pb-3 text-sm font-bold tracking-widest transition-colors',
                   section.highlight
-                    ? 'border-brand-support/30 text-brand-support hover:text-white'
-                    : 'border-white/15 text-white hover:text-brand-support'
+                    ? cn(
+                        'border-brand-support/30 text-brand-support',
+                        dark ? 'hover:text-white' : 'hover:text-brand-ink'
+                      )
+                    : dark
+                      ? 'border-white/15 text-white hover:text-brand-support'
+                      : 'border-brand-line text-brand-ink hover:text-brand-accent'
                 )}
               >
                 {section.label}
@@ -166,7 +186,12 @@ export function Header() {
                   <li key={child.href}>
                     <Link
                       href={child.href}
-                      className="text-white/65 transition-colors hover:text-brand-support"
+                      className={cn(
+                        'transition-colors',
+                        dark
+                          ? 'text-white/65 hover:text-brand-support'
+                          : 'text-brand-ink-muted hover:text-brand-accent'
+                      )}
                     >
                       {child.label}
                     </Link>

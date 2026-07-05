@@ -38,7 +38,7 @@
     --muted-foreground: 220 9% 46%;
     --accent: 220 14% 96%;
     --accent-foreground: 220 22% 7%;
-    --destructive: 0 72% 51%;
+    --destructive: 356 92% 33%; /* brand-point #A00711 — 폼 에러 (01-color.md 잠정 사용처) */
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;

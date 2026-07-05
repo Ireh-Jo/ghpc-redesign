@@ -14,6 +14,7 @@
 | `form-handling.md` | 신청·등록 폼 공통 처리 (검증·전송·알림·동의) | draft |
 | `bulletin-pdf.md` | 주보 PDF 업로드·표시 (Supabase Storage) | draft |
 | `wayfinding.md` | 실내 길찾기 (5개 층, 프로토타입 완성) | locked (레퍼런스: `prototypes/wayfind/`) |
+| `reservation.md` | 시설(장소) 예약 시스템 — 신청·승인·달력 (2026-07-05 신규) | draft (확인사항 5건 회의 대기) |
 
 ## feature .md frontmatter 템플릿
 

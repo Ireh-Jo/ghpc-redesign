@@ -12,7 +12,6 @@ import { NAV } from '@/lib/nav';
  * `overrides`로 특정 앵커(hash id)의 placeholder 본문만 실제 콘텐츠로 교체 가능.
  * 섹션이 길어지는 것에 대한 대응은 아코디언이 아니라 sticky `AnchorNav`(섹션 바로가기) —
  * 이유는 context/components/layout/anchor-nav.md 참조.
- * ⚠️ F안 임시 룩.
  */
 export function SubPage({
   sectionKey,
@@ -33,13 +32,13 @@ export function SubPage({
 
   return (
     <>
-      {/* 서브 헤로 (다크) — fixed 헤더 높이만큼 pt 보정 */}
-      <section className="bg-brand-ink pb-14 pt-28 text-white md:pb-20 md:pt-40">
+      {/* 서브 헤로 (라이트 — 2026-07-05 환영 동선 라이트화) — fixed 헤더 높이만큼 pt 보정 */}
+      <section className="border-b border-brand-line bg-brand-surface pb-14 pt-28 md:pb-20 md:pt-40">
         <Container>
           <p className="mb-4 text-[11px] font-bold tracking-[0.4em] text-brand-support md:text-xs">
             — 경향교회
           </p>
-          <h1 className="display-lg text-white">{section.label}</h1>
+          <h1 className="display-lg text-brand-ink">{section.label}</h1>
         </Container>
       </section>
 

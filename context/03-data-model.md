@@ -149,6 +149,50 @@
 
 > DECISION NEEDED: 폼 종류별 별도 테이블 vs 통합 `form_submissions`. 통합이 RLS·어드민 UI 단순하나 컬럼이 nullable 투성이 됨.
 
+### 10. `rooms` — 예약 가능 시설 마스터 (2026-07-05 추가, `context/features/reservation.md`)
+
+| 컬럼 | 타입 | 비고 |
+|---|---|---|
+| `id` | uuid PK | |
+| `name` | text | "제1교육실", "비전홀" ... |
+| `wayfind_code` | text | 실내 길찾기 방 코드 (`B249` 등) — "위치 보기" 연동 |
+| `order` | smallint | 표시 순서 |
+| `active` | boolean | 예약 접수 on/off |
+| `created_at` / `updated_at` | timestamptz | |
+
+**RLS:** 익명 SELECT (active=true), 어드민 ALL.
+
+> DECISION NEEDED: 장소 목록 확정 (회의) — 후보: 교육실 1~8·10, 체육관, 1세미나실, 연합회의실,
+> 트리니티홀, 비전홀, 글로브홀. 운동장·식당은 추후.
+
+### 11. `reservations` — 시설 예약 신청 (개인정보 포함)
+
+| 컬럼 | 타입 | 비고 |
+|---|---|---|
+| `id` | uuid PK | |
+| `room_id` | uuid FK → rooms.id | |
+| `applicant_name` | text | **PII — 공개 뷰 제외** |
+| `applicant_phone` | text | **PII — 공개 뷰 제외** |
+| `org` | text | 이용기관 (달력 공개 표시) |
+| `purpose` | text | 용도 (달력 공개 표시) |
+| `starts_at` / `ends_at` | timestamptz | |
+| `status` | text | pending / approved / rejected / cancelled |
+| `recurrence_group_id` | uuid | nullable — 반복 신청 묶음 (§반복 미정, 미지원 확정 시 제거) |
+| `admin_note` | text | nullable |
+| `consent_privacy` | boolean | 필수 true |
+| `created_at` / `updated_at` | timestamptz | |
+
+**RLS:**
+- 익명: **INSERT만** (consent_privacy=true 강제) — `newcomer_submissions` 패턴.
+- 익명: 원본 테이블 SELECT 금지. 달력 표시는 **공개 뷰 `reservations_public`**(PII 제외:
+  room_id·org·purpose·starts_at·ends_at·status)로만.
+- 어드민: 전체 권한.
+
+**겹침 방지:** exclusion constraint (`btree_gist` + `tstzrange(starts_at, ends_at)` && 같은 room_id).
+> DECISION NEEDED: constraint 적용 대상 status — A안 `('pending','approved')` vs B안 `('approved')`
+> (`context/features/reservation.md` §2, 회의 확정 대기. 담당자 추천 A안).
+> DECISION NEEDED: 3일 전 마감 차단 여부·신청 가능 시간대·반복 신청 (§3).
+
 ## 인증
 
 - 어드민: `auth.users` + 운영 메일 화이트리스트 (`profiles.is_admin` 또는 Supabase Custom Claim).
@@ -196,3 +240,4 @@ CI에서 마이그 후 자동 실행.
 - [ ] 어드민 역할 모델 (Custom Claim vs profiles)
 - [ ] 미디어 서버 연동 시 `sermons.video_source` 컬럼 추가 여부
 - [ ] 개인정보 암호화 (phone) — pgsodium 검토
+- [ ] 예약: 겹침 처리 A/B·신청 규칙·장소 목록 (`context/features/reservation.md`, 회의 대기)
