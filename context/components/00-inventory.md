@@ -51,14 +51,17 @@
 | 이름 | 상태 | 페이지 | 문서 |
 |---|---|---|---|
 | Container | wip | 전 페이지 | `layout/container.md` |
-| Header | wip | 전 페이지 (fixed GNB · 사랑의교회식 메가메뉴 hover 펼침) | `layout/header.md` |
-| MobileNav | wip | 전 페이지 (햄버거 풀스크린) | `layout/mobile-nav.md` |
+| Header | wip | 전 페이지 (fixed GNB · 메가메뉴는 hover한 **한 개만** 펼침 · 대메뉴 클릭 불가) | `layout/header.md` |
+| MobileNav | wip | 전 페이지 (햄버거 → 드릴다운 2단) | `layout/mobile-nav.md` |
 | Footer | wip | 전 페이지 | `layout/footer.md` |
 | SectionHeader | draft | 거의 모든 섹션 | `layout/section-header.md` |
 | AnchorNav | shipped | 모든 서브페이지(`SubPage`) 상단 sticky 섹션 바로가기 | `layout/anchor-nav.md` |
 
 > **GNB 메뉴 구조 단일 출처: `lib/nav.ts`** (트리 config). 항목·라벨·순서·뎁스는 코드에 박지 않고 이 파일에서 관리.
-> Header는 데스크탑 메가메뉴(전체 폭 5컬럼 트리) + 모바일 풀스크린(MobileNav)을 포함. 비주얼은 2뎁스 고정, 데이터는 트리(children)라 3뎁스 확장은 렌더만 추가.
+> Header는 데스크탑 메가메뉴 + 모바일 풀스크린(MobileNav)을 포함. 비주얼은 2뎁스 고정, 데이터는 트리(children)라 3뎁스 확장은 렌더만 추가.
+> **상호작용 잠금 (2026-08-12, `context/04-information-architecture.md` § GNB 상호작용):** 메가메뉴는 hover/focus한
+> 대메뉴 **하나만** 펼치고(좌측 제목+tagline / 우측 하위 목록), 대메뉴 자체는 링크가 아니라 패널 컨트롤이다.
+> 모바일은 hover가 없어 같은 성격을 드릴다운 2단으로 옮겼다.
 > 룩 결정권: 담임목사가 시안 판단을 팀에 위임 (2026-07-05) — F안 다크 미니멀을 베이스로 하되,
 > **환영 동선(메인 환영 섹션·서브페이지 헤로·헤더 라이트 톤)은 라이트로 전환** (무드 "따뜻한·환영하는" 정합).
 > 다크는 메인 헤로·표어 배너·푸터에만 유지. Header는 route 기준 톤 분기 (`/`=다크 헤로 위 투명, 서브=라이트).

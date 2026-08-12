@@ -11,16 +11,26 @@ import { MobileNav } from './mobile-nav';
 import { NAV, LIVE_URL } from '@/lib/nav';
 
 /**
- * 전역 헤더(GNB) + 사랑의교회식 메가메뉴.
- * - 데스크탑: GNB hover 시 전체 폭 패널이 펼쳐지고 5개 메뉴 트리가 한 번에 노출.
- * - 모바일: 햄버거 → 풀스크린 메뉴(MobileNav).
+ * 전역 헤더(GNB) + 메가메뉴.
+ *
+ * ── 상호작용 잠금 (2026-08-12 · 디자이너 합의, `context/04-information-architecture.md` § GNB 상호작용) ──
+ * - **B안**: hover/focus한 대메뉴 **하나만** 펼친다 (5개 동시 노출 = 폐기된 A안).
+ * - **대메뉴는 링크가 아니다.** 패널을 여는 컨트롤(button)일 뿐이라 클릭해도 이동하지 않는다.
+ *   하위 항목이 전부 해당 페이지 앵커(`/worship#times` …)라 1클릭 도달성은 유지된다.
+ *   구분은 색·커서로 — 대메뉴는 hover 색 변화 없음(cursor-default), 하위 링크만 accent로 반응.
+ * - 새가족 패널만 `/newcomer` 루트로 가는 CTA를 따로 둔다 (새신자 동선 보증).
+ *
+ * 패널은 각 대메뉴 <li> 안에 넣는다 — DOM 순서가 [대메뉴 → 그 하위 링크]가 돼야
+ * 키보드 Tab이 자기 패널로 들어간다 (공용 패널 하나면 마지막 메뉴만 도달 가능).
+ * 닫힌 패널은 `invisible`(visibility:hidden) — 포커스 대상에서 빠진다.
+ *
+ * - 모바일: 햄버거 → 드릴다운 2단(MobileNav).
  * - 톤 분기 (2026-07-05 환영 동선 라이트화): `/`(다크 영상 헤로)만 다크 톤 —
  *   투명 → 스크롤·메가 오픈 시 다크 솔리드. 서브페이지는 라이트 헤로라 라이트 톤.
  * 메뉴 항목은 lib/nav.ts 단일 출처.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   // 메인만 다크 헤로 위에 얹힘 — 나머지는 라이트 배경 위
@@ -36,7 +46,7 @@ export function Header() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setMegaOpen(false);
+        setActiveKey(null);
         setMobileOpen(false);
       }
     };
@@ -44,20 +54,11 @@ export function Header() {
     return () => document.removeEventListener('keydown', onKey);
   }, []);
 
+  // 펼쳐진 패널이 있으면 헤더도 솔리드 — 패널 뒤로 히어로가 비치지 않게
+  const megaOpen = activeKey !== null;
   const isSolid = scrolled || megaOpen;
 
-  // 메가메뉴는 데스크탑(lg) 전용 hover. 모바일이거나 모바일 메뉴가 열려 있으면 비활성화
-  // (MobileNav가 header의 자식이라, 가드 없으면 모바일에서 hover 시 megaOpen 토글 → 배경 깜빡임)
-  const openMega = () => {
-    if (mobileOpen) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(min-width:1024px)').matches) {
-      setMegaOpen(true);
-    }
-  };
-  const closeMega = () => {
-    setMegaOpen(false);
-    setActiveKey(null);
-  };
+  const closeMega = () => setActiveKey(null);
 
   return (
     <>
@@ -70,7 +71,6 @@ export function Header() {
             : 'bg-brand-surface/95 backdrop-blur-md border-b border-brand-line'
           : 'border-b border-transparent'
       )}
-      onMouseEnter={openMega}
       onMouseLeave={closeMega}
       onBlur={(e) => {
         // 키보드 탭아웃으로 포커스가 헤더 밖으로 나가면 메가메뉴 닫기 (focusout 버블링)
@@ -91,29 +91,112 @@ export function Header() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
-          {NAV.map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              onMouseEnter={() => setActiveKey(item.key)}
-              onFocus={() => {
-                setMegaOpen(true);
-                setActiveKey(item.key);
-              }}
-              aria-expanded={megaOpen}
-              aria-controls="mega-menu"
-              className={cn(
-                'relative py-1 text-[13px] tracking-widest transition-colors',
-                dark ? 'text-white' : 'text-brand-ink',
-                item.highlight ? 'font-bold' : 'font-medium',
-                'after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-brand-support after:transition-transform after:duration-200',
-                activeKey === item.key ? 'after:scale-x-100' : 'after:scale-x-0'
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="hidden lg:block" aria-label="주 메뉴">
+          <ul className="flex items-center gap-8">
+            {NAV.map((section) => {
+              const open = activeKey === section.key;
+              return (
+                // li에 relative를 주지 않는다 — 패널의 absolute 기준이 fixed header가 돼야 전체 폭으로 펼쳐진다
+                <li key={section.key}>
+                  <button
+                    type="button"
+                    // 클릭 핸들러를 일부러 두지 않는다 — "눌러도 아무 일 없음"이 결정사항(2026-08-12).
+                    // 여는 건 마우스 hover / 키보드 focus, 닫는 건 헤더 밖으로 나가기 또는 Esc.
+                    onMouseEnter={() => setActiveKey(section.key)}
+                    onFocus={() => setActiveKey(section.key)}
+                    aria-expanded={open}
+                    aria-controls={`mega-${section.key}`}
+                    className={cn(
+                      'relative cursor-default py-1 text-[13px] tracking-widest',
+                      dark ? 'text-white' : 'text-brand-ink',
+                      section.highlight ? 'font-bold' : 'font-medium',
+                      'after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-brand-support after:transition-transform after:duration-200',
+                      open ? 'after:scale-x-100' : 'after:scale-x-0'
+                    )}
+                  >
+                    {section.label}
+                  </button>
+
+                  {/* ── 메가메뉴 패널 — 이 대메뉴 하나만 (B안) ── */}
+                  <div
+                    id={`mega-${section.key}`}
+                    className={cn(
+                      'absolute inset-x-0 top-full transition-all duration-200',
+                      // 두 톤 다 불투명 — 반투명이면 뒤 히어로 사진·큰 타이틀이 비쳐 가독성 저하
+                      // (라이트는 2026-07-06 피드백, 다크는 2026-08-12 B안 전환 때 같은 이유로 통일)
+                      dark ? 'bg-brand-ink' : 'border-b border-brand-line bg-brand-surface',
+                      open ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-1.5 opacity-0'
+                    )}
+                  >
+                    <Container
+                      className={cn('flex min-h-[200px] gap-12 py-10', dark ? 'text-white' : 'text-brand-ink')}
+                    >
+                      {/* 좌측 — 대메뉴 이름. 링크가 아니므로 hover 반응 없음 */}
+                      <div
+                        className={cn(
+                          'w-56 shrink-0 border-r pr-8',
+                          dark ? 'border-white/15' : 'border-brand-line'
+                        )}
+                      >
+                        <p
+                          className={cn(
+                            'text-lg font-bold tracking-tight',
+                            section.highlight
+                              ? 'text-brand-support'
+                              : dark
+                                ? 'text-white'
+                                : 'text-brand-ink'
+                          )}
+                        >
+                          {section.label}
+                        </p>
+                        {section.tagline && (
+                          <p
+                            className={cn(
+                              'mt-2 text-[12px] leading-relaxed',
+                              dark ? 'text-white/55' : 'text-brand-ink-muted'
+                            )}
+                          >
+                            {section.tagline}
+                          </p>
+                        )}
+                        {section.highlight && (
+                          <Link
+                            href={section.href}
+                            onClick={closeMega}
+                            className="mt-5 inline-flex items-center gap-1.5 text-[12px] font-bold tracking-[0.2em] text-brand-support"
+                          >
+                            새가족 안내 바로가기 <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                      </div>
+
+                      {/* 우측 — 하위 항목. 이쪽만 링크라 hover 시 색이 바뀐다 */}
+                      <ul className="grid flex-1 grid-cols-3 content-start gap-x-8 gap-y-3 text-[13px]">
+                        {section.children?.map((child) => (
+                          <li key={child.href}>
+                            <Link
+                              href={child.href}
+                              onClick={closeMega}
+                              className={cn(
+                                'transition-colors',
+                                // 라이트 패널에서 ink-muted는 가독성 부족 (2026-07-06 피드백) — 본문 ink 사용
+                                dark
+                                  ? 'text-white/65 hover:text-brand-support'
+                                  : 'text-brand-ink hover:text-brand-accent'
+                              )}
+                            >
+                              {child.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </Container>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </nav>
 
         <div className="hidden items-center gap-4 lg:flex">
@@ -146,72 +229,6 @@ export function Header() {
         </button>
       </Container>
 
-      {/* ── 메가메뉴 패널 (데스크탑) ── */}
-      <div
-        id="mega-menu"
-        className={cn(
-          'absolute inset-x-0 top-full hidden backdrop-blur-md transition-all duration-200 lg:block',
-          // 라이트 패널은 불투명 — /95면 뒤 히어로 사진·타이틀이 비쳐 가독성 저하
-          dark ? 'bg-brand-ink/95' : 'bg-brand-surface border-b border-brand-line',
-          megaOpen
-            ? 'visible translate-y-0 opacity-100'
-            : 'invisible -translate-y-1.5 opacity-0'
-        )}
-      >
-        <Container
-          className={cn(
-            'grid grid-cols-5 gap-x-8 gap-y-4 py-9',
-            dark ? 'text-white' : 'text-brand-ink'
-          )}
-        >
-          {NAV.map((section) => (
-            <div key={section.key}>
-              <Link
-                href={section.href}
-                className={cn(
-                  'mb-4 block border-b pb-3 text-sm font-bold tracking-widest transition-colors',
-                  section.highlight
-                    ? cn(
-                        'border-brand-support/30 text-brand-support',
-                        dark ? 'hover:text-white' : 'hover:text-brand-ink'
-                      )
-                    : dark
-                      ? 'border-white/15 text-white hover:text-brand-support'
-                      : 'border-brand-line text-brand-ink hover:text-brand-accent'
-                )}
-              >
-                {section.label}
-              </Link>
-              <ul className="space-y-2.5 text-[13px]">
-                {section.children?.map((child) => (
-                  <li key={child.href}>
-                    <Link
-                      href={child.href}
-                      className={cn(
-                        'transition-colors',
-                        // 라이트 패널에서 ink-muted는 가독성 부족 (2026-07-06 피드백) — 본문 ink 사용
-                        dark
-                          ? 'text-white/65 hover:text-brand-support'
-                          : 'text-brand-ink hover:text-brand-accent'
-                      )}
-                    >
-                      {child.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              {section.highlight && (
-                <Link
-                  href={section.href}
-                  className="mt-5 inline-flex items-center gap-1.5 text-[12px] font-bold tracking-[0.2em] text-brand-support"
-                >
-                  등록하기 <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              )}
-            </div>
-          ))}
-        </Container>
-      </div>
     </header>
 
     {/* MobileNav는 header 밖에 — header의 backdrop-filter가 fixed 기준을 가로채지 않도록 */}

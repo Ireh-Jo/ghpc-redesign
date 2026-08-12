@@ -22,6 +22,11 @@ export type NavSection = NavItem & {
   key: string;
   /** 새가족 등 강조 메뉴 (녹색 처리) */
   highlight?: boolean;
+  /**
+   * 메가메뉴 좌측·모바일 하위 화면 상단에 붙는 한 줄 설명.
+   * 대메뉴가 클릭 불가라 "이 메뉴가 뭔지"를 문장으로 알려주는 자리 (2026-08-12 결정).
+   */
+  tagline?: string;
 };
 
 export const NAV: NavSection[] = [
@@ -29,6 +34,7 @@ export const NAV: NavSection[] = [
     key: 'intro',
     label: '교회소개',
     href: '/intro',
+    tagline: '1973년부터, 세계를 품은 교회',
     children: [
       { label: '인사말', href: '/intro#greeting' },
       { label: '비전 · 신학 노선', href: '/intro#vision' },
@@ -43,6 +49,7 @@ export const NAV: NavSection[] = [
     key: 'worship',
     label: '예배와 교육',
     href: '/worship',
+    tagline: '자유로이, 함께 예배하라',
     children: [
       { label: '예배 시간표', href: '/worship#times' },
       { label: '생방송 · 예배 실황', href: '/worship#live' },
@@ -56,6 +63,7 @@ export const NAV: NavSection[] = [
     key: 'care',
     label: '목양과 사역',
     href: '/care',
+    tagline: '함께 자라고 함께 섬깁니다',
     children: [
       { label: '새가족 안내', href: '/care#newfamily' },
       { label: '구역모임', href: '/care#district' },
@@ -68,6 +76,7 @@ export const NAV: NavSection[] = [
     key: 'activity',
     label: '교회 활동',
     href: '/activity',
+    tagline: '이번 주 경향교회',
     children: [
       { label: '교회 일정', href: '/activity#calendar' },
       { label: '주보', href: '/activity#bulletin' },
@@ -80,6 +89,7 @@ export const NAV: NavSection[] = [
     label: '새가족',
     href: '/newcomer',
     highlight: true,
+    tagline: '처음 오셨나요? 반갑습니다',
     children: [
       { label: '처음 오셨나요?', href: '/newcomer#welcome' },
       { label: '새가족 등록', href: '/newcomer#register' },
