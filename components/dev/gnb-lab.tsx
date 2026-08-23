@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronDown, ExternalLink, Monitor, MousePointerClick, Ban, Smartphone, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { NAV_V2, type NavSection } from '@/lib/nav-v2';
+import { NAV as NAV_V2, type NavSection } from '@/lib/nav';
 
 /**
  * GNB 검토 랩 (/dev/gnb) — 개발 내부용. 실서비스 라우트 아님.
@@ -268,7 +268,8 @@ function ItemLink({
   item,
   showNotes,
 }: {
-  item: { label: string; href: string; external?: boolean; note?: string };
+  // `note`는 2026-08-23 nav 승계 때 `desc`(사용자에게 보이는 한 줄 설명)로 통합됨
+  item: { label: string; href: string; external?: boolean; desc?: string };
   showNotes: boolean;
 }) {
   return (
@@ -280,8 +281,8 @@ function ItemLink({
       {showNotes && (
         <span className="mt-0.5 block font-mono text-[10px] leading-snug text-brand-ink-muted">{item.href}</span>
       )}
-      {showNotes && item.note && (
-        <span className="mt-0.5 block text-[11px] leading-snug text-brand-point">↳ {item.note}</span>
+      {showNotes && item.desc && (
+        <span className="mt-0.5 block text-[11px] leading-snug text-brand-point">↳ {item.desc}</span>
       )}
     </li>
   );

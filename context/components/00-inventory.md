@@ -56,6 +56,8 @@
 | Footer | wip | 전 페이지 | `layout/footer.md` |
 | SectionHeader | draft | 거의 모든 섹션 | `layout/section-header.md` |
 | AnchorNav | shipped | 모든 서브페이지(`SubPage`) 상단 sticky 섹션 바로가기 | `layout/anchor-nav.md` |
+| SubPage | shipped | 대메뉴 5개 페이지 골격 (앵커 섹션 + 외부 라우트는 바로가기 카드) | `layout/sub-page.md` |
+| StubPage | shipped | 2차 목차로 신설된 라우트 13종의 골격 (콘텐츠 이관 전) | `layout/stub-page.md` |
 
 > **GNB 메뉴 구조 단일 출처: `lib/nav.ts`** (트리 config). 항목·라벨·순서·뎁스는 코드에 박지 않고 이 파일에서 관리.
 > Header는 데스크탑 메가메뉴 + 모바일 풀스크린(MobileNav)을 포함. 비주얼은 2뎁스 고정, 데이터는 트리(children)라 3뎁스 확장은 렌더만 추가.
@@ -92,8 +94,9 @@
 | Calendar | draft | `/activity` | `interactive/calendar.md` |
 | LiveBadge | draft | Header GNB (생방송 상태) | `interactive/live-badge.md` |
 | NewcomerForm | wip | `/newcomer`, `/care` | `interactive/newcomer-form.md` — UI·검증 완료, Supabase INSERT 스텁 (프로젝트 미생성) |
-| SeniorSchoolForm | draft | `/care` 시니어스쿨 | `interactive/senior-school-form.md` |
-| LifelongEduForm | draft | `/care` 평생교육원 | `interactive/lifelong-edu-form.md` |
+| ApplyForm | shipped | `/activity/apply`(영상제작·후원작정·평생교육원) · `/reserve`(시설이용) | `interactive/apply-form.md` — 폼 정의 기반 공통 렌더러. 현행 사이트 필드 그대로 (2026-08-23) |
+| ~~SeniorSchoolForm~~ | 폐기 | — | `ApplyForm` + 폼 정의로 흡수. 시니어스쿨 신청은 현행 사이트에 폼이 없어 정의만 추가하면 됨 |
+| ~~LifelongEduForm~~ | 폐기 | — | `ApplyForm`의 `lifelong_edu` 정의로 대체 |
 | NewsTabs | draft | `/activity` 영상뉴스/소식/교우/교단 탭 | `interactive/news-tabs.md` |
 | ScrollToTop | draft | 전 페이지 | `interactive/scroll-to-top.md` |
 | FloorMap | shipped | `/intro` 오시는 길 · 실내 길찾기 | `interactive/floor-map.md` |
