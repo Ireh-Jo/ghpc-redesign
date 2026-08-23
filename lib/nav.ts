@@ -17,9 +17,14 @@
  * 5. `새가족 등록`(온라인 폼) 항목 없음 — 온라인 유입 안 함. 접점은 카카오채널·전화.
  * 6. 현행 `연합기관` 해체분 중 **집사회·권사회는 `목양과 사역 > 목양`에 항목으로 흡수.**
  *    (그것만을 위해 그룹/대메뉴를 새로 만들지 않는다 — 2026-08-23 사용자 지시)
- * 7. 현행 대메뉴 `e교회행정` 해체분은 `교회 활동 > 행정·신청` 그룹으로. 전 항목이 로그인 없이
- *    공개돼 있어 회원 전용 영역은 만들지 않는다.
- *    근거: `docs/meetings/2026-08-23-현행사이트-메뉴-전수분석.md`
+ * 7. **2차 개편안 PPT(`docs/meetings/교회 홈페이지 개편안 2차.pptx` 슬라이드 4~7)를 벗어나지 않는다.**
+ *    항목을 늘리고 싶으면 PPT의 어느 줄에 속하는지부터 정한다 (2026-08-23 사용자 지시).
+ *    - `e교회행정`은 PPT 슬라이드 4대로 **교회소개 > 교회정보**의 한 줄이다 (`/church-admin` 허브).
+ *      한때 `교회 활동 > 행정·신청` 그룹으로 뒀다가 PPT 원안으로 되돌렸다.
+ *    - 교회활동의 `교회소식`은 PPT 슬라이드 7대로 **하위 3종(영상뉴스·교회소식·교우소식)을
+ *      거느린 한 줄**이다. GNB에 펼쳐 나열하지 않고 페이지 안 탭으로 내린다. 교구친선리그도 그 탭.
+ *    - PPT에 없던 `실내 길찾기`는 `오시는 길 · 주차` 안으로 흡수했다.
+ *    현행 사이트와의 대조: `docs/meetings/2026-08-23-현행사이트-메뉴-전수분석.md`
  *
  * `legacy`는 현행 사이트(ghpc.or.kr)의 대응 URL — 콘텐츠 이관 전까지 스텁 페이지에서
  * "현재 홈페이지에서 보기"로 노출한다. 이관이 끝나면 제거한다.
@@ -33,6 +38,12 @@ export type NavItem = {
   legacy?: string;
   /** 스텁/허브 페이지에 뿌리는 한 줄 설명 */
   desc?: string;
+  /**
+   * **GNB에는 뜨지 않고 그 페이지 안에서만 보이는 하위 항목.**
+   * PPT가 한 줄로 적어둔 것을 GNB에서 펼치지 않기 위한 장치다 (뎁스 상한 L3 유지).
+   * 예: `e교회행정` 한 줄 → 페이지 안에서 공지사항·자료실·신청 서식·시설 예약으로 갈라진다.
+   */
+  children?: NavItem[];
 };
 
 export type NavGroup = {
@@ -85,11 +96,50 @@ export const NAV: NavSection[] = [
       {
         label: '교회정보',
         items: [
-          { label: '오시는 길 · 주차', href: '/intro#directions', legacy: `${LEGACY}/Page/Index/36` },
-          { label: '실내 길찾기', href: '/intro#wayfind' },
+          // PPT 슬라이드 4 `교회정보` = 교회 위치 · 교회 시설 · 전화번호 · 온라인 헌금 · 교회 일정 · e행정.
+          // `교회 일정`만 뺐다 — 슬라이드 7에도 있는 PPT 자체 중복이라 `교회 활동`을 정본으로 삼는다.
+          {
+            label: '오시는 길 · 주차',
+            href: '/intro#directions',
+            desc: '지도 · 주차 안내 · 실내 길찾기',
+            legacy: `${LEGACY}/Page/Index/36`,
+          },
           { label: '교회 시설', href: '/intro#facility', legacy: `${LEGACY}/Page/Index/238` },
           { label: '연락처', href: '/intro#contact', legacy: `${LEGACY}/Page/Index/37` },
           { label: '온라인 헌금', href: '/giving' },
+          {
+            label: 'e교회행정',
+            href: '/church-admin',
+            desc: '공지사항 · 자료실 · 신청 서식 · 시설 예약',
+            legacy: `${LEGACY}/Link/Index/11`,
+            // GNB엔 위 한 줄만. 아래 4개는 `/church-admin` 페이지 안에서만 보인다
+            children: [
+              {
+                label: '공지사항',
+                href: '/church-admin/notice',
+                desc: '연말정산 · 좌석 안내 등 전교인 공지',
+                legacy: `${LEGACY}/Board/Index/12`,
+              },
+              {
+                label: '자료실',
+                href: '/church-admin/resources',
+                desc: '자료실 · 로고 · 별들의 노래 · 기관회계보고',
+                legacy: `${LEGACY}/Board/Index/44544`,
+              },
+              {
+                label: '신청 · 서식',
+                href: '/church-admin/apply',
+                desc: '영상제작 · 3대 후원회원 작정 · 평생교육원 수강',
+                legacy: `${LEGACY}/Link/Index/76`,
+              },
+              {
+                label: '시설 예약',
+                href: '/church-admin/reserve',
+                desc: '교회 시설 이용 신청',
+                legacy: `${LEGACY}/Board/Index/25484`,
+              },
+            ],
+          },
         ],
       },
     ],
@@ -178,38 +228,18 @@ export const NAV: NavSection[] = [
         ],
       },
       {
+        // PPT 슬라이드 7 = 교회일정 / 주보 / 교회소식(영상뉴스·교회소식·교우소식) / 교단소식 / 경향의일주일.
+        // `교회소식`은 원안대로 하위 3종을 거느린 한 줄이다 — 펼쳐서 나열하지 않는다.
         label: '소식 · 자료',
         items: [
           { label: '주보', href: '/activity/bulletin', legacy: `${LEGACY}/Board/Index/53` },
           {
-            label: '영상뉴스',
-            href: '/activity/video-news',
-            desc: '경향뉴스 · 홍보영상 · 교구친선리그',
-            legacy: `${LEGACY}/Board/Index/5985`,
+            label: '교회소식',
+            href: '/activity/news',
+            desc: '영상뉴스 · 교회소식 · 교우소식 · 교구친선리그',
+            legacy: `${LEGACY}/Board/Index/54`,
           },
-          { label: '교회소식', href: '/activity/news', legacy: `${LEGACY}/Board/Index/54` },
-          { label: '교우소식', href: '/activity/members', legacy: `${LEGACY}/Board/Index/113347` },
           { label: '교단소식', href: '/activity/denomination', legacy: `${LEGACY}/Board/Index/21646` },
-        ],
-      },
-      {
-        // 현행 대메뉴 `e교회행정` 해체분 (2026-08-23)
-        label: '행정 · 신청',
-        items: [
-          { label: '공지사항', href: '/activity/notice', legacy: `${LEGACY}/Board/Index/12` },
-          {
-            label: '자료실',
-            href: '/activity/resources',
-            desc: '자료실 · 로고 · 별들의 노래 · 기관회계보고',
-            legacy: `${LEGACY}/Board/Index/44544`,
-          },
-          {
-            label: '신청 · 서식',
-            href: '/activity/apply',
-            desc: '영상제작 · 3대 후원회원 작정 · 평생교육원 수강',
-            legacy: `${LEGACY}/Link/Index/76`,
-          },
-          { label: '시설 예약', href: '/reserve', legacy: `${LEGACY}/Board/Index/25484` },
         ],
       },
     ],
@@ -226,8 +256,9 @@ export const NAV: NavSection[] = [
         items: [
           { label: '처음 오셨나요?', href: '/newcomer#welcome' },
           { label: '처음 오신 날 안내', href: '/newcomer#firstday' },
-          { label: '오시는 길 · 주차', href: '/newcomer#directions' },
-          { label: '예배당 가는 길', href: '/newcomer#wayfind' },
+          // 교회소개의 `오시는 길 · 주차`와 라벨이 겹쳐 하나로 합쳤다.
+          // 새가족 쪽은 "주차하고 자리에 앉기까지"가 한 흐름이라 실내 길찾기까지 여기서 끝낸다 (D-1).
+          { label: '오시는 길 · 예배당 찾아가기', href: '/newcomer#directions' },
           { label: '픽업 차량', href: '/newcomer#pickup' },
         ],
       },
@@ -258,8 +289,12 @@ export function findByHref(href: string):
   | undefined {
   for (const section of NAV) {
     for (const group of section.groups) {
-      const item = group.items.find((i) => i.href === href);
-      if (item) return { section, group, item };
+      for (const item of group.items) {
+        if (item.href === href) return { section, group, item };
+        // 페이지 안에서만 보이는 하위 항목도 breadcrumb을 가질 수 있어야 한다
+        const child = item.children?.find((c) => c.href === href);
+        if (child) return { section, group, item: child };
+      }
     }
   }
   return undefined;

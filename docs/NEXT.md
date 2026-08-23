@@ -67,8 +67,8 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 |---|---|---|
 | **로고 SVG 3종 · 히어로 영상 2종** | 디자인팀 (Phase 1, 가이드 발송함) | `logo.png`/`logo_black.png` 교체 · `HeroVideo` 실제 영상 연결 |
 | **비주얼 자산 공유 폴더 위치** | 디자인팀 회신 | 가이드 §공통 전달 규칙에 채워 재발송 |
-| **예약시스템 ②겹침 A/B · ③신청규칙** | 시설 담당자 회의 | `context/features/reservation.md`의 DECISION NEEDED 확정 → `/reserve`에 달력 UI 얹기. 지금은 현행과 같은 신청 폼 |
-| **`rooms` 장소 목록** | 시설 담당자 회의 | `/reserve`의 `place`를 자유 입력 text → select로 교체 (`lib/schemas/reservation.ts`만 수정) |
+| **예약시스템 ②겹침 A/B · ③신청규칙** | 시설 담당자 회의 | `context/features/reservation.md`의 DECISION NEEDED 확정 → `/church-admin/reserve`에 달력 UI 얹기. 지금은 현행과 같은 신청 폼 |
+| **`rooms` 장소 목록** | 시설 담당자 회의 | `/church-admin/reserve`의 `place`를 자유 입력 text → select로 교체 (`lib/schemas/reservation.ts`만 수정) |
 | **사실 확인 3건** — 청년회 소속 · 구역공과 게시 여부 · 키즈그라운드 폼 통합 | 카톡 회신 | 기본값은 이미 적용됨. 답 오면 `lib/nav.ts`의 `OPEN_QUESTIONS` 해당 항목만 수정 |
 | **개인정보 보호책임자 · 보유기간 · 위탁 고지** | 교회 | `/privacy` 초안의 "아직 확정되지 않은 항목" 3건. **확정 전 최종본 공표 금지** |
 | **화면정의서** (새가족 폼 필드) | 교회 | `lib/schemas/newcomer.ts`만 수정하면 됨. 단 폼 자체는 1차 오픈 범위 밖 |

@@ -4,5 +4,10 @@ import { StubPage } from '@/components/layout/stub-page';
 export const metadata: Metadata = { title: '교회소식' };
 
 export default function Page() {
-  return <StubPage route="/activity/news" />;
+  return (
+    <StubPage
+      route="/activity/news"
+      tabs={['영상뉴스', '교회소식', '교우소식', '교구친선리그']}
+    />
+  );
 }

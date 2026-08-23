@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: '시설 예약' };
  */
 export default function ReservePage() {
   return (
-    <StubPage route="/reserve" lead="교회 시설 이용을 신청합니다.">
+    <StubPage route="/church-admin/reserve" lead="교회 시설 이용을 신청합니다.">
       <section className="border-b border-brand-line py-16 md:py-20">
         <Container>
           <ApplyForm id={RESERVATION_FORM.id} />

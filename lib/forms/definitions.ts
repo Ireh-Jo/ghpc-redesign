@@ -267,7 +267,7 @@ export const RESERVATION_FORM: FormDef = {
   ],
 };
 
-/** `/activity/apply` 한 페이지에 앵커로 함께 놓이는 신청서들 */
+/** `/church-admin/apply` 한 페이지에 앵커로 함께 놓이는 신청서들 */
 export const APPLY_FORMS: FormDef[] = [VIDEO_REQUEST_FORM, SPONSOR_PLEDGE_FORM, LIFELONG_EDU_FORM];
 
 /**

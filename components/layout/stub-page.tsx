@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import { Container } from './container';
 import { AnchorNav } from './anchor-nav';
 import { NAV, findByHref, type NavItem } from '@/lib/nav';
@@ -99,6 +99,34 @@ export function StubPage({
 
       {children}
 
+      {/* GNB엔 한 줄로만 뜨는 항목의 하위 — 이 페이지가 그 갈림길 역할을 한다 */}
+      {found?.item.children && found.item.children.length > 0 && (
+        <section className="border-b border-brand-line py-16 md:py-20">
+          <Container>
+            <ul className="grid gap-px bg-brand-line sm:grid-cols-2">
+              {found.item.children.map((child) => (
+                <li key={child.href}>
+                  <Link
+                    href={child.href}
+                    className="group flex h-full flex-col justify-between gap-6 bg-brand-surface p-6 transition-colors hover:bg-brand-bg md:p-8"
+                  >
+                    <span>
+                      <span className="block text-[19px] font-bold text-brand-ink">{child.label}</span>
+                      {child.desc && (
+                        <span className="mt-2 block text-[13px] leading-relaxed text-brand-ink-muted">
+                          {child.desc}
+                        </span>
+                      )}
+                    </span>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-brand-ink-muted transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </section>
+      )}
+
       {anchors.length > 0
         ? anchors.map(({ id, label, item }) => (
             <section
@@ -125,7 +153,7 @@ export function StubPage({
               </Container>
             </section>
           ))
-        : !children && (
+        : !children && !found?.item.children && (
             <section className="border-b border-brand-line py-16 md:py-20">
               <Container>
                 <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">

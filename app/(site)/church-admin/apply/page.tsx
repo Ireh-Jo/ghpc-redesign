@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: '신청 · 서식' };
 export default function ApplyPage() {
   return (
     <StubPage
-      route="/activity/apply"
+      route="/church-admin/apply"
       lead="교회 기관·부서에서 사용하는 신청서입니다. 시설 이용은 별도 페이지에서 신청해주세요."
     >
       <AnchorNav items={APPLY_FORMS.map((f) => ({ id: f.anchor, label: f.title }))} />

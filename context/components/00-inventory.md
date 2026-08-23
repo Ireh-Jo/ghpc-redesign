@@ -94,7 +94,7 @@
 | Calendar | draft | `/activity` | `interactive/calendar.md` |
 | LiveBadge | draft | Header GNB (생방송 상태) | `interactive/live-badge.md` |
 | NewcomerForm | wip | `/newcomer`, `/care` | `interactive/newcomer-form.md` — UI·검증 완료, Supabase INSERT 스텁 (프로젝트 미생성) |
-| ApplyForm | shipped | `/activity/apply`(영상제작·후원작정·평생교육원) · `/reserve`(시설이용) | `interactive/apply-form.md` — 폼 정의 기반 공통 렌더러. 현행 사이트 필드 그대로 (2026-08-23) |
+| ApplyForm | shipped | `/church-admin/apply`(영상제작·후원작정·평생교육원) · `/church-admin/reserve`(시설이용) | `interactive/apply-form.md` — 폼 정의 기반 공통 렌더러. 현행 사이트 필드 그대로 (2026-08-23) |
 | ~~SeniorSchoolForm~~ | 폐기 | — | `ApplyForm` + 폼 정의로 흡수. 시니어스쿨 신청은 현행 사이트에 폼이 없어 정의만 추가하면 됨 |
 | ~~LifelongEduForm~~ | 폐기 | — | `ApplyForm`의 `lifelong_edu` 정의로 대체 |
 | NewsTabs | draft | `/activity` 영상뉴스/소식/교우/교단 탭 | `interactive/news-tabs.md` |
