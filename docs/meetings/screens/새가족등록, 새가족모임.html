@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경향교회 — 새가족 안내</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@300;400;600;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+  --black:#0A0A0A;
+  --white:#F8F7F4;
+  --gray-50:#FAFAF8;
+  --gray-100:#F0EEE9;
+  --gray-200:#D8D5CE;
+  --gray-400:#9E9B94;
+  --gray-600:#5A574F;
+  --accent:#C8A96E;
+  --accent-dark:#9E7B3E;
+  --accent-light:#E8D5A8;
+  --navy:#1A2333;
+  --navy-light:#243044;
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;transition:all .4s ease}
+nav.scrolled{background:rgba(10,10,10,.93);backdrop-filter:blur(14px);padding:.9rem 2rem}
+.nav-logo{font-family:'Noto Serif KR',serif;font-weight:900;font-size:1.05rem;color:var(--white);letter-spacing:.08em;text-decoration:none}
+.nav-logo span{color:var(--accent)}
+
+/* ── QUICK MENU ── */
+.qm-btn{position:fixed;left:1.5rem;bottom:1.75rem;z-index:200;width:52px;height:52px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 4px 20px rgba(200,169,110,.4);transition:transform .2s,background .2s}
+.qm-btn:hover{transform:scale(1.08)}
+.qm-btn.open{background:var(--black)}
+.qm-bar{display:block;width:18px;height:2px;background:var(--black);border-radius:2px;transition:all .3s}
+.qm-btn.open .qm-bar{background:var(--accent)}
+.qm-btn.open .qm-bar:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.qm-btn.open .qm-bar:nth-child(2){opacity:0;transform:scaleX(0)}
+.qm-btn.open .qm-bar:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.qm-panel{position:fixed;left:1.5rem;bottom:6rem;z-index:199;background:var(--black);border:1px solid rgba(200,169,110,.22);padding:.6rem 0;min-width:190px;transform:scale(.85) translateY(12px);transform-origin:bottom left;opacity:0;pointer-events:none;transition:transform .3s cubic-bezier(.34,1.5,.64,1),opacity .25s ease;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.qm-panel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+.qm-item{display:flex;align-items:center;gap:.7rem;padding:.6rem 1.2rem;font-size:.8rem;letter-spacing:.04em;color:rgba(248,247,244,.65);text-decoration:none;transition:all .15s;border:none;background:none;width:100%;text-align:left;cursor:pointer}
+.qm-item:hover{color:var(--accent);background:rgba(200,169,110,.07)}
+.qm-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;opacity:.5}
+.qm-item:hover .qm-dot{opacity:1}
+
+/* ── REVEAL ANIMATIONS ── */
+.rv{opacity:0;transform:scale(.88) translateY(30px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:scale(1) translateY(0)}
+.rv-pop{opacity:0;transform:scale(.76) translateY(18px);transition:opacity .5s cubic-bezier(.34,1.56,.64,1),transform .5s cubic-bezier(.34,1.56,.64,1)}
+.rv-pop.in{opacity:1;transform:scale(1) translateY(0)}
+.rv-card{opacity:0;transform:scale(.82) translateY(26px);transition:opacity .5s cubic-bezier(.34,1.45,.64,1),transform .5s cubic-bezier(.34,1.45,.64,1)}
+.rv-card.in{opacity:1;transform:scale(1) translateY(0)}
+.rv-tag{opacity:0;transform:scale(.6);transition:opacity .38s cubic-bezier(.34,1.7,.64,1),transform .38s cubic-bezier(.34,1.7,.64,1)}
+.rv-tag.in{opacity:1;transform:scale(1)}
+.d0{transition-delay:0s}.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}.d5{transition-delay:.35s}
+
+/* ── SHARED ── */
+.tag{display:inline-block;font-size:.65rem;letter-spacing:.4em;text-transform:uppercase;padding:.35rem 1rem;border:1px solid currentColor;margin-bottom:1.2rem}
+.tag-gold{color:var(--accent);border-color:rgba(200,169,110,.4)}
+.tag-dark{color:var(--gray-400);border-color:var(--gray-200)}
+.section-h2-light{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,3vw,2.5rem);font-weight:600;color:var(--white);line-height:1.35}
+.section-h2-dark{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,3vw,2.5rem);font-weight:600;color:var(--black);line-height:1.35}
+.section-h2-navy{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,3vw,2.5rem);font-weight:600;color:var(--white);line-height:1.35}
+
+/* ══ 1. HERO ══ */
+.hero{min-height:100vh;background:var(--black);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none}
+.hero-top-line{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.hero-content{position:relative;z-index:1;text-align:center;padding:2rem 1.5rem;max-width:820px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.75rem;font-size:.7rem;letter-spacing:.45em;color:var(--accent);text-transform:uppercase;margin-bottom:2.5rem;animation:fadeUp .8s .2s both}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:28px;height:1px;background:var(--accent);opacity:.6}
+.hero-title{font-family:'Noto Serif KR',serif;font-size:clamp(1.7rem,4vw,3.2rem);font-weight:600;color:var(--white);line-height:1.55;letter-spacing:-.01em;margin-bottom:1.25rem;animation:fadeUp .8s .4s both}
+.hero-title em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:.9rem;color:rgba(248,247,244,.5);font-weight:300;line-height:2;margin-bottom:3rem;animation:fadeUp .8s .6s both}
+.hero-cta{display:inline-flex;align-items:center;gap:.7rem;padding:.85rem 2.2rem;background:var(--accent);color:var(--black);font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s;animation:fadeUp .8s .8s both}
+.hero-cta:hover{background:var(--accent-light);transform:translateY(-2px)}
+.hero-cta svg{transition:transform .2s}
+.hero-cta:hover svg{transform:translateX(4px)}
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:rgba(248,247,244,.3);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;animation:float 2.2s ease-in-out infinite}
+.hero-scroll-bar{width:1px;height:44px;background:linear-gradient(to bottom,var(--accent),transparent)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* ══ 2. PHOTO STRIP ══ */
+.strip-section{background:var(--black);padding:4.5rem 0 5rem}
+.strip-header{text-align:center;margin-bottom:2.5rem;padding:0 1.5rem}
+.strip-outer{overflow:hidden;cursor:grab;padding:0 2rem}
+.strip-outer.dragging{cursor:grabbing}
+.strip-track{display:flex;gap:10px;user-select:none;-webkit-user-select:none}
+.strip-item{flex-shrink:0;width:clamp(220px,35vw,400px);aspect-ratio:4/3;background:var(--gray-600);border:1px solid rgba(200,169,110,.12);position:relative;overflow:hidden;transition:transform .2s}
+.strip-item:hover{transform:scale(1.018)}
+.strip-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.6) 0%,transparent 55%);pointer-events:none}
+.strip-item img{width:100%;height:100%;object-fit:cover;display:block}
+.strip-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;color:rgba(248,247,244,.18)}
+.strip-ph-icon{font-size:1.8rem}
+.strip-ph-text{font-size:.68rem;letter-spacing:.12em}
+.strip-lbl{position:absolute;bottom:.9rem;left:1.1rem;z-index:1;font-size:.68rem;letter-spacing:.14em;color:rgba(248,247,244,.75);text-transform:uppercase}
+.strip-hint{text-align:center;margin-top:1.5rem;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,169,110,.35);display:flex;align-items:center;justify-content:center;gap:.5rem}
+.strip-hint-arr{animation:nudge 1.9s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+/* ══ 3. 나의 공동체 찾기 ══ */
+.community-section{background:var(--gray-50);padding:7rem 1.5rem}
+.community-inner{max-width:920px;margin:0 auto}
+.community-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:2.5rem 0}
+.ctab{padding:.6rem 1.4rem;background:transparent;border:1.5px solid var(--gray-200);color:var(--gray-600);font-size:.82rem;letter-spacing:.06em;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif;font-weight:500}
+.ctab:hover{border-color:var(--accent);color:var(--accent-dark)}
+.ctab.active{background:var(--black);border-color:var(--black);color:var(--white)}
+.cpanel{display:none;animation:panelIn .4s cubic-bezier(.34,1.3,.64,1) both}
+.cpanel.show{display:block}
+@keyframes panelIn{from{opacity:0;transform:scale(.94) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.cpanel-inner{background:var(--white);border:1px solid var(--gray-200);padding:2.25rem 2.5rem}
+.cpanel-badge{display:inline-block;background:var(--black);color:var(--white);font-size:.75rem;font-weight:700;letter-spacing:.1em;padding:.4rem 1rem;margin-bottom:.5rem}
+.cpanel-tagline{font-size:.88rem;color:var(--accent-dark);font-weight:500;margin-bottom:1.5rem;line-height:1.6}
+.cpanel-desc{font-size:.88rem;color:var(--gray-600);line-height:1.95;margin-bottom:1.5rem}
+
+/* schedule grid inside panels */
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--gray-200);margin-bottom:1.25rem}
+.sched-cell{background:var(--white);padding:1.25rem 1.5rem}
+.sched-time{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-dark);font-weight:700;margin-bottom:.4rem}
+.sched-name{font-weight:700;font-size:.92rem;color:var(--black);margin-bottom:.3rem}
+.sched-place{font-size:.8rem;color:var(--gray-600)}
+
+/* age tag */
+.age-tag{display:inline-block;font-size:.72rem;background:var(--gray-100);color:var(--gray-600);padding:.25rem .75rem;margin-bottom:.75rem}
+
+/* district map */
+.district-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.district-card{padding:1rem 1.25rem;background:var(--gray-100);border-left:3px solid var(--accent)}
+.district-name{font-weight:700;font-size:.88rem;color:var(--black);margin-bottom:.25rem}
+.district-area{font-size:.78rem;color:var(--gray-600);line-height:1.7}
+
+/* youth group schedule table */
+.youth-sched{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:.84rem}
+.youth-sched th{background:var(--black);color:var(--white);padding:.6rem 1rem;text-align:left;font-weight:600;letter-spacing:.05em;font-size:.75rem}
+.youth-sched td{padding:.65rem 1rem;border-bottom:1px solid var(--gray-200);color:var(--gray-600);vertical-align:top}
+.youth-sched tr:hover td{background:var(--gray-50)}
+
+/* youth chart (편성표) */
+.chart-wrap{overflow-x:auto;margin-bottom:1rem}
+.chart-table{width:100%;min-width:480px;border-collapse:collapse;font-size:.8rem}
+.chart-table th{background:var(--navy);color:var(--white);padding:.55rem .85rem;text-align:center;font-size:.72rem;letter-spacing:.04em}
+.chart-table td{padding:.55rem .85rem;border:1px solid var(--gray-200);text-align:center;color:var(--gray-600)}
+.chart-table tr:nth-child(even) td{background:var(--gray-50)}
+
+.cpanel-contact{font-size:.8rem;color:var(--gray-400);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-100)}
+.cpanel-contact strong{color:var(--accent-dark)}
+
+/* ══ 4. 처음 오신 날 ══ */
+.first-section{background:var(--navy);padding:7rem 1.5rem}
+.first-inner{max-width:920px;margin:0 auto}
+.first-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1.25rem;margin-top:2.5rem}
+.first-step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:1.75rem 1.5rem;position:relative;transition:all .25s}
+.first-step:hover{background:rgba(255,255,255,.08);transform:translateY(-4px)}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(200,169,110,.2);line-height:1;margin-bottom:.75rem}
+.step-img{width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:.9rem;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center}
+.step-img-ph{width:100%;aspect-ratio:1;background:rgba(255,255,255,.05);border:1px solid rgba(200,169,110,.1);display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:.9rem;color:rgba(200,169,110,.35)}
+.step-name{font-weight:700;font-size:.92rem;color:var(--white);margin-bottom:.4rem}
+.step-desc{font-size:.78rem;color:rgba(248,247,244,.5);line-height:1.75}
+
+/* ══ 5. 오시는 길 ══ */
+.directions-section{background:var(--white);padding:7rem 1.5rem}
+.directions-inner{max-width:920px;margin:0 auto}
+.map-box{width:100%;height:380px;background:var(--gray-100);border:1px solid var(--gray-200);overflow:hidden;margin:2.5rem 0;position:relative}
+.map-box iframe{width:100%;height:100%;border:none;display:block}
+.map-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--gray-400)}
+.map-ph a{color:var(--accent-dark);font-size:.83rem;text-decoration:none;border-bottom:1px solid var(--accent-dark)}
+.addr-row{display:flex;align-items:center;gap:.75rem;font-size:.88rem;color:var(--gray-600);margin-bottom:.5rem}
+.addr-ico{color:var(--accent-dark);font-size:1rem;flex-shrink:0}
+.transport-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--gray-200);border:1px solid var(--gray-200);margin-top:2rem}
+.tr-item{background:var(--white);padding:1.6rem 1.75rem}
+.tr-label{display:flex;align-items:center;gap:.45rem;font-size:.67rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent-dark);font-weight:700;margin-bottom:.7rem}
+.tr-content{font-size:.85rem;color:var(--gray-600);line-height:1.9}
+
+/* ══ 6. 픽업 차량 ══ */
+.shuttle-section{background:var(--black);padding:6rem 1.5rem;position:relative;overflow:hidden}
+.shuttle-bg-txt{position:absolute;right:-120px;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:20rem;color:rgba(200,169,110,.04);line-height:1;pointer-events:none;white-space:nowrap}
+.shuttle-inner{max-width:920px;margin:0 auto;position:relative;z-index:1}
+.route-chips{display:flex;flex-wrap:wrap;gap:.55rem;margin:1.75rem 0 2.25rem}
+.route-chip{padding:.42rem 1.05rem;background:transparent;border:1px solid rgba(200,169,110,.28);color:rgba(248,247,244,.6);font-size:.8rem;letter-spacing:.05em;transition:all .2s;cursor:default}
+.route-chip:hover{background:rgba(200,169,110,.1);border-color:var(--accent);color:var(--accent-light)}
+.shuttle-notice{padding:1.6rem 2rem;background:rgba(200,169,110,.06);border:1px solid rgba(200,169,110,.2);font-size:.85rem;color:rgba(248,247,244,.55);line-height:2}
+.shuttle-notice strong{color:var(--accent-light)}
+
+/* ══ 7. 새가족 모임 4주 과정 ══ */
+.meeting-section{background:var(--gray-50);padding:7rem 1.5rem}
+.meeting-inner{max-width:920px;margin:0 auto}
+.meeting-meta{font-size:.88rem;color:var(--gray-600);margin:1rem 0 2.5rem;line-height:1.9}
+.meeting-meta strong{color:var(--accent-dark)}
+.weeks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1.25rem}
+.week-card{background:var(--white);border:1px solid var(--gray-200);padding:2rem 1.6rem;transition:all .25s;position:relative;overflow:hidden}
+.week-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.week-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.08)}
+.week-card:hover::before{transform:scaleX(1)}
+.week-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(200,169,110,.25);line-height:1;margin-bottom:.6rem}
+.week-img{width:100%;aspect-ratio:4/3;object-fit:cover;margin-bottom:.9rem;background:var(--gray-100);display:block}
+.week-img-ph{width:100%;aspect-ratio:4/3;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:.9rem;color:var(--gray-400)}
+.week-name{font-weight:700;font-size:.92rem;color:var(--black);margin-bottom:.35rem}
+.week-desc{font-size:.8rem;color:var(--gray-600);line-height:1.75}
+
+/* ══ 8. 함께 소통해요 ══ */
+.connect-section{background:var(--black);padding:7rem 1.5rem}
+.connect-inner{max-width:920px;margin:0 auto}
+.connect-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1.25rem;margin-top:2.5rem}
+.cc-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:2.25rem 1.75rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.7rem;text-decoration:none;color:var(--white);transition:all .25s;position:relative;overflow:hidden}
+.cc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.cc-card:hover{background:rgba(255,255,255,.08);transform:translateY(-4px)}
+.cc-card:hover::after{transform:scaleX(1)}
+.cc-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:.2rem}
+.cc-name{font-weight:700;font-size:.92rem;letter-spacing:.04em}
+.cc-desc{font-size:.75rem;color:rgba(248,247,244,.45);line-height:1.6}
+
+/* ── INDOOR GUIDE ── */
+.indoor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem;margin-top:2rem}
+.indoor-card{background:var(--white);border:1px solid var(--gray-200);padding:1.5rem 1.5rem 1.25rem;transition:all .22s;position:relative;overflow:hidden}
+.indoor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.indoor-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.07)}
+.indoor-card:hover::before{transform:scaleX(1)}
+.indoor-badge{display:inline-block;font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;background:var(--gray-100);color:var(--gray-600);padding:.25rem .65rem;margin-bottom:.6rem;font-weight:600}
+.indoor-title{font-weight:700;font-size:.95rem;color:var(--black);margin-bottom:.35rem}
+.indoor-desc{font-size:.8rem;color:var(--gray-600);line-height:1.75;margin-bottom:.75rem}
+.indoor-floor{font-size:.73rem;color:var(--accent-dark);font-weight:600;letter-spacing:.03em}
+
+/* ── GRADUATES ── */
+.grad-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem}
+.grad-add-btn{padding:.5rem 1.1rem;background:var(--black);color:var(--white);border:none;font-size:.78rem;font-weight:600;letter-spacing:.06em;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .2s}
+.grad-add-btn:hover{background:var(--accent-dark)}
+.grad-form{display:none;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;padding:1rem 1.25rem;background:var(--white);border:1px solid var(--gray-200)}
+.grad-form.open{display:flex}
+.grad-input{padding:.5rem .85rem;border:1px solid var(--gray-200);font-size:.83rem;font-family:'Noto Sans KR',sans-serif;color:var(--black);background:var(--gray-50);outline:none;transition:border .2s}
+.grad-input:focus{border-color:var(--accent)}
+#gradDate{min-width:140px}
+#gradName{min-width:120px;flex:1}
+.grad-save-btn{padding:.5rem 1rem;background:var(--accent);color:var(--black);border:none;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .2s}
+.grad-save-btn:hover{background:var(--accent-light)}
+.grad-cancel-btn{padding:.5rem .85rem;background:transparent;color:var(--gray-600);border:1px solid var(--gray-200);font-size:.78rem;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s}
+.grad-cancel-btn:hover{border-color:var(--gray-400);color:var(--black)}
+.grad-list{background:var(--white);border:1px solid var(--gray-200)}
+.grad-empty{padding:2rem;text-align:center;font-size:.83rem;color:var(--gray-400);letter-spacing:.04em}
+.grad-row{display:flex;align-items:center;padding:.75rem 1.25rem;border-bottom:1px solid var(--gray-100);gap:1.25rem;transition:background .15s}
+.grad-row:last-child{border-bottom:none}
+.grad-row:hover{background:var(--gray-50)}
+.grad-date{font-size:.78rem;color:var(--accent-dark);font-weight:600;letter-spacing:.05em;min-width:90px;flex-shrink:0}
+.grad-name{font-size:.9rem;font-weight:500;color:var(--black);flex:1}
+.grad-del{background:none;border:none;color:var(--gray-400);font-size:.78rem;cursor:pointer;padding:.2rem .5rem;transition:color .15s;flex-shrink:0}
+.grad-del:hover{color:#c0392b}
+
+/* ── FOOTER ── */
+footer{background:var(--black);padding:3rem 2rem;text-align:center;border-top:1px solid rgba(200,169,110,.18)}
+.ft-logo{font-family:'Noto Serif KR',serif;font-weight:900;font-size:1.05rem;color:var(--white);letter-spacing:.1em;margin-bottom:.6rem}
+.ft-logo span{color:var(--accent)}
+.ft-addr{font-size:.73rem;color:rgba(248,247,244,.28);letter-spacing:.05em;line-height:2}
+
+/* ── MOBILE ── */
+@media(max-width:600px){
+  .first-steps{grid-template-columns:repeat(2,1fr)}
+  .weeks-grid{grid-template-columns:repeat(2,1fr)}
+  .cpanel-inner{padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="nav-logo" href="#top">경향<span>교회</span></a>
+</nav>
+
+<!-- QUICK MENU -->
+<button class="qm-btn" id="qmBtn" aria-label="빠른 이동">
+  <span class="qm-bar"></span><span class="qm-bar"></span><span class="qm-bar"></span>
+</button>
+<div class="qm-panel" id="qmPanel">
+  <a class="qm-item" href="#top"><span class="qm-dot"></span>새가족 환영</a>
+  <a class="qm-item" href="#strip"><span class="qm-dot"></span>교회 사진</a>
+  <a class="qm-item" href="#community"><span class="qm-dot"></span>나의 공동체 찾기</a>
+  <a class="qm-item" href="#first-day"><span class="qm-dot"></span>처음 오신 날</a>
+  <a class="qm-item" href="#directions"><span class="qm-dot"></span>오시는 길</a>
+  <a class="qm-item" href="#indoor"><span class="qm-dot"></span>예배당 가는 길</a>
+  <a class="qm-item" href="#shuttle"><span class="qm-dot"></span>픽업 차량</a>
+  <a class="qm-item" href="#connect"><span class="qm-dot"></span>함께 소통해요</a>
+  <a class="qm-item" href="#meeting"><span class="qm-dot"></span>새가족 모임</a>
+</div>
+
+<!-- ══ 1. HERO ══ -->
+<section class="hero" id="top">
+  <div class="hero-noise"></div>
+  <div class="hero-top-line"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">새가족 등록 안내</div>
+    <h1 class="hero-title">
+      바른 신앙, 따뜻한 사랑이 있는<br>
+      경향교회에 오신 것을<br>
+      <em>환영합니다</em>
+    </h1>
+    <p class="hero-sub">
+      경향교회로의 첫 발걸음을 환영합니다.<br>
+      여러분을 예수님의 사랑으로 기쁘게 맞이합니다.
+    </p>
+
+  </div>
+  <div class="hero-scroll"><div class="hero-scroll-bar"></div>Scroll</div>
+</section>
+
+<!-- ══ 2. PHOTO STRIP ══ -->
+<section class="strip-section" id="strip">
+  <div class="strip-header">
+    <div class="tag tag-gold rv-tag d0">Gallery</div>
+    <h2 class="section-h2-light rv-pop d1">교회 사진</h2>
+  </div>
+  <div class="strip-outer rv d2" id="stripOuter">
+    <div class="strip-track" id="stripTrack">
+      <div class="strip-item"><div class="strip-ph"><div class="strip-ph-icon">⛪</div><div class="strip-ph-text">교회 전경</div></div><div class="strip-lbl">경향교회 전경</div></div>
+      <div class="strip-item"><div class="strip-ph"><div class="strip-ph-icon">🙏</div><div class="strip-ph-text">주일 예배</div></div><div class="strip-lbl">주일 예배</div></div>
+      <div class="strip-item"><div class="strip-ph"><div class="strip-ph-icon">🎓</div><div class="strip-ph-text">새가족 수료식</div></div><div class="strip-lbl">새가족 수료식</div></div>
+      <div class="strip-item"><div class="strip-ph"><div class="strip-ph-icon">❤️</div><div class="strip-ph-text">교회 공동체</div></div><div class="strip-lbl">교회 공동체</div></div>
+      <div class="strip-item"><div class="strip-ph"><div class="strip-ph-icon">🌿</div><div class="strip-ph-text">소그룹 모임</div></div><div class="strip-lbl">소그룹 모임</div></div>
+      <div class="strip-item"><div class="strip-ph"><div class="strip-ph-icon">🎵</div><div class="strip-ph-text">찬양 사역</div></div><div class="strip-lbl">찬양 사역</div></div>
+      <div class="strip-item"><div class="strip-ph"><div class="strip-ph-icon">📖</div><div class="strip-ph-text">새가족 모임</div></div><div class="strip-lbl">새가족 모임</div></div>
+    </div>
+  </div>
+  <div class="strip-hint rv d3"><span class="strip-hint-arr">←</span> 드래그하여 둘러보세요 <span class="strip-hint-arr" style="animation-delay:.3s">→</span></div>
+</section>
+
+<!-- ══ 3. 나의 공동체 찾기 ══ -->
+<section class="community-section" id="community">
+  <div class="community-inner">
+    <div>
+      <div class="tag tag-dark rv-tag d0">My Community</div>
+      <h2 class="section-h2-dark rv-pop d1">경향의 아름다운 공동체들을 소개합니다</h2>
+      <p class="rv d2" style="font-size:.88rem;color:var(--gray-600);margin-top:.6rem;line-height:1.9">나의 공동체를 찾아보세요. 아래 탭을 눌러 각 부서 안내를 확인할 수 있습니다.</p>
+    </div>
+    <div class="community-tabs rv d2">
+      <button class="ctab active" data-target="pan-adult">장년</button>
+      <button class="ctab" data-target="pan-kids">주일학교</button>
+      <button class="ctab" data-target="pan-youth">중·고등부</button>
+      <button class="ctab" data-target="pan-college">대학부</button>
+      <button class="ctab" data-target="pan-young">청년회</button>
+    </div>
+
+    <!-- 장년 -->
+    <div class="cpanel show" id="pan-adult">
+      <div class="cpanel-inner">
+        <div class="cpanel-badge">장년</div>
+        <div class="cpanel-tagline">기혼 교인으로 이루어진 공동체입니다.</div>
+        <div class="cpanel-desc">등록 후 거주 지역에 따라 교구에 편성됩니다. 각 교구는 구역 모임을 통해 말씀과 기도, 삶을 나누며 함께 성장합니다.</div>
+        <div style="font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-dark);font-weight:700;margin-bottom:.75rem">교구 안내 — 거주 지역 기준</div>
+        <div class="district-grid">
+          <div class="district-card">
+            <div class="district-name">등촌 교구</div>
+            <div class="district-area">등촌 지역</div>
+          </div>
+          <div class="district-card">
+            <div class="district-name">동서울·남서울·여의도·영등포 교구</div>
+            <div class="district-area">동서울, 남서울, 여의도, 영등포 지역</div>
+          </div>
+          <div class="district-card">
+            <div class="district-name">화곡 교구</div>
+            <div class="district-area">화곡 지역</div>
+          </div>
+          <div class="district-card">
+            <div class="district-name">북서울 교구</div>
+            <div class="district-area">북서울 지역</div>
+          </div>
+          <div class="district-card">
+            <div class="district-name">가양 교구</div>
+            <div class="district-area">가양 지역</div>
+          </div>
+          <div class="district-card">
+            <div class="district-name">염창·양천 교구</div>
+            <div class="district-area">염창, 양천 지역</div>
+          </div>
+          <div class="district-card">
+            <div class="district-name">발산·방화·마곡 교구</div>
+            <div class="district-area">발산, 방화, 마곡 지역</div>
+          </div>
+          <div class="district-card">
+            <div class="district-name">서서울·김포 교구</div>
+            <div class="district-area">서서울, 김포 지역</div>
+          </div>
+        </div>
+        <div class="cpanel-contact"><strong>문의</strong> &nbsp;02-3663-0333</div>
+      </div>
+    </div>
+
+    <!-- 주일학교 -->
+    <div class="cpanel" id="pan-kids">
+      <div class="cpanel-inner">
+        <div class="cpanel-badge">주일학교</div>
+        <div class="age-tag">0세 ~ 13세(초등학교 6학년)</div>
+        <div class="cpanel-tagline">어린이가 하나님을 만나는 예배 공동체입니다.</div>
+        <div class="cpanel-desc">경향교회 주일학교는 영아부터 초등학교 6학년까지 각 연령에 맞는 예배를 드립니다. 아이들이 신앙의 첫 발걸음을 내딛는 소중한 공간입니다.</div>
+        <div class="sched-grid">
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">영아부</div>
+            <div class="sched-place">0–3세</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">유아부</div>
+            <div class="sched-place">4–5세</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">유치1부</div>
+            <div class="sched-place">6–7세</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">초등1부</div>
+            <div class="sched-place">초등 1–2학년 · 4교육실</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">초등2부</div>
+            <div class="sched-place">초등 3–4학년 · 8교육실</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">초등3부</div>
+            <div class="sched-place">초등 5–6학년 · 3교육실</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">11시 예배</div>
+            <div class="sched-name">유치2부</div>
+            <div class="sched-place">미취학 전 연령</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">11시 예배</div>
+            <div class="sched-name">초등4부</div>
+            <div class="sched-place">초등학교 전 학년</div>
+          </div>
+        </div>
+        <div class="cpanel-contact"><strong>문의</strong> &nbsp;교육국 02-3663-0333 (내선 000)</div>
+      </div>
+    </div>
+
+    <!-- 중고등부 -->
+    <div class="cpanel" id="pan-youth">
+      <div class="cpanel-inner">
+        <div class="cpanel-badge">중·고등부</div>
+        <div class="age-tag">중학생 ~ 고등학생</div>
+        <div class="cpanel-tagline">친구들과 함께 예배하고, 진정한 교제를 나누며 성장하는 공동체입니다.</div>
+        <div class="cpanel-desc">중·고등부는 예배와 모임을 통해 믿음의 뿌리를 내리고, 소중한 관계 안에서 청소년기를 신앙으로 빛내갑니다.</div>
+        <div class="sched-grid">
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">중등부</div>
+            <div class="sched-place">중학교 1–3학년<br>트리니티홀(1층) · 장년부와 함께</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">9시 예배</div>
+            <div class="sched-name">고등부</div>
+            <div class="sched-place">고등학교 1–3학년<br>트리니티홀(1층) · 장년부와 함께</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">10시 모임</div>
+            <div class="sched-name">중등부</div>
+            <div class="sched-place">교육관 3층</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">10시 모임</div>
+            <div class="sched-name">고등부</div>
+            <div class="sched-place">교육관 4층</div>
+          </div>
+        </div>
+        <div class="cpanel-contact"><strong>문의</strong> &nbsp;교육국 02-3663-0333 (내선 000)</div>
+      </div>
+    </div>
+
+    <!-- 대학부 -->
+    <div class="cpanel" id="pan-college">
+      <div class="cpanel-inner">
+        <div class="cpanel-badge">대학부</div>
+        <div class="age-tag">20세 이상 (대학생, 군 입대자, 재수생)</div>
+        <div class="cpanel-tagline">예배와 교제 속에서 스스로 믿음을 세워가며, 삶의 방향을 함께 고민하는 공동체입니다.</div>
+        <div class="cpanel-desc">대학부는 예배와 모임을 통해 신앙을 주도적으로 세워가고, 진로·배움·삶의 본질적인 물음에 함께 답해갑니다. (희망 여부에 따라 청년회로 소속 변경 가능)</div>
+        <div class="sched-grid">
+          <div class="sched-cell">
+            <div class="sched-time">주일 낮 예배</div>
+            <div class="sched-name">1부 예배</div>
+            <div class="sched-place">오전 7시 · 비전홀 B1</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">주일 낮 예배</div>
+            <div class="sched-name">2부 예배</div>
+            <div class="sched-place">오전 9시 · 트리니티홀 1층</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">주일 낮 예배</div>
+            <div class="sched-name">3부 예배</div>
+            <div class="sched-place">오전 11시 · 트리니티홀 1·2층</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">주일 오후 모임</div>
+            <div class="sched-name">대학부 모임</div>
+            <div class="sched-place">오후 1시 20분 · 교육관 4층</div>
+          </div>
+        </div>
+        <div class="cpanel-contact"><strong>문의</strong> &nbsp;교육국 02-3663-0333 (내선 000)</div>
+      </div>
+    </div>
+
+    <!-- 청년회 -->
+    <div class="cpanel" id="pan-young">
+      <div class="cpanel-inner">
+        <div class="cpanel-badge">청년회</div>
+        <div class="age-tag">미혼 교인 공동체 · 주로 26–39세</div>
+        <div class="cpanel-tagline">사회 속에서 믿음으로 살아가며, 배우자와 함께 교회 안에서 하나님의 뜻을 이루어가는 공동체입니다.</div>
+        <div class="cpanel-desc">청년회는 미혼 교인들이 교회 안에서 함께 예배하고 교제하며, 사회생활과 결혼·가정에 대한 기도와 격려를 나누는 공동체입니다. 40세 이상 미혼 교인은 청년전도회로 편성됩니다.</div>
+        <div class="sched-grid">
+          <div class="sched-cell">
+            <div class="sched-time">주일 낮 예배</div>
+            <div class="sched-name">1·2·3부 예배</div>
+            <div class="sched-place">장년부와 함께 드립니다</div>
+          </div>
+          <div class="sched-cell">
+            <div class="sched-time">주일 오후 모임</div>
+            <div class="sched-name">청년회 모임</div>
+            <div class="sched-place">오후 1시 20분 · 글로브홀(B2)</div>
+          </div>
+        </div>
+        <!-- 편성표 -->
+        <div style="font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-dark);font-weight:700;margin:1.25rem 0 .6rem">청년회 편성표</div>
+        <div class="chart-wrap">
+          <table class="chart-table">
+            <thead>
+              <tr><th>청(구역)</th><th>출생연도</th><th>모임 장소</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1청</td><td>○○○○년생</td><td>○○</td></tr>
+              <tr><td>2청</td><td>○○○○년생</td><td>○○</td></tr>
+              <tr><td>3청</td><td>○○○○년생</td><td>○○</td></tr>
+              <tr><td>4청</td><td>○○○○년생</td><td>○○</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- 청년전도회 -->
+        <div style="background:var(--gray-50);border:1px solid var(--gray-200);padding:1rem 1.25rem;margin-top:.75rem;font-size:.83rem;color:var(--gray-600);line-height:1.9">
+          <strong style="color:var(--black)">청년전도회</strong> &nbsp;— &nbsp;40세 이상 미혼 교인
+        </div>
+        <div class="cpanel-contact"><strong>문의</strong> &nbsp;02-3663-0333 (내선 000)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4. 처음 오신 날 ══ -->
+<section class="first-section" id="first-day">
+  <div class="first-inner">
+    <div>
+      <div class="tag tag-gold rv-tag d0">First Visit</div>
+      <h2 class="section-h2-navy rv-pop d1">처음 오신 날, 이렇게 안내받으실 수 있어요!</h2>
+    </div>
+    <div class="first-steps">
+      <div class="first-step rv-card d1">
+        <div class="step-num">01</div>
+        <div class="step-img-ph">⛪</div>
+        <div class="step-name">교회 방문</div>
+        <div class="step-desc">1부 오전 7시<br>2부 오전 9시<br>3부 오전 11시<br><span style="opacity:.6;font-size:.75rem">— 트리니티홀(1층) —</span></div>
+      </div>
+      <div class="first-step rv-card d2">
+        <div class="step-num">02</div>
+        <div class="step-img-ph">🙋</div>
+        <div class="step-name">새가족 환영팀</div>
+        <div class="step-desc">1층 로비에서<br>새가족 안내 배지를 단<br>안내위원이 기다립니다</div>
+      </div>
+      <div class="first-step rv-card d3">
+        <div class="step-num">03</div>
+        <div class="step-img-ph">📝</div>
+        <div class="step-name">새가족 카드 작성</div>
+        <div class="step-desc">예배 중<br>교역자에게<br>전달해 주세요</div>
+      </div>
+      <div class="first-step rv-card d4">
+        <div class="step-num">04</div>
+        <div class="step-img-ph">🤝</div>
+        <div class="step-name">새가족 환영</div>
+        <div class="step-desc">예배 후<br>지하1층 친교실에서<br>환영 시간을 갖습니다</div>
+      </div>
+      <div class="first-step rv-card d5">
+        <div class="step-num">05</div>
+        <div class="step-img-ph">✨</div>
+        <div class="step-name">새가족 모임</div>
+        <div class="step-desc">매주 오전 10시<br>4주 과정<br>(하단 안내 참조)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 5. 오시는 길 ══ -->
+<section class="directions-section" id="directions">
+  <div class="directions-inner">
+    <div>
+      <div class="tag tag-dark rv-tag d0">Location</div>
+      <h2 class="section-h2-dark rv-pop d1">오시는 길</h2>
+    </div>
+    <div class="rv d2" style="margin-top:1rem">
+      <div class="addr-row"><span class="addr-ico">📍</span><span><strong>서울특별시 강서구 화곡로 375</strong></span></div>
+      <div class="addr-row"><span class="addr-ico">📞</span><span>02-3663-0333</span></div>
+      <div class="addr-row"><span class="addr-ico">✉</span><span>abcd@ghpc.or.kr</span></div>
+    </div>
+    <div class="map-box rv d3">
+      <!--
+        카카오맵 embed 예시:
+        <iframe src="https://map.kakao.com/link/to/경향교회,37.5517,126.8495" allowfullscreen></iframe>
+        실제 좌표로 교체해 주세요
+      -->
+      <div class="map-ph">
+        <div style="font-size:2.5rem">📍</div>
+        <div style="font-size:.9rem;font-weight:600">서울시 강서구 화곡로 375</div>
+        <a href="https://map.kakao.com/link/search/경향교회" target="_blank">카카오맵에서 열기 →</a>
+        <div style="font-size:.72rem;margin-top:.25rem;color:var(--gray-400)">iframe src를 실제 embed URL로 교체해 주세요</div>
+      </div>
+    </div>
+    <div class="transport-grid rv d4">
+      <div class="tr-item">
+        <div class="tr-label">🚇 지하철</div>
+        <div class="tr-content">가양역 8번 출구 (5분 거리)<br>발산역 n번 출구 (20분 거리)<br>강서구청역</div>
+      </div>
+      <div class="tr-item">
+        <div class="tr-label">🚌 버스</div>
+        <div class="tr-content">하이웨이 주유소 정류장<br>60·123·456번<br><br>88체육관 정류장<br>88·15·154번<br><br>경복여고, 경복비즈니스고 앞</div>
+      </div>
+      <div class="tr-item">
+        <div class="tr-label">🚗 자가용</div>
+        <div class="tr-content">강서구 화곡로 375<br><br>제1주차장 (교회 지하)<br>제2주차장 (선교원)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 5-2. 예배당 가는 길 (내부) ══ -->
+<section class="directions-section" id="indoor" style="background:var(--gray-50);padding-top:5rem;padding-bottom:5rem">
+  <div class="directions-inner">
+    <div>
+      <div class="tag tag-dark rv-tag d0">Indoor Guide</div>
+      <h2 class="section-h2-dark rv-pop d1">예배당 가는 길</h2>
+      <p class="rv d2" style="font-size:.87rem;color:var(--gray-600);margin-top:.6rem;line-height:1.9">
+        교회 내부 안내 — 1층 출발 기준으로 각 예배·모임 장소를 찾아보세요.
+      </p>
+    </div>
+
+    <!-- 출발 층 안내 카드 -->
+    <div class="indoor-grid rv d3">
+      <div class="indoor-card">
+        <div class="indoor-badge">1층 출발</div>
+        <div class="indoor-title">트리니티홀</div>
+        <div class="indoor-desc">주일 1·2·3부 예배<br>중·고등부 · 대학부 예배</div>
+        <div class="indoor-floor">▶ 1층 로비 → 트리니티홀 (1층)</div>
+      </div>
+      <div class="indoor-card">
+        <div class="indoor-badge">지하 1층</div>
+        <div class="indoor-title">비전홀 B1</div>
+        <div class="indoor-desc">대학부 1부 예배 (오전 7시)<br>새가족 환영 (예배 후)</div>
+        <div class="indoor-floor">▶ 1층 로비 → 엘리베이터 → B1</div>
+      </div>
+      <div class="indoor-card">
+        <div class="indoor-badge">지하 1층</div>
+        <div class="indoor-title">연합회의실</div>
+        <div class="indoor-desc">새가족 모임 4주 과정<br>(헌당기념홀 옆)</div>
+        <div class="indoor-floor">▶ 1층 로비 → 엘리베이터 → B1</div>
+      </div>
+      <div class="indoor-card">
+        <div class="indoor-badge">지하 1층</div>
+        <div class="indoor-title">친교실</div>
+        <div class="indoor-desc">예배 후 새가족 환영<br>성도 교제 공간</div>
+        <div class="indoor-floor">▶ 1층 로비 → 계단/엘리베이터 → B1</div>
+      </div>
+      <div class="indoor-card">
+        <div class="indoor-badge">지하 2층</div>
+        <div class="indoor-title">주차장 (제1)</div>
+        <div class="indoor-desc">교회 지하 주차장<br>주일 주차 도우미 운영</div>
+        <div class="indoor-floor">▶ 차량 진입 → B2 주차</div>
+      </div>
+      <div class="indoor-card">
+        <div class="indoor-badge">교육관 3층</div>
+        <div class="indoor-title">중등부 모임실</div>
+        <div class="indoor-desc">중등부 주일 10시 모임</div>
+        <div class="indoor-floor">▶ 교육관 입구 → 3층</div>
+      </div>
+      <div class="indoor-card">
+        <div class="indoor-badge">교육관 4층</div>
+        <div class="indoor-title">고등부 · 대학부 모임실</div>
+        <div class="indoor-desc">고등부 · 대학부 주일 오후 모임</div>
+        <div class="indoor-floor">▶ 교육관 입구 → 4층</div>
+      </div>
+      <div class="indoor-card">
+        <div class="indoor-badge">글로브홀 B2</div>
+        <div class="indoor-title">청년회 모임실</div>
+        <div class="indoor-desc">청년회 주일 오후 1시 20분 모임</div>
+        <div class="indoor-floor">▶ 1층 로비 → 엘리베이터 → B2</div>
+      </div>
+    </div>
+
+    <!-- 안내 메모 -->
+    <div class="rv d4" style="margin-top:1.75rem;padding:1.25rem 1.75rem;background:var(--white);border:1px solid var(--gray-200);border-left:3px solid var(--accent);font-size:.83rem;color:var(--gray-600);line-height:1.9">
+      📌 &nbsp;실제 내부 지도 이미지 또는 로드뷰를 여기에 삽입할 수 있습니다.<br>
+      <span style="color:var(--gray-400)">예배당 내부 사진·3D 지도를 교체하시려면 이 영역에 img 태그 또는 iframe을 넣어 주세요.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 6. 픽업 차량 ══ -->
+<section class="shuttle-section" id="shuttle">
+  <div class="shuttle-bg-txt">SHUTTLE</div>
+  <div class="shuttle-inner">
+    <div>
+      <div class="tag tag-gold rv-tag d0">Pickup Shuttle</div>
+      <h2 class="section-h2-light rv-pop d1">픽업 차량 안내</h2>
+    </div>
+    <p class="rv d2" style="color:rgba(248,247,244,.55);font-size:.88rem;line-height:1.95;margin-top:1.25rem;max-width:560px">
+      주일 예배를 위한 픽업 차량을 운행하고 있습니다.<br>
+      이용을 원하시는 분은 새가족 카카오채널로 문의해 주세요.
+    </p>
+    <div class="route-chips rv d3">
+      <span class="route-chip">🚌 등촌 방면</span>
+      <span class="route-chip">🚌 화곡 방면</span>
+      <span class="route-chip">🚌 가양 방면</span>
+      <span class="route-chip">🚌 방화 방면</span>
+      <span class="route-chip">🚌 마곡 방면</span>
+      <span class="route-chip">+ 문의 후 확인</span>
+    </div>
+    <div class="shuttle-notice rv d4">
+      <strong>탑승 신청 마감</strong> — 매주 토요일 오후 6시까지<br>
+      새가족 카카오채널 또는 교회 전화(02-3663-0333)로 출발 시간과 탑승 장소를 안내해 드립니다.
+    </div>
+  </div>
+</section>
+
+<!-- ══ 7. 함께 소통해요 ══ -->
+<section class="connect-section" id="connect">
+  <div class="connect-inner">
+    <div>
+      <div class="tag tag-gold rv-tag d0">Connect</div>
+      <h2 class="section-h2-light rv-pop d1">함께 소통해요</h2>
+      <p class="rv d2" style="color:rgba(248,247,244,.45);font-size:.85rem;margin-top:.5rem">무엇이든 물어보세요</p>
+    </div>
+    <div class="connect-grid">
+      <a class="cc-card rv-card d1" href="https://pf.kakao.com" target="_blank">
+        <div class="cc-icon" style="background:#FEE500"><span>💬</span></div>
+        <div class="cc-name">카카오 채널</div>
+        <div class="cc-desc">새가족 공지 및<br>1:1 문의</div>
+      </a>
+      <a class="cc-card rv-card d2" href="https://youtube.com" target="_blank">
+        <div class="cc-icon" style="background:#FF0000"><span style="font-size:1.3rem;color:#fff">▶</span></div>
+        <div class="cc-name">유튜브</div>
+        <div class="cc-desc">예배 영상 &amp;<br>설교 다시보기</div>
+      </a>
+      <a class="cc-card rv-card d3" href="https://instagram.com" target="_blank">
+        <div class="cc-icon" style="background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285AEB 90%)"><span style="font-size:1.4rem">📷</span></div>
+        <div class="cc-name">인스타그램</div>
+        <div class="cc-desc">교회 일상 &amp;<br>소식 나눔</div>
+      </a>
+      <a class="cc-card rv-card d4" href="tel:02-3663-0333">
+        <div class="cc-icon" style="background:rgba(255,255,255,.1)"><span>📞</span></div>
+        <div class="cc-name">전화 문의</div>
+        <div class="cc-desc">02-3663-0333<br>평일 오전 9시–오후 6시</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 8. 새가족 모임 4주 과정 ══ -->
+<section class="meeting-section" id="meeting">
+  <div class="meeting-inner">
+    <div>
+      <div class="tag tag-dark rv-tag d0">New Member Meeting</div>
+      <h2 class="section-h2-dark rv-pop d1">새가족 모임 4주 과정</h2>
+    </div>
+    <div class="meeting-meta rv d2">
+      <strong>매주 주일 오전 10시</strong> &nbsp;|&nbsp; 지하1층 연합회의실 (헌당기념홀 옆)
+    </div>
+    <div class="weeks-grid">
+      <div class="week-card rv-card d1">
+        <div class="week-num">01</div>
+        <div class="week-img-ph">⛪</div>
+        <div class="week-name">1주차</div>
+        <div class="week-desc">교회 방문 &amp; 예배 안내<br>경향교회 첫 만남</div>
+      </div>
+      <div class="week-card rv-card d2">
+        <div class="week-num">02</div>
+        <div class="week-img-ph">🙋</div>
+        <div class="week-name">2주차</div>
+        <div class="week-desc">교역자 소개 &amp;<br>공동체 안내</div>
+      </div>
+      <div class="week-card rv-card d3">
+        <div class="week-num">03</div>
+        <div class="week-img-ph">📝</div>
+        <div class="week-name">3주차</div>
+        <div class="week-desc">신앙 나눔 &amp;<br>말씀 교육</div>
+      </div>
+      <div class="week-card rv-card d4">
+        <div class="week-num">04</div>
+        <div class="week-img-ph">🎓</div>
+        <div class="week-name">4주차 수료식</div>
+        <div class="week-desc">수료 &amp; 환영<br>경향 가족이 됩니다!</div>
+      </div>
+    </div>
+
+    <!-- 수료자 명단 -->
+    <div class="rv d4" style="margin-top:2.5rem">
+      <div class="grad-header">
+        <div>
+          <div style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-dark);font-weight:700;margin-bottom:.35rem">Graduates</div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:600;color:var(--black)">새가족 모임 수료자</div>
+        </div>
+        <button class="grad-add-btn" id="gradAddBtn">+ 수료자 추가</button>
+      </div>
+      <div class="grad-form" id="gradForm">
+        <input class="grad-input" id="gradDate" type="date" title="수료 날짜">
+        <input class="grad-input" id="gradName" type="text" placeholder="이름" maxlength="20">
+        <button class="grad-save-btn" id="gradSaveBtn">저장</button>
+        <button class="grad-cancel-btn" id="gradCancelBtn">취소</button>
+      </div>
+      <div class="grad-list" id="gradList">
+        <div class="grad-empty" id="gradEmpty">등록된 수료자가 없습니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-logo">경향<span>교회</span></div>
+  <div class="ft-addr">
+    서울특별시 강서구 화곡로 375 경향교회<br>
+    Tel. 02-3663-0333 &nbsp;·&nbsp; abcd@ghpc.or.kr
+  </div>
+</footer>
+
+<script>
+/* NAV */
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+/* QUICK MENU */
+const qmBtn=document.getElementById('qmBtn'),qmPanel=document.getElementById('qmPanel');
+qmBtn.addEventListener('click',()=>{qmBtn.classList.toggle('open');qmPanel.classList.toggle('open')});
+qmPanel.querySelectorAll('.qm-item').forEach(a=>a.addEventListener('click',()=>{qmBtn.classList.remove('open');qmPanel.classList.remove('open')}));
+document.addEventListener('click',e=>{if(!qmBtn.contains(e.target)&&!qmPanel.contains(e.target)){qmBtn.classList.remove('open');qmPanel.classList.remove('open')}});
+
+/* COMMUNITY TABS */
+document.querySelectorAll('.ctab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.cpanel').forEach(p=>{p.classList.remove('show')});
+    btn.classList.add('active');
+    const panel=document.getElementById(btn.dataset.target);
+    panel.classList.add('show');
+    /* re-trigger reveal on newly shown cards */
+    panel.querySelectorAll('.rv,.rv-pop,.rv-card,.rv-tag').forEach(el=>{
+      el.classList.remove('in');
+      void el.offsetWidth;
+      setTimeout(()=>el.classList.add('in'),50);
+    });
+  });
+});
+
+/* DRAG-SCROLL GALLERY */
+const sOuter=document.getElementById('stripOuter');
+let drag=false,sx=0,sl=0;
+sOuter.addEventListener('mousedown',e=>{drag=true;sOuter.classList.add('dragging');sx=e.pageX-sOuter.offsetLeft;sl=sOuter.scrollLeft});
+document.addEventListener('mouseup',()=>{drag=false;sOuter.classList.remove('dragging')});
+sOuter.addEventListener('mouseleave',()=>{drag=false;sOuter.classList.remove('dragging')});
+sOuter.addEventListener('mousemove',e=>{if(!drag)return;e.preventDefault();sOuter.scrollLeft=sl-(e.pageX-sOuter.offsetLeft-sx)*1.4});
+sOuter.addEventListener('touchstart',e=>{sx=e.touches[0].pageX-sOuter.offsetLeft;sl=sOuter.scrollLeft},{passive:true});
+sOuter.addEventListener('touchmove',e=>{sOuter.scrollLeft=sl-(e.touches[0].pageX-sOuter.offsetLeft-sx)*1.2},{passive:true});
+sOuter.style.overflowX='scroll';sOuter.style.msOverflowStyle='none';sOuter.style.scrollbarWidth='none';
+const sStyle=document.createElement('style');sStyle.textContent='#stripOuter::-webkit-scrollbar{display:none}';document.head.appendChild(sStyle);
+
+/* GRADUATES */
+const gradAddBtn=document.getElementById('gradAddBtn');
+const gradForm=document.getElementById('gradForm');
+const gradSaveBtn=document.getElementById('gradSaveBtn');
+const gradCancelBtn=document.getElementById('gradCancelBtn');
+const gradList=document.getElementById('gradList');
+const gradEmpty=document.getElementById('gradEmpty');
+const gradDateInput=document.getElementById('gradDate');
+const gradNameInput=document.getElementById('gradName');
+
+let graduates=[];
+try{graduates=JSON.parse(localStorage.getItem('kh_graduates')||'[]')}catch(e){graduates=[]}
+
+function saveGrads(){try{localStorage.setItem('kh_graduates',JSON.stringify(graduates))}catch(e){}}
+
+function renderGrads(){
+  gradList.querySelectorAll('.grad-row').forEach(r=>r.remove());
+  if(graduates.length===0){gradEmpty.style.display='';return}
+  gradEmpty.style.display='none';
+  /* sort by date descending */
+  const sorted=[...graduates].sort((a,b)=>b.date.localeCompare(a.date));
+  sorted.forEach((g,i)=>{
+    const row=document.createElement('div');
+    row.className='grad-row';
+    const dateStr=g.date.replace(/-/g,'.');
+    row.innerHTML=`<span class="grad-date">${dateStr}</span><span class="grad-name">${g.name}</span><button class="grad-del" data-id="${g.id}" title="삭제">✕</button>`;
+    gradList.appendChild(row);
+  });
+  gradList.querySelectorAll('.grad-del').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      graduates=graduates.filter(g=>g.id!==btn.dataset.id);
+      saveGrads();renderGrads();
+    });
+  });
+}
+
+gradAddBtn.addEventListener('click',()=>{
+  gradForm.classList.toggle('open');
+  if(gradForm.classList.contains('open')) gradNameInput.focus();
+});
+gradCancelBtn.addEventListener('click',()=>{
+  gradForm.classList.remove('open');
+  gradDateInput.value='';gradNameInput.value='';
+});
+gradSaveBtn.addEventListener('click',()=>{
+  const d=gradDateInput.value,n=gradNameInput.value.trim();
+  if(!d){gradDateInput.focus();return}
+  if(!n){gradNameInput.focus();return}
+  graduates.push({id:Date.now().toString(),date:d,name:n});
+  saveGrads();renderGrads();
+  gradDateInput.value='';gradNameInput.value='';
+  gradForm.classList.remove('open');
+});
+gradNameInput.addEventListener('keydown',e=>{if(e.key==='Enter')gradSaveBtn.click()});
+renderGrads();
+
+/* POP REVEAL */
+const allRv=document.querySelectorAll('.rv,.rv-pop,.rv-card,.rv-tag');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}});
+},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+allRv.forEach(el=>{
+  /* skip items inside hidden panels */
+  if(!el.closest('.cpanel')||el.closest('.cpanel.show')) obs.observe(el);
+});
+/* observe active panel items immediately */
+document.querySelector('.cpanel.show').querySelectorAll('.rv,.rv-pop,.rv-card,.rv-tag').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
