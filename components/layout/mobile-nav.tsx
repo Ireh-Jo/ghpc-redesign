@@ -14,6 +14,7 @@ import { NAV, LIVE_URL, type NavSection } from '@/lib/nav';
  * 데스크탑 B안("올린 대메뉴 하나만 펼침")을 hover 없는 모바일로 옮긴 형태다.
  * 아코디언(그 자리에서 펼치기)은 『목양과 사역』처럼 하위가 11개 넘는 메뉴에서
  * 한 번 펼치면 화면을 꽉 채워 폐기했다.
+ * L2 그룹(2026-08-23 승계)은 3단 드릴다운을 만들지 않고 2단 화면 안 소제목으로만 구분한다.
  *
  * 대메뉴 행은 데스크탑과 같이 **이동하지 않는다** — 하위 화면을 여는 컨트롤. 새가족만 CTA로 `/newcomer` 도달.
  * `새가족`은 맨 아래 유지 + highlight 색 (최상단 배치안 철회, 2026-08-12).
@@ -156,20 +157,26 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
           </h2>
           {section.tagline && <p className="mt-2 text-sm text-white/50">{section.tagline}</p>}
 
-          <ul className="mt-7 flex flex-col border-t border-white/10">
-            {section.children?.map((child) => (
-              <li key={child.href}>
-                <Link
-                  href={child.href}
-                  onClick={close}
-                  className="flex items-center justify-between border-b border-white/10 py-4 text-[15px] text-white/85"
-                >
-                  {child.label}
-                  <ChevronRight className="h-4 w-4 shrink-0 text-white/25" />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/* L2 그룹은 화면을 나누지 않고 소제목으로만 구분한다 — 드릴다운 3단은 만들지 않는다(뎁스 상한 L3) */}
+          {section.groups.map((group) => (
+            <div key={group.label} className="mt-7">
+              <p className="text-[11px] font-bold tracking-[0.25em] text-white/40">{group.label}</p>
+              <ul className="mt-3 flex flex-col border-t border-white/10">
+                {group.items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={close}
+                      className="flex items-center justify-between border-b border-white/10 py-4 text-[15px] text-white/85"
+                    >
+                      {item.label}
+                      <ChevronRight className="h-4 w-4 shrink-0 text-white/25" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           {/* 대메뉴 자체는 이동하지 않지만, 새가족은 진입 동선 보증을 위해 루트로 가는 CTA를 둔다 */}
           {section.highlight && (

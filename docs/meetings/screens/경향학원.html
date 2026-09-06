@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경향학원 소개 | 경향교회</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #1B2A47;
+    --navy-deep: #101a30;
+    --parchment: #F6F1E6;
+    --parchment-dim: #EDE5D3;
+    --gold: #B08A4E;
+    --gold-soft: #D9C08F;
+    --coral: #E0885E;
+    --ink: #23262b;
+    --line: rgba(27,42,71,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    line-height:1.7;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+  h1,h2,h3{
+    font-family:'Noto Serif KR', serif;
+    margin:0;
+    color:var(--navy);
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  /* ===== HERO / VISION ===== */
+  .hero{
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(217,192,143,0.35), transparent 55%),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color:#f4efe2;
+    padding:78px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(246,241,230,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(246,241,230,0.05) 1px, transparent 1px);
+    background-size:44px 44px;
+    pointer-events:none;
+  }
+  .hero-inner{position:relative; z-index:1;}
+  .eyebrow{
+    display:inline-block;
+    font-size:12.5px; letter-spacing:0.28em;
+    color:var(--gold-soft);
+    border:1px solid rgba(217,192,143,0.4);
+    padding:6px 14px;
+    border-radius:100px;
+    margin-bottom:26px;
+    font-weight:500;
+  }
+  .hero h1{
+    color:#faf6ea;
+    font-size:clamp(30px, 4.6vw, 46px);
+    font-weight:600;
+    line-height:1.35;
+    max-width:640px;
+  }
+  .hero-lede{
+    margin-top:22px;
+    max-width:760px;
+    font-size:clamp(13.5px, 3.4vw, 16.5px);
+    color:#d7cfba;
+    font-weight:300;
+  }
+  .hero-lede br{display:block; content:""; margin-top:4px;}
+
+  /* lineage */
+  .lineage{
+    margin-top:48px;
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:0;
+    font-size:13.5px;
+    color:#c9bfa4;
+  }
+  .lineage .node{
+    padding:9px 16px;
+    border:1px solid rgba(217,192,143,0.35);
+    border-radius:8px;
+    background:rgba(246,241,230,0.04);
+    white-space:nowrap;
+  }
+  .lineage .node.strong{
+    border-color:var(--gold-soft);
+    color:#faf6ea;
+    font-weight:600;
+  }
+  .lineage .arrow{padding:0 10px; color:var(--gold-soft); opacity:0.7;}
+  .lineage .branch{display:flex; flex-wrap:wrap; gap:8px;}
+
+  /* vision pillars */
+  .pillars{
+    margin-top:44px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:rgba(217,192,143,0.22);
+    border:1px solid rgba(217,192,143,0.22);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .pillar{
+    background:rgba(16,26,48,0.55);
+    padding:22px 20px;
+  }
+  .pillar .num{
+    font-family:'Noto Serif KR', serif;
+    color:var(--gold-soft);
+    font-size:13px;
+    letter-spacing:0.1em;
+  }
+  .pillar p{
+    margin:10px 0 0;
+    font-size:14px;
+    color:#e6dfcc;
+    font-weight:300;
+  }
+
+  /* ===== SECTIONS ===== */
+  .quicknav{
+    background:var(--parchment-dim);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:5;
+    backdrop-filter:blur(6px);
+  }
+  .quicknav .wrap{
+    display:flex; gap:6px; padding:12px 28px;
+    overflow-x:auto;
+  }
+  .quicknav a{
+    flex:0 0 auto;
+    font-size:13.5px;
+    color:var(--navy);
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:100px;
+    font-weight:500;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .quicknav a:hover{border-color:var(--gold-soft); background:#fff;}
+
+  section.inst{
+    padding:74px 0;
+    border-bottom:1px solid var(--line);
+  }
+  section.inst:last-of-type{border-bottom:none;}
+
+  .inst-head{
+    display:flex;
+    align-items:flex-start;
+    gap:22px;
+    margin-bottom:26px;
+  }
+  .badge{
+    flex:0 0 auto;
+    width:56px; height:56px;
+    border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Noto Serif KR', serif;
+    font-size:20px; font-weight:600;
+    color:var(--navy);
+    background:#fff;
+  }
+  .inst-tag{
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .inst-head h2{
+    font-size:26px;
+    font-weight:600;
+  }
+  .inst-desc{
+    font-size:16px;
+    color:#4a4d53;
+    max-width:560px;
+    margin:14px 0 0;
+  }
+
+  .media{
+    margin-top:30px;
+    aspect-ratio:16/7.2;
+    border-radius:14px;
+    border:1.5px dashed var(--gold-soft);
+    background:
+      repeating-linear-gradient(135deg, rgba(176,138,78,0.05) 0 12px, transparent 12px 24px),
+      #fffdf8;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:var(--gold);
+    text-align:center;
+    padding:20px;
+  }
+  .media svg{width:34px; height:34px; opacity:0.75;}
+  .media .m-title{font-size:14px; font-weight:600; color:var(--navy);}
+  .media .m-sub{font-size:12.5px; color:#9a8a6a; font-weight:400;}
+
+  .inst-foot{
+    margin-top:28px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--navy);
+    color:#faf6ea;
+    text-decoration:none;
+    font-size:14.5px;
+    font-weight:600;
+    padding:13px 22px;
+    border-radius:9px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn:hover{background:var(--navy-deep); transform:translateY(-1px);}
+  .btn.kids{background:var(--coral);}
+  .btn.kids:hover{background:#c76f45;}
+  .btn svg{width:14px; height:14px;}
+  .meta{font-size:13px; color:#8b8f96;}
+
+  /* kids section distinct tint */
+  section.inst.kids{
+    background:linear-gradient(180deg, rgba(224,136,94,0.06), transparent 60%);
+  }
+  section.inst.kids .badge{border-color:var(--coral); color:var(--coral);}
+  section.inst.kids .inst-tag{color:var(--coral);}
+  section.inst.kids .media{border-color:#eab791; color:var(--coral);}
+
+  footer{
+    padding:40px 0 60px;
+    text-align:center;
+    color:#9a9d9f;
+    font-size:13px;
+  }
+
+  @media (max-width:640px){
+    .pillars{grid-template-columns:1fr;}
+    .inst-head{gap:14px;}
+    .badge{width:46px; height:46px; font-size:16px;}
+    .inst-head h2{font-size:22px;}
+    .hero{padding:56px 0 48px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <span class="eyebrow">학교법인 경향학원</span>
+    <h1>믿음과 실력을 함께 키우는<br>다음세대 배움터</h1>
+    <p class="hero-lede">
+      경향교회는 학원복음화를 교회의 중요한 사명으로 삼아왔습니다.<br>
+      기독교 정신에 입각한 경영으로 신앙과 실력을 겸비한 인재를 키워내고자,<br>
+      경복여자고등학교와 경복비즈니스고등학교, 경향키즈놀이학원을 세워 운영하고 있습니다.
+    </p>
+  </div>
+</header>
+
+<nav class="quicknav">
+  <div class="wrap">
+    <a href="#kb">경복여자고등학교</a>
+    <a href="#kbb">경복비즈니스고등학교</a>
+    <a href="#kids">경향키즈놀이학원</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="inst" id="kb">
+    <div class="inst-head">
+      <div class="badge">慶福</div>
+      <div>
+        <h2>경복여자고등학교</h2>
+        <p class="inst-desc">하나님의 형상을 닮은 인재를 길러내는<br>기독교 명문 여자고등학교입니다.<br>신앙 위에 세운 배움으로 다음세대 딸들을 세워갑니다.</p>
+      </div>
+    </div>
+
+    <div class="media">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.1 0L4 19"/></svg>
+      <div class="m-title">경복여자고등학교 활동 사진 · 영상</div>
+      <div class="m-sub">이 자리에 학교 행사 사진이나 영상을 넣어주세요</div>
+    </div>
+
+    <div class="inst-foot">
+      <a class="btn" href="https://kb.sen.hs.kr/52356/subMenu.do" target="_blank" rel="noopener">
+        경복여자고등학교 홈페이지 바로가기
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+      <span class="meta">kb.sen.hs.kr</span>
+    </div>
+  </section>
+
+  <section class="inst" id="kbb">
+    <div class="inst-head">
+      <div class="badge">Biz</div>
+      <div>
+        <div class="inst-tag">특성화고등학교 · 서울형 마이스터고 선도학교</div>
+        <h2>경복비즈니스고등학교</h2>
+        <p class="inst-desc">신앙 인격과 실무 역량을 함께 갖춘 인재를 키우는<br>특성화고등학교입니다.<br>세상 속에서 빛과 소금으로 살아갈 전문인을 길러냅니다.</p>
+      </div>
+    </div>
+
+    <div class="media">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.1 0L4 19"/></svg>
+      <div class="m-title">경복비즈니스고등학교 활동 사진 · 영상</div>
+      <div class="m-sub">이 자리에 학교 행사 사진이나 영상을 넣어주세요</div>
+    </div>
+
+    <div class="inst-foot">
+      <a class="btn" href="https://kbb.sen.hs.kr/74588/subMenu.do" target="_blank" rel="noopener">
+        경복비즈니스고등학교 홈페이지 바로가기
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+      <span class="meta">kbb.sen.hs.kr</span>
+    </div>
+  </section>
+
+  <section class="inst kids" id="kids">
+    <div class="inst-head">
+      <div class="badge">Kids</div>
+      <div>
+        <h2>경향키즈놀이학원</h2>
+        <p class="inst-desc">어린 자녀들이 마음껏 뛰놀며<br>하나님의 사랑을 자연스럽게 만나는 공간입니다.<br>놀이를 통해 몸과 마음, 믿음이 함께 자라갑니다.</p>
+      </div>
+    </div>
+
+    <div class="media">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5.5-5.5a1.5 1.5 0 0 0-2.1 0L4 19"/></svg>
+      <div class="m-title">경향키즈놀이학원 활동 사진 · 영상</div>
+      <div class="m-sub">이 자리에 놀이학원 사진이나 영상을 넣어주세요</div>
+    </div>
+
+    <div class="inst-foot">
+      <a class="btn kids" href="https://cafe.naver.com/f-e/cafes/30939262/articles/58?boardtype=L&menuid=8&referrerAllArticles=false" target="_blank" rel="noopener">
+        경향키즈놀이학원 소식 보러가기
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+      <span class="meta">네이버 카페</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>경향학원 · 경향키즈놀이학원 — 경향교회가 함께 세우는 다음세대 배움터</footer>
+
+</body>
+</html>

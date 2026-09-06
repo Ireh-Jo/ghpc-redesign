@@ -29,6 +29,14 @@ import { NAV, LIVE_URL } from '@/lib/nav';
  *   투명 → 스크롤·메가 오픈 시 다크 솔리드. 서브페이지는 라이트 헤로라 라이트 톤.
  * 메뉴 항목은 lib/nav.ts 단일 출처.
  */
+/** 그룹 수 → 열 클래스. Tailwind가 정적 스캔하므로 `grid-cols-${n}` 보간을 쓰지 않는다 */
+const GROUP_COLS: Record<number, string> = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+  4: 'grid-cols-4',
+};
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [activeKey, setActiveKey] = useState<string | null>(null);
@@ -171,26 +179,45 @@ export function Header() {
                         )}
                       </div>
 
-                      {/* 우측 — 하위 항목. 이쪽만 링크라 hover 시 색이 바뀐다 */}
-                      <ul className="grid flex-1 grid-cols-3 content-start gap-x-8 gap-y-3 text-[13px]">
-                        {section.children?.map((child) => (
-                          <li key={child.href}>
-                            <Link
-                              href={child.href}
-                              onClick={closeMega}
+                      {/* 우측 — L2 그룹별 열. 이쪽만 링크라 hover 시 색이 바뀐다 */}
+                      <div
+                        className={cn(
+                          'grid flex-1 content-start gap-x-10',
+                          GROUP_COLS[section.groups.length] ?? 'grid-cols-3'
+                        )}
+                      >
+                        {section.groups.map((group) => (
+                          <div key={group.label}>
+                            <p
                               className={cn(
-                                'transition-colors',
-                                // 라이트 패널에서 ink-muted는 가독성 부족 (2026-07-06 피드백) — 본문 ink 사용
-                                dark
-                                  ? 'text-white/65 hover:text-brand-support'
-                                  : 'text-brand-ink hover:text-brand-accent'
+                                'mb-4 text-[12px] font-bold tracking-[0.2em]',
+                                dark ? 'text-white/45' : 'text-brand-ink-muted'
                               )}
                             >
-                              {child.label}
-                            </Link>
-                          </li>
+                              {group.label}
+                            </p>
+                            <ul className="flex flex-col gap-3 text-[13px]">
+                              {group.items.map((item) => (
+                                <li key={item.href}>
+                                  <Link
+                                    href={item.href}
+                                    onClick={closeMega}
+                                    className={cn(
+                                      'transition-colors',
+                                      // 라이트 패널에서 ink-muted는 가독성 부족 (2026-07-06 피드백) — 본문 ink 사용
+                                      dark
+                                        ? 'text-white/65 hover:text-brand-support'
+                                        : 'text-brand-ink hover:text-brand-accent'
+                                    )}
+                                  >
+                                    {item.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     </Container>
                   </div>
                 </li>

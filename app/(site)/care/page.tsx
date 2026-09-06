@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { SubPage } from '@/components/layout/sub-page';
-import { NewcomerForm } from '@/components/interactive/newcomer-form';
 
 export const metadata: Metadata = { title: '목양과 사역' };
 
@@ -13,20 +12,10 @@ export default function CarePage() {
       heroImage={{
         src: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1600&q=80',
         alt: '따뜻한 불빛 아래 함께 모인 사람들 (예시 이미지)',
-        lead: '구역모임부터 시니어스쿨까지 — 삶을 나누는 자리.',
+        lead: '구역모임과 전도회부터 교회가 함께 섬기는 기관까지.',
       }}
-      overrides={{
-        // 새가족 등록 폼 임베드 (context/features/form-handling.md — /newcomer와 공용)
-        newfamily: (
-          <div className="space-y-8">
-            <p className="max-w-xl text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
-              경향교회에 처음 오셨나요? 아래 양식을 남겨주시면 담당 교역자가 따뜻하게
-              안내해드립니다.
-            </p>
-            <NewcomerForm />
-          </div>
-        ),
-      }}
+      // 2026-08-23: `newfamily` 앵커가 2차 목차 승계로 사라졌고(새가족 안내는 `/newcomer` 교차링크),
+      // 온라인 등록 폼도 1차 오픈 범위에서 빠져 override를 제거했다.
     />
   );
 }

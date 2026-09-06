@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경향복지재단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAF6EE;
+    --ink: #2B3A32;
+    --ink-soft: #5B6B60;
+    --line: #E4DCC9;
+    --card: #FFFFFF;
+
+    --c-sm: #4F7B63;      /* 성민종합사회복지관 - 세이지 그린 */
+    --c-sm-soft: #E7EFE7;
+    --c-child: #C98A34;   /* 경향지역아동센터 - 머스타드 골드 */
+    --c-child-soft: #F5EBD8;
+    --c-kium: #4C6E8C;    /* 강서8호점 우리동네키움센터 - 더스티 블루 */
+    --c-kium-soft: #E7EDF2;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 80px;
+  }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
+
+  /* ── 섹션 헤더 ───────────────────────── */
+  .section-head{
+    padding:64px 24px 40px;
+    text-align:center;
+  }
+  .eyebrow{
+    font-size:13px;
+    letter-spacing:0.18em;
+    color:var(--ink-soft);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .section-title{
+    font-family:'Gowun Batang', serif;
+    font-size:clamp(30px, 5vw, 44px);
+    font-weight:700;
+    line-height:1.35;
+    word-break:keep-all;
+  }
+  .section-title span{ color:var(--c-sm); }
+
+  /* 세 기관을 잇는 실선 리본 — 경향복지재단이 세 기관을 함께 품고 있다는 시그니처 */
+  .thread{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px;
+    position:relative;
+  }
+  .thread svg{ display:block; width:100%; height:auto; }
+
+  /* ── 기관 카드 ───────────────────────── */
+  .org{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    margin:0 0 40px;
+    overflow:hidden;
+    position:relative;
+  }
+  .org::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:6px;
+  }
+  .org.sm::before{ background:var(--c-sm); }
+  .org.child::before{ background:var(--c-child); }
+  .org.kium::before{ background:var(--c-kium); }
+
+  .org-body{ padding:36px 32px 28px; }
+
+  .org-tag{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.05em;
+    padding:5px 12px;
+    border-radius:100px;
+    margin-bottom:16px;
+  }
+  .org.sm .org-tag{ background:var(--c-sm-soft); color:var(--c-sm); }
+  .org.child .org-tag{ background:var(--c-child-soft); color:var(--c-child); }
+  .org.kium .org-tag{ background:var(--c-kium-soft); color:var(--c-kium); }
+
+  .org-name{
+    font-family:'Gowun Batang', serif;
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:12px;
+    word-break:keep-all;
+  }
+
+  .org-desc{
+    font-size:15px;
+    line-height:1.75;
+    color:var(--ink-soft);
+    word-break:keep-all;
+    max-width:56ch;
+  }
+
+  /* 사진 갤러리 — 가로 스크롤 */
+  .gallery{
+    display:flex;
+    gap:10px;
+    padding:22px 32px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+  .gallery::-webkit-scrollbar{ height:6px; }
+  .gallery::-webkit-scrollbar-thumb{ background:var(--line); border-radius:10px; }
+
+  .gallery img{
+    scroll-snap-align:start;
+    width:180px;
+    height:135px;
+    object-fit:cover;
+    border-radius:14px;
+    flex:0 0 auto;
+    background:var(--c-sm-soft);
+  }
+
+  /* 버튼 */
+  .actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:8px 32px 30px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:14px;
+    font-weight:600;
+    padding:11px 18px;
+    border-radius:11px;
+    text-decoration:none;
+    border:1.5px solid transparent;
+    transition:transform .15s ease, opacity .15s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn:active{ transform:translateY(0); }
+
+  .btn-primary.sm{ background:var(--c-sm); color:#fff; }
+  .btn-primary.child{ background:var(--c-child); color:#fff; }
+  .btn-primary.kium{ background:var(--c-kium); color:#fff; }
+
+  .btn-line.sm{ border-color:var(--c-sm); color:var(--c-sm); }
+  .btn-line.child{ border-color:var(--c-child); color:var(--c-child); }
+  .btn-line.kium{ border-color:var(--c-kium); color:var(--c-kium); }
+
+  .btn-support{
+    background:transparent;
+    border:1.5px dashed var(--ink);
+    color:var(--ink);
+  }
+  .btn-support:hover{ background:var(--ink); color:var(--bg); border-style:solid; }
+
+  @media (max-width: 560px){
+    .org-body{ padding:28px 20px 20px; }
+    .gallery{ padding:18px 20px; }
+    .actions{ padding:8px 20px 26px; }
+    .org-name{ font-size:22px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="section-head">
+    <div class="eyebrow">GYUNG-HYANG WELFARE FOUNDATION</div>
+    <h2 class="section-title"><span>경향복지재단</span></h2>
+  </div>
+
+  <div class="thread">
+    <svg viewBox="0 0 920 40" preserveAspectRatio="none">
+      <path d="M 40 20 C 300 20, 300 20, 460 20 S 620 20, 880 20"
+            fill="none" stroke="#DCD2B8" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 성민종합사회복지관 -->
+    <section class="org sm">
+      <div class="org-body">
+        <h3 class="org-name">성민종합사회복지관</h3>
+        <p class="org-desc">서울 관악구 삼성동에서 지역 주민과 함께 살아가는 사회복지 전문기관입니다. 어르신 급식·돌봄, 아동·청소년 교육문화, 지역 사례관리 등 다양한 복지사업을 운영합니다.</p>
+      </div>
+      <div class="gallery">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/576/660/7ISx66e8MS5qcGdkaW1vZGVfOTA5OTE5OV9lbmMc.jpg" alt="성민종합사회복지관 활동 사진">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/576/660/7ISx66e8Mi5qcGdkaW1vZGVfODI4NDYzNF9lbmMc.jpg" alt="성민종합사회복지관 활동 사진">
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary sm" href="http://www.smw.or.kr/" target="_blank" rel="noopener">홈페이지 바로가기</a>
+        <a class="btn btn-line sm" href="https://www.instagram.com/sungmin_welfare" target="_blank" rel="noopener">인스타그램</a>
+        <a class="btn btn-support" href="http://www.smw.or.kr/bbs/board.php?bo_table=m03_01&sca=%EB%82%98%EB%88%94%EC%95%88%EB%82%B4" target="_blank" rel="noopener">후원하기</a>
+        <a class="btn btn-support" href="http://www.smw.or.kr/bbs/board.php?bo_table=m03_02&sca=%EC%9E%90%EC%9B%90%ED%99%9C%EB%8F%99%EC%95%88%EB%82%B4" target="_blank" rel="noopener">자원봉사 신청</a>
+      </div>
+    </section>
+
+    <!-- 경향지역아동센터 -->
+    <section class="org child">
+      <div class="org-body">
+        <h3 class="org-name">경향지역아동센터</h3>
+        <p class="org-desc">경향교회 교육관 3층에 자리한 아동복지시설로, 초등학생부터 고등학생까지 방과후 돌봄과 학습·정서·문화 프로그램을 제공합니다.</p>
+      </div>
+      <div class="gallery">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/121247/121618/MF8wMDAxXeybhe2SgDIucG5nZGltb2RlXzQ2ODM5MjBfZW5j.png" alt="경향지역아동센터 활동 사진 - 웅진플레이">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/121247/121618/MF8wMDAzXeyasOyepeyCsOyIsuyytO2XmDIucG5nZGltb2RlXzcwNjg4ODNfZW5j.png" alt="경향지역아동센터 활동 사진 - 우장산숲체험">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/121247/121618/MF8wMDE5XeuUuOq4sOuGjeyepeyytO2XmDIucG5nZGltb2RlXzcwNDk5NDFfZW5j.png" alt="경향지역아동센터 활동 사진 - 딸기농장체험">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/121247/121618/MF8wMDE1XeuupOyngOy7rOq0gOuejDIucG5nZGltb2RlXzc3NjY2OTBfZW5j.png" alt="경향지역아동센터 활동 사진 - 뮤지컬관람">
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary child" href="https://www.hjy.kr/center/index.php?cId=ghpc1516" target="_blank" rel="noopener">홈페이지 바로가기</a>
+        <a class="btn btn-line child" href="https://www.instagram.com/ghlcc_love/" target="_blank" rel="noopener">인스타그램</a>
+        <a class="btn btn-support" href="tel:02-876-0900">후원 및 자원봉사 문의</a>
+      </div>
+    </section>
+
+    <!-- 강서8호점 우리동네키움센터 -->
+    <section class="org kium">
+      <div class="org-body">
+        <h3 class="org-name">강서8호점 우리동네키움센터</h3>
+        <p class="org-desc">강서구청으로부터 운영을 위탁받아 2025년부터 운영 중인 초등 돌봄센터로, 정서·체육·독서·공예·요리 등 다채로운 성장 프로그램을 진행합니다.</p>
+      </div>
+      <div class="gallery">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/131954/132166/7YKk7JuAdXAgKDIpLmpwZ2RpbW9kZV8xOTYwOTU1X2VuYwcc.jpg" alt="강서8호점 우리동네키움센터 활동 사진 - 키움UP">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/131954/132166/7LC97J2Y7Iug7LK0ICgxNSkuanBnZGltb2RlXzc1MDM5MTNfZW5j.jpg" alt="강서8호점 우리동네키움센터 활동 사진 - 창의신체">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/131954/132178/6re466a87LGFIOqzoOqzoOqzoCAoMikuanBnZGltb2RlXzkwNTU2NDBfZW5j.jpg" alt="강서8호점 우리동네키움센터 활동 사진 - 그림책 고고고">
+        <img src="http://data.dimode.co.kr/UserData/ghpchp/files/131954/132161/7IS4652866e567Kg7J207Luk66asXeq3uOumhyDrp4zrk6TquLAgKDQpLmpwZ2RpbW9kZV81Njg2Mjg4X2VuYwcc.jpg" alt="강서8호점 우리동네키움센터 활동 사진 - 도자기 공예">
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary kium" href="https://ghpc.or.kr/Page/Index/131954" target="_blank" rel="noopener">홈페이지 바로가기</a>
+        <a class="btn btn-support" href="tel:02-876-0900">후원 및 자원봉사 문의</a>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>

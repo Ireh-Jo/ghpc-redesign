@@ -46,13 +46,13 @@ export function Footer() {
           <div className="md:col-span-4">
             <p className="mb-4 text-[11px] font-bold tracking-[0.4em] text-white/45">— 연락처</p>
             <ul className="space-y-2.5 text-sm leading-relaxed">
+              {/* 현행 사이트(ghpc.or.kr) 푸터에서 확인된 값 — 2026-08-23 */}
               <li>
-                서울특별시 강서구 가양동
+                07589 서울특별시 강서구
                 <br />
-                [도로명 주소]
+                화곡로 375
               </li>
-              <li>02-2668-6633</li>
-              <li>info@ghpc.or.kr</li>
+              <li>TEL 02-3663-0333 · FAX 02-3663-0336</li>
             </ul>
             <div className="mt-5 flex items-center gap-3">
               <a
@@ -87,13 +87,11 @@ export function Footer() {
         <div className="flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
           <p>© 2026 경향교회. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link href="#" className="hover:text-white">
+            <Link href="/privacy" className="hover:text-white">
               개인정보처리방침
             </Link>
-            <span className="text-white/15">·</span>
-            <Link href="#" className="hover:text-white">
-              이용약관
-            </Link>
+            {/* 이용약관: 1차 오픈 범위에 회원가입·로그인이 없어 작성하지 않는다.
+                회원 기능이 생기면 `/terms`를 만들고 여기 링크를 되살릴 것. */}
           </div>
         </div>
       </Container>

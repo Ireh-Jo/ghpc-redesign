@@ -24,12 +24,20 @@ depends-on:
 
 ## 폼 종류
 
-| 폼 | 테이블 | 라우트 |
-|---|---|---|
-| 새가족 등록 | `newcomer_submissions` | `/newcomer`, `/care` 임베드 |
-| 시니어스쿨 신청 | `form_submissions` (form_type='senior_school') | `/care` |
-| 평생교육원 수강신청 | `form_submissions` (form_type='lifelong_edu')  | `/care` |
-| Q&A (AI) | (1차 오픈 범위 외) | - |
+| 폼 | 테이블 | 라우트 | 상태 |
+|---|---|---|---|
+| 새가족 등록 | `newcomer_submissions` | (노출 중단) | 코드 보존, **1차 오픈 범위 제외** (2026-08-09) — 온라인 접점은 카카오채널·전화 |
+| 영상 제작 신청 | `form_submissions` (`video_request`) | `/church-admin/apply#video` | UI·검증 완료, INSERT 스텁 |
+| 3대 후원회원 작정 | `form_submissions` (`sponsor_pledge`) | `/church-admin/apply#sponsor` | UI·검증 완료, INSERT 스텁 |
+| 평생교육원 수강신청 | `form_submissions` (`lifelong_edu`) | `/church-admin/apply#lifelong` | UI·검증 완료, INSERT 스텁 |
+| 시설 이용 신청 | `reservations` | `/church-admin/reserve` | UI·검증 완료, INSERT 스텁. 달력 UI는 회의 확정 후 |
+| 시니어스쿨 신청 | `form_submissions` (`senior_school`) | 미정 | 현행 사이트에 폼 없음 — 필요 확인 후 정의만 추가 |
+| Q&A (AI) | (1차 오픈 범위 외) | - | - |
+
+> **2026-08-23**: 신청 폼 4종은 현행 사이트(ghpc.or.kr)의 같은 폼을 **필드 단위로 그대로** 옮겼다
+> (사용자 지시). 바뀐 것은 입력 방식뿐 — 오전/오후 + 시 + 분 select 3단 → `type="time"`.
+> 폼마다 JSX를 복붙하지 않고 **폼 정의(`lib/forms/definitions.ts`) + 공통 렌더러(`ApplyForm`)** 구조로 뒀다.
+> 필드가 바뀌면 정의 배열과 `lib/schemas/*`만 고친다.
 
 ## 폼 컴포넌트 패턴
 

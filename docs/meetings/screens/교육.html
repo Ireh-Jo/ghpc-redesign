@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경향교회 교육기관</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E3350;
+    --navy-deep:#132339;
+    --gold:#C89B3C;
+    --gold-soft:#E8D6A6;
+    --cream:#FBF7EF;
+    --sage:#6E8F72;
+    --sage-soft:#DCE7DC;
+    --ink:#2B2A27;
+    --ink-soft:#6B6862;
+    --line:#E7DFCD;
+    --white:#FFFFFF;
+    --radius:18px;
+    --shadow: 0 10px 30px rgba(30,51,80,0.08);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Noto Serif KR', serif; margin:0;}
+  p{margin:0;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  section{scroll-margin-top:128px;}
+
+  /* ===== Top bar ===== */
+  .topbar{
+    background:var(--navy-deep);
+    color:var(--gold-soft);
+    text-align:center;
+    font-size:12.5px;
+    letter-spacing:.06em;
+    padding:6px 12px;
+  }
+
+  /* ===== Sticky nav ===== */
+  header.site-nav{
+    position:sticky; top:0; z-index:100;
+    background:var(--navy);
+    box-shadow:0 4px 16px rgba(19,35,57,0.18);
+  }
+  .nav-inner{
+    max-width:1180px; margin:0 auto;
+    padding:14px 20px 10px;
+  }
+  .brand-row{
+    display:flex; align-items:baseline; justify-content:space-between;
+    color:var(--white); margin-bottom:10px;
+  }
+  .brand-row .brand{
+    font-family:'Noto Serif KR', serif; font-weight:700; font-size:19px; letter-spacing:.02em;
+  }
+  .brand-row .brand span{color:var(--gold);}
+  .brand-row .sub{font-size:12px; color:#B9C4D6;}
+  .dept-nav{
+    display:flex; gap:8px; overflow-x:auto;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  .dept-nav::-webkit-scrollbar{display:none;}
+  .dept-nav button{
+    flex:0 0 auto;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.14);
+    color:#E8EDF4;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13.5px; font-weight:500;
+    padding:9px 16px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .dept-nav button:hover{background:var(--gold); color:var(--navy-deep); border-color:var(--gold);}
+  .dept-nav button.active{background:var(--gold); color:var(--navy-deep); border-color:var(--gold); font-weight:700;}
+
+  /* ===== Hero ===== */
+  .hero{
+    max-width:1180px; margin:0 auto;
+    padding:56px 24px 44px;
+    text-align:center;
+  }
+  .hero .eyebrow{
+    color:var(--sage); font-weight:700; letter-spacing:.14em; font-size:13px; margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(28px,4.2vw,44px);
+    color:var(--navy); line-height:1.35;
+  }
+  .hero h1 em{font-style:normal; color:var(--gold);}
+  .hero p.desc{
+    max-width:620px; margin:18px auto 0;
+    color:var(--ink-soft); font-size:15.5px; line-height:1.7;
+  }
+
+  /* ===== Section shell ===== */
+  .dept-section{ padding:70px 0; }
+  .dept-section.tint{ background:var(--white); }
+  .section-inner{ max-width:1080px; margin:0 auto; padding:0 24px; }
+
+  .section-head{ margin-bottom:34px; }
+  .section-head .eyebrow{
+    font-size:12.5px; font-weight:700; letter-spacing:.16em; color:var(--sage); margin-bottom:10px;
+  }
+  .section-head h2{ font-size:clamp(24px,3.4vw,32px); color:var(--navy); }
+  .section-head .lead{
+    margin-top:10px; color:var(--ink-soft); font-size:14.5px; line-height:1.75; max-width:640px;
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+
+  /* ===== Dept icon row ===== */
+  .icon-row{ display:flex; flex-wrap:wrap; gap:14px; margin:28px 0; }
+  .icon-card{
+    flex:1 1 150px; min-width:140px;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 16px;
+    text-align:center;
+  }
+  .dept-section.tint .icon-card{ background:var(--cream); }
+  .icon-card .badge{
+    width:52px; height:52px; margin:0 auto 10px;
+    border-radius:50%;
+    background:var(--sage-soft);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .icon-card .badge svg{ width:26px; height:26px; }
+  .icon-card .label{ font-weight:700; font-size:14px; color:var(--navy); }
+  .icon-card .meta{ font-size:12px; color:var(--ink-soft); margin-top:4px; line-height:1.5; }
+  .icon-group-title{
+    font-size:12.5px; font-weight:700; color:var(--gold); letter-spacing:.05em; margin:22px 0 10px;
+  }
+
+  /* ===== Intro + policy grid ===== */
+  .intro-grid{
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:26px;
+    align-items:stretch; margin:30px 0;
+  }
+  @media (max-width:760px){ .intro-grid{ grid-template-columns:1fr; } }
+  .intro-card{
+    background:var(--navy);
+    color:#EFF3F8;
+    border-radius:var(--radius);
+    padding:30px 28px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .intro-card h3{ font-size:19px; color:var(--gold-soft); margin-bottom:12px; }
+  .intro-card p{ font-size:14.5px; line-height:1.85; color:#D9E0EA; }
+
+  /* Policy signature graphic */
+  .policy-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 26px;
+    display:flex; flex-direction:column; align-items:stretch; justify-content:center;
+  }
+  .policy-card .policy-title{ font-size:12px; font-weight:700; color:var(--ink-soft); letter-spacing:.1em; margin-bottom:16px; }
+  .policy-list{ display:flex; flex-direction:column; gap:14px; }
+  .policy-item .ptitle{
+    font-size:14.5px; font-weight:700; color:var(--navy); margin-bottom:4px;
+  }
+  .policy-item .pdesc{
+    font-size:13px; color:var(--ink-soft); line-height:1.7; word-break:keep-all;
+  }
+
+  /* ===== Carousel ===== */
+  .carousel-wrap{ margin:34px 0 6px; position:relative; }
+  .carousel-title{ font-size:13px; font-weight:700; color:var(--navy); margin-bottom:12px; }
+  .carousel{
+    display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory;
+    padding-bottom:10px; scrollbar-width:thin;
+  }
+  .carousel .card{
+    flex:0 0 auto; scroll-snap-align:start;
+    width:150px; background:var(--white);
+    border:1px solid var(--line); border-radius:14px;
+    padding:20px 14px; text-align:center;
+  }
+  .dept-section.tint .carousel .card{ background:var(--cream); }
+  .carousel .card .dot{
+    width:38px; height:38px; border-radius:50%; margin:0 auto 12px;
+    background:var(--gold-soft); display:flex; align-items:center; justify-content:center;
+    color:var(--navy); font-weight:700; font-family:'Noto Serif KR',serif; font-size:13px;
+  }
+  .carousel .card .name{ font-size:13px; font-weight:500; color:var(--ink); line-height:1.4; }
+
+  /* ===== Utility rows: facility / cafe / contact ===== */
+  .util-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:34px;
+  }
+  @media (max-width:760px){ .util-grid{ grid-template-columns:1fr; } }
+  .util-box{
+    border:1px solid var(--line); border-radius:14px; padding:20px;
+    background:var(--white);
+  }
+  .dept-section.tint .util-box{ background:var(--cream); }
+  .util-box h4{ font-size:13px; color:var(--sage); letter-spacing:.06em; margin-bottom:8px; }
+  .util-box .body{ font-size:13.5px; color:var(--ink); line-height:1.7; }
+  .cafe-btn{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+    background:var(--navy); color:#fff; font-size:13px; font-weight:600;
+    padding:8px 14px; border-radius:999px;
+  }
+  .facility-list{ display:flex; flex-wrap:wrap; gap:8px; }
+  .facility-pill{
+    background:var(--sage-soft); color:var(--navy); font-size:12.5px; font-weight:600;
+    padding:6px 12px; border-radius:999px;
+  }
+  .note{
+    font-size:12px; color:var(--ink-soft); margin-top:10px; line-height:1.6;
+  }
+
+  /* ===== 청년회 table ===== */
+  .rank-table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13.5px; }
+  .rank-table th, .rank-table td{
+    border:1px solid var(--line); padding:10px 12px; text-align:center;
+  }
+  .rank-table th{ background:var(--navy); color:#fff; font-weight:500; }
+  .rank-table td{ background:var(--white); }
+  .dept-section.tint .rank-table td{ background:var(--cream); }
+
+  /* ===== 시니어스쿨 특화(큰 글씨) ===== */
+  #senior .section-head h2{ font-size:clamp(26px,3.8vw,36px); }
+  #senior .section-head .lead{ font-size:16.5px; }
+  #senior .intro-card p{ font-size:16.5px; line-height:2; }
+  #senior .icon-card .label{ font-size:15.5px; }
+  #senior .util-box .body{ font-size:15px; }
+  #senior .highlight-banner{
+    background:linear-gradient(120deg, var(--gold) 0%, #DDB458 100%);
+    color:var(--navy-deep); border-radius:var(--radius);
+    padding:22px 24px; margin:26px 0; display:flex; gap:16px; align-items:center;
+  }
+  #senior .highlight-banner .tag{
+    background:var(--navy-deep); color:var(--gold-soft); font-size:12px; font-weight:700;
+    padding:5px 10px; border-radius:999px; flex:0 0 auto;
+  }
+  #senior .highlight-banner p{ font-size:15.5px; font-weight:700; line-height:1.5; }
+
+  /* ===== 평생교육원 curriculum ===== */
+  .curri-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:26px; }
+  @media (max-width:760px){ .curri-grid{ grid-template-columns:1fr; } }
+  .curri-box{
+    background:var(--navy); color:#fff; border-radius:14px; padding:20px;
+  }
+  .curri-box .k{ font-size:12px; color:var(--gold-soft); letter-spacing:.08em; margin-bottom:6px; }
+  .curri-box .v{ font-size:15px; font-weight:700; line-height:1.5; }
+  .benefit-list{ margin-top:22px; background:var(--white); border:1px solid var(--line); border-radius:14px; padding:20px 22px; }
+  .benefit-list li{ font-size:13.5px; line-height:1.9; color:var(--ink); }
+  .btn-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:11px 20px; border-radius:999px; font-size:13.5px; font-weight:700;
+    cursor:pointer; border:1px solid var(--navy);
+  }
+  .btn.solid{ background:var(--navy); color:#fff; }
+  .btn.ghost{ background:transparent; color:var(--navy); }
+
+  /* ===== 새소식반 ===== */
+  .verse-box{
+    background:var(--sage-soft); border-left:4px solid var(--sage);
+    border-radius:0 12px 12px 0; padding:16px 20px; margin-top:22px;
+  }
+  .verse-box p{ font-size:13.5px; line-height:1.9; color:var(--navy); }
+  .verse-box p + p{ margin-top:8px; }
+  .faq{ margin-top:30px; }
+  .faq-item{ border-bottom:1px solid var(--line); padding:16px 0; }
+  .faq-item .q{ font-weight:700; color:var(--navy); font-size:14px; margin-bottom:6px; }
+  .faq-item .a{ font-size:13.5px; color:var(--ink-soft); line-height:1.8; }
+  .place-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px; }
+  @media (max-width:760px){ .place-grid{ grid-template-columns:1fr; } }
+  .place-card{
+    background:var(--white); border:1px dashed var(--gold); border-radius:14px; padding:18px;
+  }
+  .place-card .place-tag{
+    font-size:11px; font-weight:700; color:var(--gold); letter-spacing:.06em; margin-bottom:8px;
+  }
+  .place-card dl{ margin:0; font-size:13px; }
+  .place-card dt{ color:var(--ink-soft); display:inline; }
+  .place-card dd{ margin:0 0 6px; display:inline; font-weight:600; }
+  .place-card .row{ display:block; margin-bottom:4px; }
+  .privacy-note{
+    margin-top:16px; font-size:12px; color:var(--ink-soft);
+    background:#F4F0E4; border-radius:10px; padding:12px 14px; line-height:1.7;
+  }
+
+  /* ===== Footer ===== */
+  footer{
+    background:var(--navy-deep); color:#B9C4D6; padding:40px 24px; text-align:center; font-size:12.5px;
+    line-height:1.9;
+  }
+  footer .fb{ color:var(--gold-soft); font-family:'Noto Serif KR',serif; font-size:15px; margin-bottom:8px; }
+
+  /* back to top */
+  #toTop{
+    position:fixed; right:20px; bottom:20px; z-index:90;
+    width:44px; height:44px; border-radius:50%;
+    background:var(--navy); color:#fff; border:none; cursor:pointer;
+    font-size:16px; box-shadow:var(--shadow);
+    opacity:0; pointer-events:none; transition:opacity .2s ease;
+  }
+  #toTop.show{ opacity:1; pointer-events:auto; }
+</style>
+</head>
+<body>
+
+<div class="topbar">경향교회 교육기관 &nbsp;·&nbsp; 다음세대부터 어르신까지, 말씀 위에 세우는 배움의 공동체</div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="brand-row">
+      <div class="brand">경향교회 <span>교육기관</span></div>
+      <div class="sub">GHPC Education</div>
+    </div>
+    <nav class="dept-nav" id="deptNav">
+      <button data-target="#sunday">주일학교</button>
+      <button data-target="#teens">중·고등부</button>
+      <button data-target="#college">대학부</button>
+      <button data-target="#youngadult">청년회</button>
+      <button data-target="#senior">경향시니어스쿨</button>
+      <button data-target="#lifelong">평생교육원</button>
+      <button data-target="#newsclass">새소식반</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">GYUNGHYANG CHURCH · EDUCATION</div>
+  <h1>영아부터 어르신까지,<br><em>한 말씀</em> 위에서 자라는 사람들</h1>
+  <p class="desc">경향교회 교육기관은 태아부터 어르신까지 전 생애를 하나님중심 · 교회중심 · 성경중심의 신앙으로 양육합니다. 위 메뉴를 눌러 원하는 부서로 바로 이동해 보세요.</p>
+</section>
+
+<!-- ================= 1. 주일학교 ================= -->
+<section class="dept-section" id="sunday">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">01 · SUNDAY SCHOOL</div>
+      <h2>주일학교</h2>
+      <p class="lead">미취학부와 초등부로 나뉘어 연령에 맞는 예배와 양육이 이루어지는 교육기관입니다.</p>
+    </div>
+
+    <div class="icon-group-title">미취학부</div>
+    <div class="icon-row">
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="9" r="4"/><path d="M6 20c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="10" cy="8.5" r="0.4" fill="#1E3350"/><circle cx="14" cy="8.5" r="0.4" fill="#1E3350"/></svg></div>
+        <div class="label">영아부</div>
+        <div class="meta">0~3세 · 주일 9:00<br>제1교육실</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="7" r="3.4"/><path d="M12 10.4V15M8 13l4 2 4-2M9 20h6"/></svg></div>
+        <div class="label">유아부</div>
+        <div class="meta">4~5세 · 주일 9:00<br>제7교육실</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="7" r="3.4"/><path d="M12 10.4V15M8 13l4 2 4-2M9 20h6"/></svg></div>
+        <div class="label">유치1부</div>
+        <div class="meta">6~7세 · 주일 9:00<br>제2교육실</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="7" r="3.4"/><path d="M12 10.4V15M8 13l4 2 4-2M9 20h6"/></svg></div>
+        <div class="label">유치2부</div>
+        <div class="meta">0~7세 · 주일 11:00<br>제1교육실</div>
+      </div>
+    </div>
+
+    <div class="icon-group-title">초등부</div>
+    <div class="icon-row">
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10l7-4 7 4v10"/><path d="M9 20v-6h6v6"/></svg></div>
+        <div class="label">초등1부</div>
+        <div class="meta">초1~2학년 · 주일 9:00<br>제4교육실</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10l7-4 7 4v10"/><path d="M9 20v-6h6v6"/></svg></div>
+        <div class="label">초등2부</div>
+        <div class="meta">초3~4학년 · 주일 9:00<br>제3교육실</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10l7-4 7 4v10"/><path d="M9 20v-6h6v6"/></svg></div>
+        <div class="label">초등3부</div>
+        <div class="meta">초5~6학년 · 주일 9:00<br>제8교육실</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10l7-4 7 4v10"/><path d="M9 20v-6h6v6"/></svg></div>
+        <div class="label">초등4부</div>
+        <div class="meta">초1~6학년 · 주일 11:00<br>제3교육실</div>
+      </div>
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>주일학교 소개</h3>
+        <p>경향교회 주일학교는 영아부·유아부·유치부·초등부로 조직되어, 담임목사의 주일 말씀을 각 부서 눈높이에 맞게 전하며 온 교회가 같은 말씀으로 자랍니다. 다양한 프로그램으로 어린이 전도의 기회도 넓혀가고 있습니다.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">교육 방침</div>
+        <div class="policy-list">
+          <div class="policy-item"><p class="ptitle">첫째, 하나님 중심</p><p class="pdesc">모든 예배와 배움의 출발점은 하나님을 아는 것입니다.</p></div>
+          <div class="policy-item"><p class="ptitle">둘째, 교회 중심</p><p class="pdesc">각 부서는 홀로가 아닌 교회 공동체 안에서 함께 자랍니다.</p></div>
+          <div class="policy-item"><p class="ptitle">셋째, 성경 중심</p><p class="pdesc">모든 가르침은 하나님의 말씀인 성경 위에 굳게 섭니다.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-title">주요 행사</div>
+      <div class="carousel">
+        <div class="card"><div class="dot">01</div><div class="name">겨울성경학교</div></div>
+        <div class="card"><div class="dot">02</div><div class="name">어린이주일</div></div>
+        <div class="card"><div class="dot">03</div><div class="name">문화교실</div></div>
+        <div class="card"><div class="dot">04</div><div class="name">여름성경학교</div></div>
+        <div class="card"><div class="dot">05</div><div class="name">성탄찬양예배</div></div>
+        <div class="card"><div class="dot">06</div><div class="name">그림글짓기대회</div></div>
+      </div>
+      <div class="note">* 새신자·교사를 위한 연간 행사계획표는 추후 별도로 안내될 예정입니다.</div>
+    </div>
+
+    <div class="util-grid">
+      <div class="util-box">
+        <h4>주요 시설</h4>
+        <div class="facility-list">
+          <span class="facility-pill">키즈그라운드</span>
+          <span class="facility-pill">운동장</span>
+          <span class="facility-pill">수유실</span>
+          <span class="facility-pill">제1~8교육실</span>
+        </div>
+      </div>
+      <div class="util-box">
+        <h4>카페 바로가기</h4>
+        <div class="body">주일학교 소식과 자료는 네이버 카페에서 확인하실 수 있습니다.</div>
+        <a class="cafe-btn" href="https://cafe.naver.com/ghpcedu1" target="_blank" rel="noopener">주일학교 카페 ↗</a>
+      </div>
+      <div class="util-box">
+        <h4>문의처</h4>
+        <div class="body">각 부서 담당교역자 및 교육실로 문의해 주세요.<br>교회 대표전화 02-3663-0333</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 2. 중·고등부 ================= -->
+<section class="dept-section tint" id="teens">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">02 · MIDDLE & HIGH SCHOOL</div>
+      <h2>중·고등부 S.F.C.</h2>
+      <p class="lead">학업과 신앙을 함께 세워가는 청소년 신앙공동체, S.F.C.입니다.</p>
+    </div>
+
+    <div class="icon-row">
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l10-4 10 4-10 4-10-4z"/><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/><path d="M22 8v6"/></svg></div>
+        <div class="label">중등부</div>
+        <div class="meta">중학교 1~3학년</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l10-4 10 4-10 4-10-4z"/><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/><path d="M22 8v6"/></svg></div>
+        <div class="label">고등부</div>
+        <div class="meta">고등학교 1~3학년</div>
+      </div>
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>S.F.C. 소개</h3>
+        <p>그리스도 때문에 존재하고, 그리스도께 소속되어, 그리스도를 위해 살아가는 학생들의 모임입니다. 주일은 예배·성경공부·교제로, 학교에서는 빛과 소금으로 살아가도록 함께 세워갑니다.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">교육 방침</div>
+        <div class="policy-list">
+          <div class="policy-item"><p class="ptitle">첫째, 하나님 중심</p><p class="pdesc">모든 예배와 배움의 출발점은 하나님을 아는 것입니다.</p></div>
+          <div class="policy-item"><p class="ptitle">둘째, 교회 중심</p><p class="pdesc">각 부서는 홀로가 아닌 교회 공동체 안에서 함께 자랍니다.</p></div>
+          <div class="policy-item"><p class="ptitle">셋째, 성경 중심</p><p class="pdesc">모든 가르침은 하나님의 말씀인 성경 위에 굳게 섭니다.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-title">주요 행사</div>
+      <div class="carousel">
+        <div class="card"><div class="dot">01</div><div class="name">위원 MT</div></div>
+        <div class="card"><div class="dot">02</div><div class="name">부활주일행사</div></div>
+        <div class="card"><div class="dot">03</div><div class="name">고기파티</div></div>
+        <div class="card"><div class="dot">04</div><div class="name">Come and<br>See day</div></div>
+        <div class="card"><div class="dot">05</div><div class="name">체육대회</div></div>
+        <div class="card"><div class="dot">06</div><div class="name">교역자특강</div></div>
+        <div class="card"><div class="dot">07</div><div class="name">운동리그</div></div>
+        <div class="card"><div class="dot">08</div><div class="name">수양회</div></div>
+        <div class="card"><div class="dot">09</div><div class="name">수험생을<br>위한 기도</div></div>
+      </div>
+      <div class="note">* 새신자·교사를 위한 연간 행사계획표는 추후 별도로 안내될 예정입니다.</div>
+    </div>
+
+    <div class="util-grid">
+      <div class="util-box">
+        <h4>카페 바로가기</h4>
+        <div class="body">중·고등부 소식은 네이버 카페에서 확인하실 수 있습니다.</div>
+        <a class="cafe-btn" href="https://cafe.naver.com/ghmhsfc" target="_blank" rel="noopener">중·고등부 카페 ↗</a>
+      </div>
+      <div class="util-box">
+        <h4>문의처</h4>
+        <div class="body">담당교역자 및 부서 임원에게 문의해 주세요.<br>교회 대표전화 02-3663-0333</div>
+      </div>
+      <div class="util-box">
+        <h4>함께 보기</h4>
+        <div class="body">진학 후에는 <a href="#college" style="color:var(--navy); font-weight:700; text-decoration:underline;">대학부 S.F.C.</a>로 자연스럽게 이어집니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3. 대학부 ================= -->
+<section class="dept-section" id="college">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">03 · COLLEGE</div>
+      <h2>대학부 S.F.C.</h2>
+      <p class="lead">예배와 성경공부로 기독교적 세계관을 세워가는 대학생 공동체입니다.</p>
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>S.F.C. 소개</h3>
+        <p>주일 오후 예배와 함께 새빛부·선교부 등 부서모임, 조장성경공부가 진행되며, 새내기학교·동기수양회·대학부 M.T.·단기선교·Shalom's Day 등을 통해 신앙과 공동체가 함께 성장합니다.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">교육 방침</div>
+        <div class="policy-list">
+          <div class="policy-item"><p class="ptitle">첫째, 하나님 중심</p><p class="pdesc">모든 예배와 배움의 출발점은 하나님을 아는 것입니다.</p></div>
+          <div class="policy-item"><p class="ptitle">둘째, 교회 중심</p><p class="pdesc">각 부서는 홀로가 아닌 교회 공동체 안에서 함께 자랍니다.</p></div>
+          <div class="policy-item"><p class="ptitle">셋째, 성경 중심</p><p class="pdesc">모든 가르침은 하나님의 말씀인 성경 위에 굳게 섭니다.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-title">주요 행사</div>
+      <div class="carousel">
+        <div class="card"><div class="dot">01</div><div class="name">샬롬 M·T</div></div>
+        <div class="card"><div class="dot">02</div><div class="name">조별모임</div></div>
+        <div class="card"><div class="dot">03</div><div class="name">대학생대회</div></div>
+        <div class="card"><div class="dot">04</div><div class="name">단기선교</div></div>
+        <div class="card"><div class="dot">05</div><div class="name">S.F.C. 주일</div></div>
+        <div class="card"><div class="dot">06</div><div class="name">샬롬투어</div></div>
+        <div class="card"><div class="dot">07</div><div class="name">샬롬의 날</div></div>
+      </div>
+      <div class="note">* 새신자·교사를 위한 연간 행사계획표는 추후 별도로 안내될 예정입니다.</div>
+    </div>
+
+    <div class="util-grid">
+      <div class="util-box">
+        <h4>카페 바로가기</h4>
+        <div class="body">대학부 소식은 네이버 카페에서 확인하실 수 있습니다.</div>
+        <a class="cafe-btn" href="https://cafe.naver.com/shalomuniv?tc=shared_link" target="_blank" rel="noopener">대학부 카페 ↗</a>
+      </div>
+      <div class="util-box">
+        <h4>문의처</h4>
+        <div class="body">담당교역자 및 부서 임원에게 문의해 주세요.<br>교회 대표전화 02-3663-0333</div>
+      </div>
+      <div class="util-box">
+        <h4>함께 보기</h4>
+        <div class="body">졸업 후에는 <a href="#youngadult" style="color:var(--navy); font-weight:700; text-decoration:underline;">청년회</a>로 자연스럽게 이어집니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 4. 청년회 ================= -->
+<section class="dept-section tint" id="youngadult">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">04 · YOUNG ADULTS</div>
+      <h2>청년회</h2>
+      <p class="lead">삶의 모든 영역에서 그리스도인의 사명을 감당하는 청년 공동체입니다.</p>
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>청년회 소개</h3>
+        <p>연령별 10개 지회로 조직되어 주일 모임·팀 모임·구역 모임·새가족 양육 등을 통해 바른 신앙과 성숙한 그리스도인의 삶을 함께 훈련합니다. 교회학교 교사, 찬양대 등 교회 곳곳에서도 함께 섬깁니다.</p>
+      </div>
+      <div class="policy-card" style="justify-content:flex-start;">
+        <div class="policy-title">청년회 구성표</div>
+        <table class="rank-table">
+          <tr><th>지회</th><th>기준</th></tr>
+          <tr><td>청년전도회</td><td>1984년생 이상</td></tr>
+          <tr><td>1청년회</td><td>1986년생 이상</td></tr>
+          <tr><td>2청년회</td><td>1987~1988년생</td></tr>
+          <tr><td>3청년회</td><td>1989~1991년생</td></tr>
+          <tr><td>4청년회</td><td>1992~1993년생</td></tr>
+          <tr><td>5청년회</td><td>1994~1995년생</td></tr>
+          <tr><td>6청년회</td><td>1996년생</td></tr>
+          <tr><td>7청년회</td><td>1997년생</td></tr>
+          <tr><td>8청년회</td><td>1998년생</td></tr>
+          <tr><td>9청년회</td><td>1999년생</td></tr>
+          <tr><td>10청년회</td><td>2000년생 이하</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-title">주요 행사</div>
+      <div class="carousel">
+        <div class="card"><div class="dot">01</div><div class="name">사랑의 모임</div></div>
+        <div class="card"><div class="dot">02</div><div class="name">단기선교</div></div>
+        <div class="card"><div class="dot">03</div><div class="name">수련회</div></div>
+        <div class="card"><div class="dot">04</div><div class="name">엠티</div></div>
+        <div class="card"><div class="dot">05</div><div class="name">임마누엘의 날</div></div>
+        <div class="card"><div class="dot">06</div><div class="name">하계봉사</div></div>
+      </div>
+    </div>
+
+    <div class="util-grid">
+      <div class="util-box">
+        <h4>카페 바로가기</h4>
+        <div class="body">청년회 소식은 네이버 카페에서 확인하실 수 있습니다.</div>
+        <a class="cafe-btn" href="https://cafe.naver.com/ghimmanuel" target="_blank" rel="noopener">청년회 카페 ↗</a>
+      </div>
+      <div class="util-box">
+        <h4>문의처</h4>
+        <div class="body">청년회 임원 또는 담당교역자에게 문의해 주세요.<br>교회 대표전화 02-3663-0333</div>
+      </div>
+      <div class="util-box">
+        <h4>어디에 속하나요?</h4>
+        <div class="body">출생연도 기준으로 지회가 정해집니다. 잘 모르시면 주일 모임에 오셔서 안내를 받으실 수 있어요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. 경향시니어스쿨 ================= -->
+<section class="dept-section" id="senior">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">05 · SENIOR SCHOOL</div>
+      <h2>경향시니어스쿨</h2>
+      <p class="lead">어르신들이 주님 안에서 건강하고 기쁘게 지내시도록 마련된 모임입니다.</p>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-title">활동 모습</div>
+      <div class="carousel">
+        <div class="card" style="width:170px;"><div class="dot">🎬</div><div class="name">시니어스쿨<br>활동 영상</div></div>
+        <div class="card" style="width:170px;"><div class="dot">📷</div><div class="name">봄소풍</div></div>
+        <div class="card" style="width:170px;"><div class="dot">📷</div><div class="name">가을소풍</div></div>
+        <div class="card" style="width:170px;"><div class="dot">📷</div><div class="name">함께한 식사</div></div>
+      </div>
+      <div class="note">* 실제 활동 사진·영상은 관리자 페이지에서 등록해 주세요.</div>
+    </div>
+
+    <div class="highlight-banner">
+      <p>작년 초빙 가수와 함께한 특별 시간, 올해도 큰 기대를 모으고 있어요! (사진·영상 준비중)</p>
+    </div>
+
+    <div class="intro-card" style="margin:26px 0;">
+      <h3>경향시니어스쿨 소개</h3>
+      <p>봄학기와 가을학기로 운영되며, 주일 모임에서는 제네바신학대학원 교수님을 모시고 깊이 있는 성경공부를, 수요 모임에서는 예배와 특강·특별활동·소풍을, 식사 모임에서는 권사회가 정성껏 준비한 따뜻한 식사를 함께 나눕니다.</p>
+    </div>
+
+    <div class="icon-row">
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6L19 19M5 19l1.4-1.4M17.6 6.4L19 5"/></svg></div>
+        <div class="label">주일 모임</div>
+        <div class="meta">성경공부 (제네바신학대학원 교수 강의)</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="#1E3350" stroke="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8-6.2-3.6-6.2 3.6 1.6-6.8-5.2-4.6 6.9-.7z"/></svg></div>
+        <div class="label">수요 모임</div>
+        <div class="meta">예배 · 특강 · 특별활동 · 소풍</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9C.8 7.4 3 4 6.5 4c2 0 3.4 1 5.5 3 2.1-2 3.5-3 5.5-3 3.5 0 5.7 3.4 4 7-2.5 4.6-9.5 9-9.5 9z"/></svg></div>
+        <div class="label">식사 모임</div>
+        <div class="meta">권사회가 준비한 식사 교제</div>
+      </div>
+    </div>
+
+    <div class="util-grid">
+      <div class="util-box">
+        <h4>강사 소개</h4>
+        <div class="body">제네바신학대학원 교수님들이 직접 주일 성경공부를 인도해 주십니다. (강사 프로필은 추후 게시)</div>
+      </div>
+      <div class="util-box">
+        <h4>세부 일정표</h4>
+        <div class="body">봄학기·가을학기 세부 계획표는 준비되는 대로 이곳에 게시할 예정입니다.</div>
+      </div>
+      <div class="util-box">
+        <h4>문의처</h4>
+        <div class="body">담당교역자 및 부서 임원에게 문의해 주세요.<br>교회 대표전화 02-3663-0333</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 6. 평생교육원 ================= -->
+<section class="dept-section tint" id="lifelong">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">06 · LIFELONG EDUCATION</div>
+      <h2>제네바신학대학원 평생교육원</h2>
+      <p class="lead">평신도에게 깊이 있는 신학과 성경 지식을 배울 기회를 제공하는 과정입니다.</p>
+    </div>
+
+    <div class="intro-card">
+      <h3>평생교육원 소개</h3>
+      <p>개혁주의 신학에 입각해 제네바신학대학원 교수진이 직접 강의하며, 여자교역자를 배출해 온 전통을 이어 평신도들에게도 신학교육의 기회를 열어드립니다.</p>
+    </div>
+
+    <div class="curri-grid">
+      <div class="curri-box"><div class="k">개강</div><div class="v">매년 상반기 3월 · 하반기 8월</div></div>
+      <div class="curri-box"><div class="k">수업 시간</div><div class="v">월 · 화 온라인 수업</div></div>
+      <div class="curri-box"><div class="k">수료 기간</div><div class="v">전 과목 이수 시 2년 4학기</div></div>
+    </div>
+
+    <div class="benefit-list">
+      <div class="carousel-title" style="margin-bottom:10px;">특징 및 혜택</div>
+      <ul style="padding-left:18px; margin:0;">
+        <li>전 과목 이수 시 평생교육원장·총장 명의 수료증 수여</li>
+        <li>제네바신학대학원 교수진의 직접 강의</li>
+        <li>제신원 각종 부대시설 이용 가능</li>
+        <li>전 과목 이수 여학생은 소정 시험·선발 후 여전도사 자격증 수여</li>
+        <li>피택권사고시 면제</li>
+      </ul>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn solid" href="#">온라인 신청하기</a>
+      <a class="btn ghost" href="#">수강신청서 다운로드</a>
+      <a class="btn ghost" href="#">수강신청 안내 보기</a>
+      <a class="btn ghost" href="http://gts.ac.kr/" target="_blank" rel="noopener">제네바신학대학원 홈페이지 ↗</a>
+    </div>
+    <div class="note">자세한 문의는 제네바신학대학원 교학처(031-958-6001)로 연락해 주세요.</div>
+  </div>
+</section>
+
+<!-- ================= 7. 새소식반 ================= -->
+<section class="dept-section" id="newsclass">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="eyebrow">07 · GOSPEL CLASS</div>
+      <h2>경향어린이 새소식반</h2>
+      <p class="lead">성도가 사는 지역에서 동네 어린이들에게 복음을 전하는 어린이 전도 모임입니다.</p>
+    </div>
+
+    <div class="verse-box">
+      <p>“마땅히 행할 길을 아이에게 가르치라 그리하면 늙어도 그것을 떠나지 아니하리라.” (잠언 22:6)</p>
+      <p>“예수께서 이르시되 어린 아이들을 용납하고 내게 오는 것을 금하지 말라 천국이 이런 사람의 것이니라.” (마태복음 19:14)</p>
+    </div>
+
+    <div class="icon-row">
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+        <div class="label">봄학기</div>
+        <div class="meta">4월 초 ~ 6월 중순</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+        <div class="label">가을학기</div>
+        <div class="meta">9월 초 ~ 11월 초</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg></div>
+        <div class="label">모이는 곳</div>
+        <div class="meta">동네 놀이터 · 공원 · 아파트 · 주택 등</div>
+      </div>
+      <div class="icon-card">
+        <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#1E3350" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10l7-4 7 4v10"/><path d="M9 20v-6h6v6"/></svg></div>
+        <div class="label">진행 요일</div>
+        <div class="meta">처소별로 화~토 중 진행</div>
+      </div>
+    </div>
+
+    <div class="carousel-title" style="margin-top:30px;">처소별 소개 (예시 · 실제 정보로 교체해 주세요)</div>
+    <div class="place-grid">
+      <div class="place-card">
+        <div class="place-tag">예시 처소 1</div>
+        <span class="row"><dt>교사</dt> <dd>○○○ 교사</dd></span>
+        <span class="row"><dt>위치</dt> <dd>○○동 놀이터</dd></span>
+        <span class="row"><dt>자랑거리</dt> <dd>찬양과 만들기가 인기!</dd></span>
+      </div>
+      <div class="place-card">
+        <div class="place-tag">예시 처소 2</div>
+        <span class="row"><dt>교사</dt> <dd>○○○ 교사</dd></span>
+        <span class="row"><dt>위치</dt> <dd>○○아파트 단지 내</dd></span>
+        <span class="row"><dt>자랑거리</dt> <dd>매주 웃음이 끊이지 않아요</dd></span>
+      </div>
+      <div class="place-card">
+        <div class="place-tag">예시 처소 3</div>
+        <span class="row"><dt>교사</dt> <dd>○○○ 교사</dd></span>
+        <span class="row"><dt>위치</dt> <dd>○○공원</dd></span>
+        <span class="row"><dt>자랑거리</dt> <dd>부모님 전도로도 이어져요</dd></span>
+      </div>
+    </div>
+    <div class="privacy-note">⚠ 어린이 사진·영상을 게시할 때는 얼굴이 드러나지 않게 하거나 보호자 동의를 받는 등 개인정보 보호에 유의해 주세요.</div>
+
+    <div class="faq" style="margin-top:36px;">
+      <div class="carousel-title">자주 묻는 질문</div>
+      <div class="faq-item">
+        <div class="q">새소식반은 무엇인가요?</div>
+        <div class="a">성도가 사는 지역의 어린이들에게 복음을 전하고 부모와 자녀가 자연스럽게 주일에 교회로 나오도록 돕는 프로그램입니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">누가 어떻게 섬기나요?</div>
+        <div class="a">말씀교사·2부 교사·협력교사·방 제공자·전도교사가 함께 준비합니다. 매 주일 강습회를 통해 찬양·율동·말씀을 미리 훈련받아요.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">우리 새소식반의 자랑은?</div>
+        <div class="a">신나는 찬양과 율동, 쉽고 재미있는 말씀과 만들기로 '예수님을 닮아가는 어린이'로 자라도록 돕는 프로그램이에요.</div>
+      </div>
+    </div>
+
+    <div class="util-grid" style="margin-top:32px;">
+      <div class="util-box">
+        <h4>카페 바로가기</h4>
+        <div class="body">새소식반 소식과 자료를 확인하실 수 있습니다. (별도 카페 분리 운영도 검토해 보세요)</div>
+        <a class="cafe-btn" href="https://cafe.naver.com/ghpcedu1" target="_blank" rel="noopener">새소식반 카페 ↗</a>
+      </div>
+      <div class="util-box">
+        <h4>문의처</h4>
+        <div class="body">담당교역자 및 부서 임원에게 문의해 주세요.<br>교회 대표전화 02-3663-0333</div>
+      </div>
+      <div class="util-box">
+        <h4>서울 전역 약 18개소</h4>
+        <div class="body">현재 서울 전 지역 약 18개 처소에서 새소식반이 열리고 있습니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fb">경향교회</div>
+  <div>서울특별시 강서구 화곡로 375 · TEL. 02-3663-0333</div>
+  <div>이 페이지는 경향교회 교육기관 소개를 위해 제작되었습니다.</div>
+</footer>
+
+<button id="toTop" aria-label="맨 위로">↑</button>
+
+<script>
+  // dept nav scroll + active state
+  const buttons = document.querySelectorAll('.dept-nav button');
+  const sections = [...buttons].map(b => document.querySelector(b.dataset.target));
+
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.querySelector(btn.dataset.target);
+      if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const idx = sections.indexOf(entry.target);
+        buttons.forEach(b=>b.classList.remove('active'));
+        if(idx>-1) buttons[idx].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-45% 0px -45% 0px', threshold:0});
+  sections.forEach(s=> s && io.observe(s));
+
+  // back to top
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', ()=>{
+    toTop.classList.toggle('show', window.scrollY > 600);
+  });
+  toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+</script>
+
+</body>
+</html>

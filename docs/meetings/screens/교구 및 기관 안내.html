@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경향교회 공동체 소개</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  :root {
+    --navy:#1a2744; --gold:#c9a84c; --gold-light:#f0dfa0;
+    --cream:#faf8f3; --white:#ffffff; --gray-light:#f0eeea;
+    --gray-mid:#d0cec8; --gray-text:#6b6860; --red:#b84040;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;}
+
+  /* HERO */
+  .hero{background:var(--navy);padding:56px 24px 44px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(201,168,76,.18) 0%,transparent 60%);pointer-events:none;}
+  .hero-eyebrow{font-size:12px;font-weight:500;letter-spacing:.18em;color:var(--gold);margin-bottom:16px;}
+  .hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(26px,5vw,42px);font-weight:700;color:#fff;line-height:1.35;}
+  .hero h1 span{color:var(--gold);}
+  .hero-sub{margin-top:14px;font-size:15px;color:rgba(255,255,255,.6);font-weight:300;}
+
+  /* TAB — 피드백2: 크게 */
+  .tab-bar{background:#fff;border-bottom:2px solid var(--gold-light);display:flex;justify-content:center;flex-wrap:wrap;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(26,39,68,.07);}
+  .tab-btn{font-family:'Noto Sans KR',sans-serif;font-size:18px;font-weight:700;color:var(--gray-text);background:none;border:none;padding:20px 30px;cursor:pointer;position:relative;transition:color .2s;white-space:nowrap;}
+  .tab-btn::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .25s ease;}
+  .tab-btn.active{color:var(--navy);} .tab-btn.active::after{transform:scaleX(1);} .tab-btn:hover{color:var(--navy);}
+
+  /* PANEL */
+  .panel{display:none;max-width:900px;margin:0 auto;padding:52px 24px 80px;animation:fadeIn .3s ease;}
+  .panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  .panel-badge{display:inline-block;background:var(--navy);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.14em;padding:4px 12px;border-radius:2px;margin-bottom:14px;}
+  .panel-title{font-family:'Noto Serif KR',serif;font-size:clamp(22px,4vw,32px);font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.4;}
+
+  /* 피드백3: 줄바꿈 = 문장 단위 */
+  .panel-desc{font-size:15px;line-height:2;color:#3a3a4a;max-width:660px;border-left:3px solid var(--gold);padding-left:16px;margin-bottom:40px;}
+  .panel-desc p+p{margin-top:4px;}
+
+  .divider{border:none;border-top:1px solid var(--gray-mid);margin:32px 0;}
+  .section-heading{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+
+  /* TABLE */
+  .info-table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 8px rgba(26,39,68,.08);}
+  .info-table th{background:var(--navy);color:var(--gold);font-weight:700;padding:12px 16px;text-align:left;font-size:13px;}
+  .info-table td{padding:11px 16px;border-bottom:1px solid var(--gray-light);vertical-align:middle;line-height:1.6;}
+  .info-table tr:last-child td{border-bottom:none;}
+  .info-table tr:nth-child(even) td{background:#f8f6f1;}
+
+  /* CARDS */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+  .card{background:#fff;border:1px solid var(--gray-mid);border-radius:8px;padding:18px 20px;box-shadow:0 1px 6px rgba(26,39,68,.05);}
+  .card-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+  .card-value{font-size:14px;color:var(--navy);line-height:1.8;}
+
+  /* NOTE */
+  .note-box{background:#eef3fc;border-left:4px solid var(--navy);border-radius:0 6px 6px 0;padding:14px 18px;font-size:14px;color:var(--navy);line-height:1.8;margin-top:20px;}
+  .note-box strong{color:var(--red);}
+
+  /* MAP */
+  .map-outer{background:#fff;border:1px solid var(--gray-mid);border-radius:10px;padding:24px;box-shadow:0 2px 12px rgba(26,39,68,.06);}
+  .map-layout{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;}
+  .map-svg-col{flex:1 1 340px;}
+  .map-legend-col{flex:0 0 190px;}
+
+  /* 피드백4: 교구목록 hover */
+  .legend-item{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--navy);padding:6px 8px;border-radius:5px;cursor:pointer;transition:background .15s;margin-bottom:2px;user-select:none;}
+  .legend-item:hover{background:var(--gray-light);}
+  .legend-item.hl{background:var(--gold-light);font-weight:700;}
+  .legend-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(0,0,0,.1);}
+  .map-note{font-size:12px;color:var(--gray-text);margin-top:14px;line-height:1.7;border-top:1px solid var(--gray-light);padding-top:10px;}
+
+  /* SVG region states */
+  .gu-region{transition:opacity .18s,filter .18s;cursor:pointer;}
+  .gu-region.dimmed{opacity:.2;}
+  .gu-region.highlighted{filter:brightness(.82) saturate(1.6);stroke:#1a2744 !important;stroke-width:2.8 !important;}
+
+  .contact-line{margin-top:32px;font-size:13px;color:var(--gray-text);border-top:1px solid var(--gray-mid);padding-top:16px;}
+  .contact-line a{color:var(--navy);font-weight:600;text-decoration:none;}
+
+  @media(max-width:600px){
+    .tab-btn{font-size:15px;padding:15px 16px;}
+    .map-legend-col{flex:1 1 100%;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="hero-eyebrow">경향교회</p>
+  <h1>경향의 아름다운 <span>공동체들</span>을 소개합니다</h1>
+  <p class="hero-sub">나에게 맞는 공동체를 찾아보세요</p>
+</header>
+
+<nav class="tab-bar">
+  <button class="tab-btn active" onclick="show('jangnyeon',this)">장년</button>
+  <button class="tab-btn" onclick="show('sunday',this)">주일학교</button>
+  <button class="tab-btn" onclick="show('middle',this)">중·고등부</button>
+  <button class="tab-btn" onclick="show('college',this)">대학부</button>
+  <button class="tab-btn" onclick="show('youth',this)">청년회</button>
+</nav>
+
+<!-- ═══ 장년 ═══ -->
+<section class="panel active" id="jangnyeon">
+  <h2 class="panel-community-name">장년</h2>
+  <span class="panel-subtitle">기혼 성도들의 신앙 공동체</span>
+  <div class="panel-desc">
+    <p>장년 공동체는 기혼자로 이루어져 있으며, 교구(지역)별로 편성되어 각종 교회 활동을 함께합니다.</p>
+    <p>등록 후 거주 지역에 따라 장년부 교구에 속하게 됩니다.</p>
+  </div>
+
+  <p class="section-heading">교구 지도 — 서울·경기·인천</p>
+  <div class="map-outer">
+    <div class="map-layout">
+
+      <div class="map-svg-col">
+        <svg id="mainMap" viewBox="0 0 540 570" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Noto Sans KR',sans-serif;">
+          <!-- 바다 배경 -->
+          <rect width="540" height="570" fill="#cfe4f5" rx="8"/>
+          <!-- 육지 배경 -->
+          <polygon points="55,25 490,25 498,90 502,160 492,260 480,350 455,440 415,500 355,535 280,548 200,535 138,505 88,458 58,395 38,315 32,220 38,135 48,72" fill="#ede9e0" stroke="#c8c4bc" stroke-width="1"/>
+
+          <!-- 경기 북부·동부 배경 -->
+          <polygon class="gu-region" data-gu="bg"
+            points="385,45 490,45 498,100 500,175 488,230 462,242 435,228 405,215 395,200 400,155 392,100"
+            fill="#e0dbd0" stroke="#c8c4bc" stroke-width="1"/>
+          <text x="448" y="140" text-anchor="middle" font-size="11.5" fill="#a0998c" font-weight="500" pointer-events="none">경기 북부·동부</text>
+          <text x="448" y="156" text-anchor="middle" font-size="9" fill="#bbb" pointer-events="none">(북서울 교구 포함)</text>
+
+          <!-- 북서울 -->
+          <polygon class="gu-region" id="gu-bukseoul" data-gu="bukseoul"
+            points="115,55 385,45 392,100 400,155 395,200 365,212 335,205 305,200 272,204 242,207 212,210 185,215 162,218 140,212 122,200 118,165 112,120"
+            fill="#d5c8e8" stroke="#fff" stroke-width="1.5"/>
+          <text x="258" y="142" text-anchor="middle" font-size="15" fill="#1a2744" font-weight="700" pointer-events="none">북서울</text>
+          <text x="258" y="160" text-anchor="middle" font-size="10" fill="#555" pointer-events="none">(한강 이북 서울·경기)</text>
+
+          <!-- 김포 -->
+          <polygon class="gu-region" id="gu-gimpo" data-gu="gimpo"
+            points="55,125 112,120 118,165 115,215 100,255 72,265 50,244 42,192 46,148"
+            fill="#b8d4b0" stroke="#fff" stroke-width="1.5"/>
+          <text x="80" y="194" text-anchor="middle" font-size="13" fill="#1a2744" font-weight="700" pointer-events="none">김포</text>
+
+          <!-- 서서울(인천·부천) -->
+          <polygon class="gu-region" id="gu-seoseoul" data-gu="seoseoul"
+            points="42,264 72,265 100,255 114,295 108,348 86,388 62,397 40,368 34,312"
+            fill="#aec6df" stroke="#fff" stroke-width="1.5"/>
+          <text x="73" y="323" text-anchor="middle" font-size="12" fill="#1a2744" font-weight="700" pointer-events="none">서서울</text>
+          <text x="73" y="339" text-anchor="middle" font-size="9" fill="#444" pointer-events="none">(부천·인천)</text>
+
+          <!-- 강서구 -->
+          <polygon class="gu-region" id="gu-gangseo" data-gu="gangseo"
+            points="115,215 162,218 180,222 182,255 172,285 156,305 130,308 115,295 114,255"
+            fill="#f4a8a8" stroke="#fff" stroke-width="1.5"/>
+          <text x="149" y="260" text-anchor="middle" font-size="11.5" fill="#1a2744" font-weight="700" pointer-events="none">강서구</text>
+          <text x="149" y="275" text-anchor="middle" font-size="9" fill="#b84040" pointer-events="none">↓ 확대도</text>
+
+          <!-- 양천 -->
+          <polygon class="gu-region" id="gu-yangcheon" data-gu="yangcheon"
+            points="180,222 215,220 226,245 220,275 200,284 182,274 172,255"
+            fill="#f7d9a0" stroke="#fff" stroke-width="1.5"/>
+          <text x="199" y="252" text-anchor="middle" font-size="12" fill="#1a2744" font-weight="700" pointer-events="none">양천</text>
+
+          <!-- 여의도 -->
+          <ellipse class="gu-region" id="gu-yeouido" data-gu="yeouido"
+            cx="248" cy="292" rx="30" ry="13" fill="#ffe8b0" stroke="#fff" stroke-width="1.5"/>
+          <text x="248" y="296" text-anchor="middle" font-size="11" fill="#1a2744" font-weight="700" pointer-events="none">여의도</text>
+
+          <!-- 영등포 -->
+          <polygon class="gu-region" id="gu-yeongdeungpo" data-gu="yeongdeungpo"
+            points="220,275 250,268 276,274 280,305 265,325 238,327 218,310 214,290"
+            fill="#ffd080" stroke="#fff" stroke-width="1.5"/>
+          <text x="248" y="302" text-anchor="middle" font-size="12" fill="#1a2744" font-weight="700" pointer-events="none">영등포</text>
+
+          <!-- 남서울 -->
+          <polygon class="gu-region" id="gu-namseoul" data-gu="namseoul"
+            points="114,295 156,305 172,285 200,284 220,310 238,327 252,348 242,398 212,428 175,448 138,445 108,422 88,390 86,350 100,310"
+            fill="#b8e0d4" stroke="#fff" stroke-width="1.5"/>
+          <text x="170" y="382" text-anchor="middle" font-size="14" fill="#1a2744" font-weight="700" pointer-events="none">남서울</text>
+          <text x="170" y="400" text-anchor="middle" font-size="9.5" fill="#444" pointer-events="none">(구로·금천·관악</text>
+          <text x="170" y="413" text-anchor="middle" font-size="9.5" fill="#444" pointer-events="none">시흥·광명·안양·과천)</text>
+
+          <!-- 동서울 -->
+          <polygon class="gu-region" id="gu-dongseoul" data-gu="dongseoul"
+            points="278,204 335,205 365,212 395,200 432,214 452,256 462,315 452,375 432,428 390,458 350,468 312,458 278,428 258,385 252,348 264,318 278,296 280,255"
+            fill="#c5daf5" stroke="#fff" stroke-width="1.5"/>
+          <text x="362" y="338" text-anchor="middle" font-size="14" fill="#1a2744" font-weight="700" pointer-events="none">동서울</text>
+          <text x="362" y="356" text-anchor="middle" font-size="9.5" fill="#444" pointer-events="none">(동작·서초·강남·송파·강동</text>
+          <text x="362" y="370" text-anchor="middle" font-size="9.5" fill="#444" pointer-events="none">하남·성남·광주)</text>
+
+          <!-- 한강 -->
+          <path d="M 40,258 Q 95,250 148,255 Q 198,260 248,272 Q 295,284 345,280 Q 395,276 442,268"
+            fill="none" stroke="#5aa8dc" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
+          <text x="348" y="266" font-size="10" fill="#3a80b0" font-style="italic" pointer-events="none">한강</text>
+
+          <rect width="540" height="570" fill="none" rx="8" stroke="#a0a0a0" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <!-- 교구 목록 -->
+      <div class="map-legend-col">
+        <p class="section-heading" style="margin-bottom:10px;">교구 목록</p>
+        <div class="legend-item" data-target="gu-bukseoul"><span class="legend-dot" style="background:#d5c8e8"></span>북서울 교구</div>
+        <div class="legend-item" data-target="gu-yeouido"><span class="legend-dot" style="background:#ffe8b0"></span>여의도 교구</div>
+        <div class="legend-item" data-target="gu-yeongdeungpo"><span class="legend-dot" style="background:#ffd080"></span>영등포 교구</div>
+        <div class="legend-item" data-target="gu-yangcheon"><span class="legend-dot" style="background:#f7d9a0"></span>양천 교구</div>
+        <div class="legend-item" data-target="gu-gangseo"><span class="legend-dot" style="background:#f4a8a8"></span>강서구 교구</div>
+        <div class="legend-item" data-target="gu-namseoul"><span class="legend-dot" style="background:#b8e0d4"></span>남서울 교구</div>
+        <div class="legend-item" data-target="gu-dongseoul"><span class="legend-dot" style="background:#c5daf5"></span>동서울 교구</div>
+        <div class="legend-item" data-target="gu-gimpo"><span class="legend-dot" style="background:#b8d4b0"></span>김포 교구</div>
+        <div class="legend-item" data-target="gu-seoseoul"><span class="legend-dot" style="background:#aec6df"></span>서서울 교구</div>
+        <p class="map-note">목록에 마우스를 올리면 해당 교구가 지도에 강조됩니다.<br><br>거주지 기준으로 교구가 배정됩니다.</p>
+      </div>
+    </div>
+
+    <!-- 강서구 확대도 -->
+    <hr class="divider">
+    <p class="section-heading">강서구 확대 교구도</p>
+    <svg viewBox="0 0 580 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;font-family:'Noto Sans KR',sans-serif;">
+      <rect width="580" height="260" fill="#f2f0ec" rx="8"/>
+      <polygon points="20,30 110,30 110,120 20,120" fill="#d5c8e8" stroke="#fff" stroke-width="2"/>
+      <text x="65" y="73" text-anchor="middle" font-size="14" fill="#1a2744" font-weight="700">방화</text>
+      <text x="65" y="90" text-anchor="middle" font-size="10" fill="#555">(방화동)</text>
+      <polygon points="20,120 110,120 110,230 20,230" fill="#ffe8c0" stroke="#fff" stroke-width="2"/>
+      <text x="65" y="178" text-anchor="middle" font-size="14" fill="#1a2744" font-weight="700">마곡</text>
+      <text x="65" y="195" text-anchor="middle" font-size="10" fill="#555">(마곡동)</text>
+      <polygon points="110,30 295,30 295,190 110,190" fill="#f4a8a8" stroke="#fff" stroke-width="2"/>
+      <text x="202" y="105" text-anchor="middle" font-size="16" fill="#1a2744" font-weight="700">화곡</text>
+      <text x="202" y="123" text-anchor="middle" font-size="10" fill="#555">(화곡동 일대)</text>
+      <polygon points="110,190 295,190 295,240 110,240" fill="#f7d9b0" stroke="#fff" stroke-width="2"/>
+      <text x="202" y="218" text-anchor="middle" font-size="13" fill="#1a2744" font-weight="700">발산</text>
+      <text x="202" y="233" text-anchor="middle" font-size="10" fill="#555">(발산동·공항동)</text>
+      <polygon points="295,30 395,30 395,130 295,130" fill="#ffd9a0" stroke="#fff" stroke-width="2"/>
+      <text x="345" y="78" text-anchor="middle" font-size="14" fill="#1a2744" font-weight="700">등촌</text>
+      <text x="345" y="95" text-anchor="middle" font-size="10" fill="#555">(등촌동)</text>
+      <polygon points="395,30 500,30 500,130 395,130" fill="#b8e0d4" stroke="#fff" stroke-width="2"/>
+      <text x="447" y="78" text-anchor="middle" font-size="14" fill="#1a2744" font-weight="700">가양</text>
+      <text x="447" y="95" text-anchor="middle" font-size="10" fill="#555">(가양동)</text>
+      <polygon points="295,130 560,130 560,240 295,240" fill="#c8d8f0" stroke="#fff" stroke-width="2"/>
+      <text x="427" y="188" text-anchor="middle" font-size="14" fill="#1a2744" font-weight="700">염창</text>
+      <text x="427" y="205" text-anchor="middle" font-size="10" fill="#555">(염창동·등촌 일부)</text>
+      <text x="510" y="22" font-size="10" fill="#aaa" text-anchor="middle">↑ 한강</text>
+      <text x="570" y="185" font-size="10" fill="#aaa" text-anchor="end">→ 양천</text>
+      <rect width="580" height="260" fill="none" rx="8" stroke="#c0beba" stroke-width="1.5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ 주일학교 ═══ -->
+<section class="panel" id="sunday">
+  <h2 class="panel-community-name">주일학교</h2>
+  <span class="panel-subtitle">0–12세 어린이 공동체</span>
+  <div class="panel-desc">
+    <p>주일학교는 함께 하나님을 예배하고 즐겁게 찬양하는 어린이 공동체입니다.</p>
+    <p>교회에서 아름다운 신앙의 추억을 쌓아 나갑니다.</p>
+  </div>
+  <p class="section-heading">예배 편성표</p>
+  <table class="info-table">
+    <thead><tr><th>예배 시간</th><th>부서</th><th>대상</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3" style="font-weight:700;color:var(--navy);vertical-align:middle;">9시 예배</td><td>영아부</td><td>0–3세</td></tr>
+      <tr><td>유아부</td><td>4–5세</td></tr>
+      <tr><td>유치1부</td><td>6–7세</td></tr>
+      <tr><td style="font-weight:700;color:var(--navy);">11시 예배</td><td>유치2부</td><td>미취학 전 연령</td></tr>
+      <tr><td rowspan="3" style="font-weight:700;color:var(--navy);vertical-align:middle;">9시 예배</td><td>초등1부</td><td>초등학교 1–2학년</td></tr>
+      <tr><td>초등2부</td><td>초등학교 3–4학년</td></tr>
+      <tr><td>초등3부</td><td>초등학교 5–6학년</td></tr>
+      <tr><td style="font-weight:700;color:var(--navy);">11시 예배</td><td>초등4부</td><td>초등학교 전 학년</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══ 중·고등부 ═══ -->
+<section class="panel" id="middle">
+  <h2 class="panel-community-name">중·고등부 S.F.C.</h2>
+  <span class="panel-subtitle">중학생 · 고등학생 공동체</span>
+  <div class="panel-desc">
+    <p>중·고등부는 <strong>S.F.C.(Student For Christ, 그리스도를 위한 학생)</strong>라는 멋진 별명을 가지고 있습니다.</p>
+    <p>신앙의 또래를 형성하고 학업에 충실하며, 친구 전도와 교회 봉사에 힘씁니다.</p>
+  </div>
+  <p class="section-heading">예배 및 모임 안내</p>
+  <table class="info-table">
+    <thead><tr><th>시간</th><th>부서</th><th>장소</th></tr></thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="font-weight:700;color:var(--navy);vertical-align:middle;">9시 예배</td>
+        <td>중등부 (중학교 1–3학년)</td>
+        <td rowspan="2">트리니티홀 1층<br><span style="font-size:12px;color:var(--gray-text)">(장년부와 함께)</span></td>
+      </tr>
+      <tr><td>고등부 (고등학교 1–3학년)</td></tr>
+      <tr><td style="font-weight:700;color:var(--navy);">10시 모임</td><td>중등부</td><td>교육관 3층</td></tr>
+      <tr><td style="font-weight:700;color:var(--navy);">10시 모임</td><td>고등부</td><td>교육관 4층</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══ 대학부 ═══ -->
+<section class="panel" id="college">
+  <h2 class="panel-community-name">대학부 S.F.C.</h2>
+  <span class="panel-subtitle">대학생 · 재수생 · 유학생 · 군입대자</span>
+  <div class="panel-desc">
+    <p>대학부는 <strong>S.F.C.(Student For Christ, 그리스도를 위한 학생)</strong>라는 멋진 별명을 가지고 있습니다.</p>
+    <p>교회에서는 학번(나이)별로, 학교에서는 자신이 속한 대학의 지역별로 모여 하나님을 예배하는 공동체입니다.</p>
+  </div>
+  <p class="section-heading">예배 및 모임 안내</p>
+  <div class="card-grid">
+    <div class="card">
+      <p class="card-label">주일 낮 예배</p>
+      <p class="card-value">1부 — 7시 (비전홀 B1)<br>2부 — 9시 (트리니티홀 1층)<br>3부 — 11시 (트리니티홀 1·2층)<br><span style="font-size:12px;color:var(--gray-text)">장년부와 함께 예배드립니다</span></p>
+    </div>
+    <div class="card">
+      <p class="card-label">주일 오후 모임</p>
+      <p class="card-value">매주 일요일 오후 1시 20분<br>교육관 4층</p>
+    </div>
+  </div>
+  <div class="note-box">
+    💡 주로 <strong>20–26세</strong> 젊은 청년들이 모임을 갖습니다.<br>
+    희망 여부에 따라 <strong>청년회로 소속을 변경</strong>하실 수 있습니다.
+  </div>
+</section>
+
+<!-- ═══ 청년회 ═══ -->
+<section class="panel" id="youth">
+  <h2 class="panel-community-name">청년회</h2>
+  <span class="panel-subtitle">대학 졸업 미혼 성도 공동체</span>
+  <div class="panel-desc">
+    <p>청년회는 하나님을 예배할 뿐 아니라, 한 교회 안에서 신앙의 배우자를 찾고 즐겁게 신앙생활하도록 돕는 공동체입니다.</p>
+    <p>교회에서는 나이별로, 직장에서는 자신이 속한 회사의 지역별로 모입니다.</p>
+  </div>
+  <p class="section-heading">예배 및 모임 안내</p>
+  <div class="card-grid">
+    <div class="card">
+      <p class="card-label">주일 낮 예배</p>
+      <p class="card-value">1부 — 7시 (비전홀 B1)<br>2부 — 9시 (트리니티홀 1층)<br>3부 — 11시 (트리니티홀 1·2층)<br><span style="font-size:12px;color:var(--gray-text)">장년부와 함께 예배드립니다</span></p>
+    </div>
+    <div class="card">
+      <p class="card-label">주일 오후 모임</p>
+      <p class="card-value">매주 일요일 오후 1시 20분<br>글로브홀 (B2)</p>
+    </div>
+    <div class="card">
+      <p class="card-label">주요 대상</p>
+      <p class="card-value">주로 26–39세<br>미혼 성도</p>
+    </div>
+  </div>
+  <div class="note-box">
+    💡 <strong>40세 이상</strong>인 경우, 희망 여부에 따라<br>
+    <strong>청년전도회 또는 장년 교구로 소속을 변경</strong>하실 수 있습니다.
+  </div>
+</section>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:document.querySelector('.tab-bar').offsetTop-4,behavior:'smooth'});
+}
+
+// 피드백4: 교구 목록 hover → 지도 highlight
+const legendItems=document.querySelectorAll('.legend-item[data-target]');
+const allRegions=document.querySelectorAll('.gu-region[id]');
+
+legendItems.forEach(item=>{
+  const tid=item.dataset.target;
+  item.addEventListener('mouseenter',()=>{
+    item.classList.add('hl');
+    allRegions.forEach(r=>{
+      if(r.id===tid){r.classList.add('highlighted');r.classList.remove('dimmed');}
+      else{r.classList.add('dimmed');r.classList.remove('highlighted');}
+    });
+  });
+  item.addEventListener('mouseleave',()=>{
+    item.classList.remove('hl');
+    allRegions.forEach(r=>r.classList.remove('dimmed','highlighted'));
+  });
+});
+
+allRegions.forEach(r=>{
+  r.addEventListener('click',()=>{
+    const m=document.querySelector(`.legend-item[data-target="${r.id}"]`);
+    if(!m)return;
+    legendItems.forEach(i=>i.classList.remove('hl'));
+    m.classList.add('hl');
+    setTimeout(()=>m.classList.remove('hl'),1200);
+  });
+});
+</script>
+</body>
+</html>
