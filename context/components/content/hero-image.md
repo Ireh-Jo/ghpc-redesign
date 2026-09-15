@@ -36,6 +36,15 @@ used-on-pages: [intro, worship, care, activity, newcomer]
 | 타이틀 | text | 섹션명 (display-lg) | props.title |
 | 리드 | text | 선택 — 한 줄 소개 | props.lead |
 | 사진 | image | 풀블리드 배경, object-cover + 웜 화이트 스크림 | props.imageSrc / imageAlt |
+| 모바일 사진 | image | 선택 — 768px 미만 전용 크롭. 주면 `<picture>`로 **한 장만** 내려받는다 | props.imageSrcMobile |
+
+### 배너 파일 규칙 (2026-09-15 · 디자인팀 전달분)
+
+- 위치 `public/hero/`, 이름은 **라우트 키**: `worship.webp`(PC) · `worship-m.webp`(모바일).
+  나머지 넷은 `intro` · `care` · `activity` · `newcomer`.
+- 크기: PC **3840×1080**(표시 1920×540, 2x) · 모바일 **750×344**(표시 375×172, 2x)
+- 포맷 webp 우선(없으면 jpg). `<picture>` 경로는 Next 이미지 최적화를 타지 않으므로
+  **PC 400KB · 모바일 150KB 이하**로 받아야 한다 (`guardrails/05-performance.md` LCP).
 
 ## Props
 

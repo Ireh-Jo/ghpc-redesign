@@ -6,6 +6,10 @@ import { Toaster } from '@/components/primitives/toast';
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      {/* JS가 꺼져 있으면 FadeIn(`[data-fade]`)이 숨긴 채로 남는다 — 되돌려 놓는다 */}
+      <noscript>
+        <style>{`[data-fade]{opacity:1!important;transform:none!important}`}</style>
+      </noscript>
       <Header />
       <main>{children}</main>
       <Footer />

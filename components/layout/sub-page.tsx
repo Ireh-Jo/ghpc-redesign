@@ -30,7 +30,7 @@ export function SubPage({
 }: {
   sectionKey: string;
   overrides?: Record<string, ReactNode>;
-  heroImage?: { src: string; alt: string; lead?: string };
+  heroImage?: { src: string; srcMobile?: string; alt: string; lead?: string };
 }) {
   const section = NAV.find((n) => n.key === sectionKey);
   if (!section) notFound();
@@ -56,6 +56,7 @@ export function SubPage({
           title={section.label}
           lead={heroImage.lead}
           imageSrc={heroImage.src}
+          imageSrcMobile={heroImage.srcMobile}
           imageAlt={heroImage.alt}
         />
       ) : (

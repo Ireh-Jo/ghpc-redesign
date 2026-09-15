@@ -6,30 +6,45 @@ import Image from 'next/image';
  * 다크 오버레이 금지 — 스크림은 brand-bg 알파 그라데이션만, 텍스트는 항상 ink 계열.
  * 사진은 fixed 헤더 뒤까지 깔리므로 상단에 별도 스크림을 얹어 GNB(ink) 가독성 확보.
  * 사진 촬영·선정 가이드(디자인팀용): context/components/content/hero-image.md
+ *
+ * ── 2026-09-15: 모바일 전용 배너 지원 ──
+ * 디자인팀이 PC/모바일 배너를 **다른 크롭**으로 만들어 준다. `imageSrcMobile`을 주면
+ * `<picture>`로 뷰포트에 따라 **한 장만** 내려받는다 (next/image 두 장을 CSS로 숨기면 둘 다 받는다).
+ * 이 경로는 Next 이미지 최적화를 타지 않으므로 파일 자체를 webp/적정 용량으로 받아야 한다.
  */
 export function HeroImage({
   eyebrow = '— 경향교회',
   title,
   lead,
   imageSrc,
+  imageSrcMobile,
   imageAlt,
 }: {
   eyebrow?: string;
   title: string;
   lead?: string;
   imageSrc: string;
+  /** 선택 — 모바일(768px 미만) 전용 크롭. `public/hero/*-m.*` */
+  imageSrcMobile?: string;
   imageAlt: string;
 }) {
   return (
     <section className="relative border-b border-brand-line">
-      <Image
-        src={imageSrc}
-        alt={imageAlt}
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
+      {imageSrcMobile ? (
+        <picture>
+          <source media="(min-width: 768px)" srcSet={imageSrc} />
+          {/* eslint-disable-next-line @next/next/no-img-element -- 아트디렉션(PC/모바일 다른 크롭)은 next/image가 지원하지 않는다 */}
+          <img
+            src={imageSrcMobile}
+            alt={imageAlt}
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </picture>
+      ) : (
+        <Image src={imageSrc} alt={imageAlt} fill priority sizes="100vw" className="object-cover" />
+      )}
       {/* 가독성 스크림 — 모바일 하→상, 데스크탑 좌→우 (guardrails/02 히어로 예외 항목) */}
       <div
         aria-hidden

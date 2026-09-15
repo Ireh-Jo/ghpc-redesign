@@ -55,6 +55,7 @@
 | MobileNav | wip | 전 페이지 (햄버거 → 드릴다운 2단) | `layout/mobile-nav.md` |
 | Footer | wip | 전 페이지 | `layout/footer.md` |
 | SectionHeader | draft | 거의 모든 섹션 | `layout/section-header.md` |
+| FadeIn | wip | 스크롤 진입 페이드업 래퍼 (`/worship`) | `layout/fade-in.md` |
 | AnchorNav | shipped | 모든 서브페이지(`SubPage`) 상단 sticky 섹션 바로가기 | `layout/anchor-nav.md` |
 | SubPage | shipped | 대메뉴 5개 페이지 골격 (앵커 섹션 + 외부 라우트는 바로가기 카드) | `layout/sub-page.md` |
 | StubPage | shipped | 2차 목차로 신설된 라우트 13종의 골격 (콘텐츠 이관 전) | `layout/stub-page.md` |
@@ -74,9 +75,11 @@
 |---|---|---|---|
 | HeroVideo | shipped | `/` 메인 헤로 | `content/hero-video.md` |
 | HeroImage | wip | `/intro`, `/worship`, `/care`, `/activity`, `/newcomer` 서브 헤로 (unsplash 예시 — 디자인팀 교체 가이드 포함) | `content/hero-image.md` |
-| ServiceTimeTable | draft | `/`, `/worship` | `content/service-time-table.md` |
+| ServiceTimeTable | wip | `/worship#times` 표 3종 (데스크탑=표 / 모바일=카드) | `content/service-time-table.md` |
 | SermonCard | shipped | `/`, `/worship` 설교 다시보기 | `content/sermon-card.md` |
-| YouTubeEmbed | draft | `/intro` 50주년 영상 등 | `content/youtube-embed.md` |
+| VideoArchive | wip | `/worship#live`·`/worship#special` 영상 아카이브 (분류 탭 + 플레이어 + 목록) | `content/video-archive.md` |
+| LivePanel | wip | `/worship#live` 상단 생방송 상태 (수동 on/off 없음) | `content/live-panel.md` |
+| YouTubeEmbed | wip | `/worship#live`(채널 라이브) · `/worship#special` · `/intro` 50주년 영상 | `content/youtube-embed.md` |
 | BulletinCard | draft | `/activity` 주보 | `content/bulletin-card.md` |
 | NewsCard | draft | `/activity` 교회소식 | `content/news-card.md` |
 | MinistryGridItem | draft | `/care` 사역 6칸 | `content/ministry-grid-item.md` |

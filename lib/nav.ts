@@ -156,13 +156,16 @@ export const NAV: NavSection[] = [
       {
         label: '예배',
         items: [
-          { label: '예배 시간 안내', href: '/worship#times', legacy: `${LEGACY}/Page/Index/34` },
-          { label: '생방송', href: '/worship#live', legacy: `${LEGACY}/Page/Index/41` },
+          { label: '예배 및 모임 안내', href: '/worship#times', legacy: `${LEGACY}/Page/Index/34` },
+          // 2026-09-15: `생방송`과 `예배 실황`을 한 줄로 합쳤다. 디자인팀 시안의 `생방송` 탭 화면이
+          // 곧 예배 실황 영상 화면이고(사용자 확인), IA 문서(§3 예배와 교육)도 원래 "생방송 / 예배 실황"
+          // 한 섹션이었다. 전체 아카이브(검색·페이지네이션)는 `/worship/live` 라우트가 계속 맡는다 —
+          // GNB에는 노출하지 않고 섹션 안 "전체 보기"로 들어간다.
           {
-            label: '예배 실황',
-            href: '/worship/live',
-            desc: '주일낮 · 주일밤 · 수요밤 · 특별 · 금요밤 · 강해',
-            legacy: `${LEGACY}/Board/Index/137000`,
+            label: '생방송',
+            href: '/worship#live',
+            desc: '실시간 중계 · 예배 실황 다시보기',
+            legacy: `${LEGACY}/Page/Index/41`,
           },
           { label: '특별순서', href: '/worship#special', desc: '특송 · 간증', legacy: `${LEGACY}/Link/Index/4432` },
         ],
