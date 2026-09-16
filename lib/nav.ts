@@ -311,7 +311,7 @@ export function findByHref(href: string):
 }
 
 /**
- * 아직 자리를 못 정한 항목 — `/dev/gnb`에 경고로 표시.
+ * 아직 자리를 못 정한 항목. (표시용 `/dev/gnb` 검토 랩은 2026-09-16 삭제 — 이 목록은 문서로만 관리)
  * (2026-08-23: 집사회·권사회 / e교회행정 하위 / 교구친선리그 해소)
  */
 export const UNPLACED = [
@@ -343,4 +343,24 @@ export const OPEN_QUESTIONS = [
   },
   { label: '구역공과', ask: '계속 웹 게시하는가? 대상이 구역장인가 전교인인가? (현행 Board/52, 2차 목차에 없음)' },
   { label: '키즈그라운드 이용신청', ask: '시설이용신청과 통합 가능한가? (현행은 GNB 밖 별도 폼)' },
+];
+
+/**
+ * 메인 퀵메뉴 4종 — 2026-09-16 메인 시안(디자인팀)에 실린 그대로.
+ * 아이콘은 여기 두지 않고 `key`만 넘긴다 (이 파일은 React 의존 없는 데이터 파일).
+ * 매핑은 `components/content/quick-menu.tsx`.
+ *
+ * > DECISION NEEDED: `구역공과` 목적지. 2차 목차 어디에도 없어 일단 `자료실`로 보냈다
+ *   (위 `OPEN_QUESTIONS`의 '구역공과' 항목 — 게시 여부·대상 회신 오면 확정).
+ */
+export const QUICK_MENU: { key: string; label: string; href: string; desc: string }[] = [
+  { key: 'worship-time', label: '예배시간', href: '/worship#times', desc: '주일 1·2·3부와 수요·금요' },
+  { key: 'directions', label: '약도 주차', href: '/intro#directions', desc: '오시는 길 · 주차 안내' },
+  {
+    key: 'district-study',
+    label: '구역공과',
+    href: '/church-admin/resources',
+    desc: '구역모임 공과 자료',
+  },
+  { key: 'bulletin', label: '주보', href: '/activity/bulletin', desc: '이번 주 · 지난 주보' },
 ];

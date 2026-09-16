@@ -45,7 +45,7 @@ export function AnchorNav({ items }: { items: AnchorNavItem[] }) {
             href={`#${item.id}`}
             aria-current={activeId === item.id ? 'true' : undefined}
             className={cn(
-              'btn-square shrink-0 whitespace-nowrap px-3 py-2 text-[12px] font-bold tracking-wide transition-colors duration-200',
+              'btn-round shrink-0 whitespace-nowrap px-3 py-2 text-[12px] font-bold tracking-wide transition-colors duration-200',
               activeId === item.id ? 'bg-brand-ink text-white' : 'text-brand-ink-muted hover:text-brand-ink'
             )}
           >

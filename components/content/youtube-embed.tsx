@@ -41,7 +41,7 @@ export function YouTubeEmbed({
 
   if (loaded) {
     return (
-      <div className="aspect-[16/9] w-full border border-brand-line bg-brand-ink">
+      <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border border-brand-line bg-brand-ink">
         <iframe
           src={src}
           title={title}
@@ -64,7 +64,7 @@ export function YouTubeEmbed({
         e.preventDefault();
         setLoaded(true);
       }}
-      className="group relative block aspect-[16/9] w-full overflow-hidden border border-brand-line bg-brand-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+      className="group relative block aspect-[16/9] w-full overflow-hidden rounded-2xl border border-brand-line bg-brand-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
       aria-label={`${title} — 영상 재생`}
     >
       <Image

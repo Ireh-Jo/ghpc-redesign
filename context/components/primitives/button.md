@@ -26,7 +26,14 @@ used-on-pages: []
   현재 primary = brand-accent(파랑 #002D60) 근사 HSL.
 - 아이콘 포함 시 16px(h-4 w-4)이 기본(`context/design/04-iconography.md`).
 
-## 비주얼 재조정 예정
+## 라운드 기준 (2026-09-16 확정)
 
-F안 임시 룩의 `.btn-square`(2px 라운드)와 shadcn 기본 `rounded-md`가 공존 중 — 담임목사 시안 확정 후
-이 래퍼 한 곳에서 radius·스타일 통일(기존 페이지의 수제 버튼들도 이 primitive로 순차 교체).
+시안 확정으로 **전역 라운드**가 됐다 (`context/design/03-spacing.md`). 값은 두 종류만 쓴다:
+
+| 쓰임 | 값 |
+|---|---|
+| 페이지 안 버튼·탭·알약 | `.btn-round` (10px) |
+| 폼 컨트롤(shadcn Button/Input 등) | `--radius` (8px, `rounded-md`) |
+
+두 값이 나란히 보이는 자리가 생기면 `.btn-round`로 맞춘다.
+**남은 일:** 페이지에 흩어진 수제 버튼(`btn-round` + 인라인 클래스 조합)을 이 primitive로 순차 흡수.

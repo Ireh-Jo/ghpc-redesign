@@ -6,6 +6,10 @@ import { cn } from '@/lib/utils';
 /**
  * 메인 헤로 — 다크 풀블리드 영상/이미지 + 헤드라인 + 예배시간 바.
  * 상세: context/components/content/hero-video.md
+ *
+ * 2026-09-16: 메인 시안 반영 때 **영상 헤로 구조는 그대로 두고 문구 슬롯만 늘렸다** (사용자 지시).
+ * `lead`(도입 2줄) + `titleEn`(영문 표기)를 추가하고 `subtitle`·`verse`는 선택으로 바꿨다 —
+ * 시안 헤드라인이 "도입 2줄 → 큰 교회 이름 + 영문" 구조라 기존 3슬롯(title/subtitle/verse)에 안 맞았다.
  */
 export type HeroServiceTime = {
   label: string;
@@ -18,7 +22,9 @@ export type HeroServiceTime = {
 
 export function HeroVideo({
   eyebrow,
+  lead,
   title,
+  titleEn,
   subtitle,
   verse,
   verseRef,
@@ -29,10 +35,14 @@ export function HeroVideo({
   serviceTimes,
 }: {
   eyebrow: string;
+  /** 제목 위 도입 문구. 줄바꿈(`\n`) 유지 — 2026-09-16 시안 문구 반영 때 추가 */
+  lead?: string;
   title: React.ReactNode;
-  subtitle: string;
-  verse: string;
-  verseRef: string;
+  /** 제목 옆 영문 표기 (예: GYUNG-HYANG PRESBYTERIAN CHURCH) */
+  titleEn?: string;
+  subtitle?: string;
+  verse?: string;
+  verseRef?: string;
   videoSrc: string;
   posterSrc: string;
   mobileImageSrc: string;
@@ -83,13 +93,27 @@ export function HeroVideo({
       </div>
 
       <div className="relative mx-auto flex w-full max-w-container flex-1 flex-col justify-center px-5 text-white md:px-8">
-        <h1 className="display-xl mb-2 text-white md:mb-3">{title}</h1>
-        <p className="display-md mb-8 font-light text-white/85 md:mb-10">{subtitle}</p>
-        <p className="max-w-md text-[15px] leading-relaxed text-white/70 md:text-lg">
-          &ldquo;{verse}&rdquo;
-          <br className="hidden md:block" />
-          <span className="text-white/50">— {verseRef}</span>
-        </p>
+        {lead && (
+          <p className="mb-3 whitespace-pre-line text-[24px] font-light leading-[1.35] text-white/90 md:mb-4 md:text-[40px]">
+            {lead}
+          </p>
+        )}
+        <h1 className="display-lg mb-2 flex flex-wrap items-baseline gap-x-3 text-white md:mb-3 md:gap-x-4">
+          {title}
+          {titleEn && (
+            <span className="text-[10px] font-medium tracking-[0.18em] text-white/60 md:text-[13px]">
+              {titleEn}
+            </span>
+          )}
+        </h1>
+        {subtitle && <p className="display-md mb-8 font-light text-white/85 md:mb-10">{subtitle}</p>}
+        {verse && (
+          <p className="max-w-md text-[15px] leading-relaxed text-white/70 md:text-lg">
+            &ldquo;{verse}&rdquo;
+            <br className="hidden md:block" />
+            {verseRef && <span className="text-white/50">— {verseRef}</span>}
+          </p>
+        )}
       </div>
 
       <div className="relative w-full border-t border-white/15 backdrop-blur-sm">

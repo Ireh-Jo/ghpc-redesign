@@ -183,7 +183,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             <Link
               href={section.href}
               onClick={close}
-              className="btn-square mt-7 inline-flex items-center justify-center gap-2 bg-brand-support px-5 py-4 text-sm font-semibold tracking-widest text-white"
+              className="btn-round mt-7 inline-flex items-center justify-center gap-2 bg-brand-support px-5 py-4 text-sm font-semibold tracking-widest text-white"
             >
               새가족 안내 바로가기
               <ArrowRight className="h-4 w-4" />
@@ -219,7 +219,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             href={LIVE_URL}
             target="_blank"
             rel="noopener"
-            className="btn-square mt-8 inline-flex items-center justify-center gap-2 bg-brand-accent px-5 py-4 text-sm font-semibold tracking-widest text-white"
+            className="btn-round mt-8 inline-flex items-center justify-center gap-2 bg-brand-accent px-5 py-4 text-sm font-semibold tracking-widest text-white"
           >
             생방송 보기
           </a>

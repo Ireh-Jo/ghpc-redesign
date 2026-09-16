@@ -54,7 +54,7 @@
 | Header | wip | 전 페이지 (fixed GNB · 메가메뉴는 hover한 **한 개만** 펼침 · 대메뉴 클릭 불가) | `layout/header.md` |
 | MobileNav | wip | 전 페이지 (햄버거 → 드릴다운 2단) | `layout/mobile-nav.md` |
 | Footer | wip | 전 페이지 | `layout/footer.md` |
-| SectionHeader | draft | 거의 모든 섹션 | `layout/section-header.md` |
+| SectionHeader | wip | 메인 말씀·공지사항 (2026-09-16 시안) · 이후 서브페이지 섹션 | `layout/section-header.md` |
 | FadeIn | wip | 스크롤 진입 페이드업 래퍼 (`/worship`) | `layout/fade-in.md` |
 | AnchorNav | shipped | 모든 서브페이지(`SubPage`) 상단 sticky 섹션 바로가기 | `layout/anchor-nav.md` |
 | SubPage | shipped | 대메뉴 5개 페이지 골격 (앵커 섹션 + 외부 라우트는 바로가기 카드) | `layout/sub-page.md` |
@@ -65,18 +65,24 @@
 > **상호작용 잠금 (2026-08-12, `context/04-information-architecture.md` § GNB 상호작용):** 메가메뉴는 hover/focus한
 > 대메뉴 **하나만** 펼치고(좌측 제목+tagline / 우측 하위 목록), 대메뉴 자체는 링크가 아니라 패널 컨트롤이다.
 > 모바일은 hover가 없어 같은 성격을 드릴다운 2단으로 옮겼다.
-> 룩 결정권: 담임목사가 시안 판단을 팀에 위임 (2026-07-05) — F안 다크 미니멀을 베이스로 하되,
-> **환영 동선(메인 환영 섹션·서브페이지 헤로·헤더 라이트 톤)은 라이트로 전환** (무드 "따뜻한·환영하는" 정합).
-> 다크는 메인 헤로·표어 배너·푸터에만 유지. Header는 route 기준 톤 분기 (`/`=다크 헤로 위 투명, 서브=라이트).
+> **룩 기준 (2026-09-16 갱신): 디자인팀 시안이 단일 출처다.** 2026-07-05의 "F안 다크 미니멀 베이스"는
+> 메인 시안 확정으로 종료됐다 — 라운드는 전역 적용(`context/design/03-spacing.md`), 다크는 **메인 헤로와
+> 푸터에만** 남는다. 나머지는 라이트(웜 화이트) 기조.
+> Header는 route 기준 톤 분기 (`/`=다크 헤로 위 투명, 서브=라이트).
 
 ### Content
 
 | 이름 | 상태 | 페이지 | 문서 |
 |---|---|---|---|
-| HeroVideo | shipped | `/` 메인 헤로 | `content/hero-video.md` |
+| HeroVideo | shipped | `/` 메인 헤로 (2026-09-16: 문구 슬롯 `lead`·`titleEn` 추가, 영상 구조 그대로) | `content/hero-video.md` |
 | HeroImage | wip | `/intro`, `/worship`, `/care`, `/activity`, `/newcomer` 서브 헤로 (unsplash 예시 — 디자인팀 교체 가이드 포함) | `content/hero-image.md` |
 | ServiceTimeTable | wip | `/worship#times` 표 3종 (데스크탑=표 / 모바일=카드) | `content/service-time-table.md` |
-| SermonCard | shipped | `/`, `/worship` 설교 다시보기 | `content/sermon-card.md` |
+| WeeklySermons | wip | `/` 말씀 3편 (PC 3열 / 모바일 스냅 캐러셀) | `content/weekly-sermons.md` |
+| MainBanner | wip | `/` 중앙 배너 슬라이드 — **관리자 영역** | `content/main-banner.md` |
+| QuickMenu | wip | `/` 퀵메뉴 4종 (예배시간·약도 주차·구역공과·주보) | `content/quick-menu.md` |
+| NoticeList | wip | `/` 공지사항 4줄 — **관리자 영역** | `content/notice-list.md` |
+| NewcomerCard | wip | `/` 새가족 환영 + 등록 카드 (안내 문구·칩 3·주 버튼) | `content/newcomer-card.md` |
+| RelatedOrgs | wip | `/` 관련 기관 6칸 (카드 뒤집기) | `content/related-orgs.md` |
 | VideoArchive | wip | `/worship#live`·`/worship#special` 영상 아카이브 (분류 탭 + 플레이어 + 목록) | `content/video-archive.md` |
 | LivePanel | wip | `/worship#live` 상단 생방송 상태 (수동 on/off 없음) | `content/live-panel.md` |
 | YouTubeEmbed | wip | `/worship#live`(채널 라이브) · `/worship#special` · `/intro` 50주년 영상 | `content/youtube-embed.md` |
@@ -85,10 +91,13 @@
 | MinistryGridItem | draft | `/care` 사역 6칸 | `content/ministry-grid-item.md` |
 | StaffCard | draft | `/intro` 섬기는 사람들 | `content/staff-card.md` |
 | TimelineItem | draft | `/intro` 역사 | `content/timeline-item.md` |
-| MapEmbed | shipped | `/`, `/intro` 오시는 길 | `content/map-embed.md` |
-| WelcomeCTA | shipped | `/`, `/care` 새가족 환영 카드 | `content/welcome-cta.md` |
-| CampaignBanner | shipped | `/` Go & Grow 배너 | `content/campaign-banner.md` |
+| WelcomeCTA | **보류(미사용)** | `/care` 새가족 섹션에 쓸 예정. 메인은 `NewcomerCard`로 교체됨 (2026-09-16) | `content/welcome-cta.md` |
+| MapEmbed | **보류(미사용)** | `/intro#directions`에 쓸 예정. 지금 그 자리는 `interactive/FloorMap`이 차지 | `content/map-embed.md` |
 | FaqAccordion | shipped | `/intro` 새신자 Q&A | `content/faq-accordion.md` |
+
+> **2026-09-16 삭제:** `SermonCard`·`CampaignBanner` — 메인 시안 반영으로 각각 `WeeklySermons`·`MainBanner`에
+> 완전히 대체됐고 남은 사용처가 없어 코드·문서를 지웠다 (복구는 git). `WelcomeCTA`·`MapEmbed`는 예정된
+> 사용처가 있어 **보류**로 남긴다 — 3개월 안에 안 쓰이면 같이 정리할 것.
 
 ### Interactive
 

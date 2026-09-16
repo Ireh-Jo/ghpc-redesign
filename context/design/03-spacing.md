@@ -51,12 +51,18 @@ export function Container({ children, className }: ...) {
 
 ## 라운드·그림자
 
+> **2026-09-16 확정 — 전역 라운드.** 디자인팀 메인 시안(`홈페이지 메인 디자인 전달용.ai`)이
+> 카드·타일·버튼을 전부 둥근 모서리로 그렸고, 사용자가 **메인만이 아니라 전역 전환**으로 확정했다.
+> F안 임시 룩의 직각(`.btn-square` 2px)은 폐기하고 `.btn-round`(10px)로 바꿨다 —
+> 이 문서가 원래 정의하던 라운드 체계로 돌아온 것이다. 서브페이지도 이 값을 따른다.
+
 | 토큰 | 클래스 | 용도 |
 |---|---|---|
 | `rounded-md` | `rounded-md` (6px) | 인풋·작은 버튼 |
-| `rounded-xl` | `rounded-xl` (12px) | 일반 이미지·인풋 |
-| `rounded-2xl` | `rounded-2xl` (16px) | 카드·큰 컨테이너 |
-| `rounded-full` | `rounded-full` | 아바타·dot·pill |
+| **10px** | `.btn-round` (`app/globals.css`) | 버튼·탭·작은 타일·알약 — 구 `.btn-square` 자리 |
+| `rounded-xl` | `rounded-xl` (12px) | 퀵메뉴 타일·중간 컨테이너 |
+| `rounded-2xl` | `rounded-2xl` (16px) | 카드·썸네일·큰 컨테이너 |
+| `rounded-full` | `rounded-full` | 아바타·dot·pill·원형 버튼 |
 
 그림자:
 - 카드: `shadow-sm` 또는 `shadow-none + border border-brand-line` (선호: 보더)

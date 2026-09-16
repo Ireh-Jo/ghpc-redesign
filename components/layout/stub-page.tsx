@@ -87,7 +87,7 @@ export function StubPage({
               {tabs.map((tab) => (
                 <li
                   key={tab}
-                  className="btn-square border border-brand-line px-3 py-2 text-[13px] text-brand-ink-muted"
+                  className="btn-round border border-brand-line px-3 py-2 text-[13px] text-brand-ink-muted"
                 >
                   {tab}
                 </li>

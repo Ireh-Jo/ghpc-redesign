@@ -4,17 +4,23 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { YouTubeEmbed } from './youtube-embed';
 import { LIVE_PRE_ROLL_MIN, LIVE_SCHEDULE, YOUTUBE_CHANNEL_ID } from '@/lib/worship-videos';
+import type { LiveBroadcast } from '@/lib/youtube-live';
 
 /**
  * 생방송 패널.
  *
  * ── 수동 on/off를 없앤 이유 (2026-09-15 결정) ──
  * 현행 사이트는 방송 상태를 사람이 켜고 껐다. 끄는 걸 잊으면 "방송 중"인데 화면이 비고, 켜는 걸 잊으면
- * 방송 중인데 안내가 안 뜬다. 그래서 **아무도 손대지 않아도 맞는 구조**로 바꿨다.
- * - 실제 라이브 여부는 유튜브 채널 임베드(`embed/live_stream?channel=`)가 스스로 판단한다. 키·서버 불필요.
- * - 편성표(`LIVE_SCHEDULE`)는 "지금 방송 시간대인가"만 판정해서 **플레이어를 크게 띄울지 / 다음 방송을 안내할지**를 고른다.
- *   편성표가 틀려도 플레이어 안의 내용은 유튜브가 정정해 준다 (편성표는 화면 배치용, 진실은 유튜브).
- * - 더 정확한 배지가 필요해지면 YouTube Data API로 승격 (`context/features/live-streaming.md` 하이브리드안).
+ * 방송 중인데 안내가 안 뜬다. 그래서 **아무도 손대지 않아도 맞는 구조**로 간다.
+ *
+ * ── 2026-09-16 수정: 채널 임베드 폐기 ──
+ * `embed/live_stream?channel=`은 **실제 방송 중에도 오류 화면**을 띄운다(재현·확인). 같은 방송을
+ * 영상 ID로 임베드하면 정상 재생된다. 그래서 서버에서 `lib/youtube-live.ts`로 **라이브 영상 ID**를 받아
+ * `live` prop으로 내려받는다.
+ * - `live`가 있으면 → LIVE 배지 + 그 영상 임베드 (실제 유튜브 상태가 근거)
+ * - `live`가 없는데 편성 시간대면 → "곧 시작합니다" 안내 + 유튜브 바로가기 (오류 화면 대신)
+ * - 둘 다 아니면 → 다음 생방송 안내
+ * `LIVE_SCHEDULE`은 이제 **문구용**이다. 방송 중인지 아닌지는 유튜브가 말해 준다.
  *
  * 스펙: `context/components/content/live-panel.md`
  */
@@ -44,7 +50,7 @@ function formatTime(startMin: number) {
   return `${meridiem} ${displayHour}시${minute ? ` ${minute}분` : ''}`;
 }
 
-export function LivePanel() {
+export function LivePanel({ live }: { live?: LiveBroadcast | null }) {
   // 서버 렌더 시점엔 알 수 없다 (하이드레이션 불일치 방지) → 마운트 후 판정
   const [now, setNow] = useState<{ day: number; minutes: number } | null>(null);
 
@@ -77,30 +83,58 @@ export function LivePanel() {
         .sort((a, b) => a.wait - b.wait)[0]
     : undefined;
 
-  if (onAir) {
+  // ① 유튜브가 "방송 중"이라고 답한 경우 — 이 경로만 플레이어를 띄운다
+  if (live) {
     return (
       <div className="max-w-3xl">
-        {beforeStart ? (
-          <p className="mb-4 flex items-center gap-2 text-[13px] font-bold text-brand-support">
-            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-brand-support" />
-            잠시 후 시작 · {onAir.label} {formatTime(onAir.startMin)}
-          </p>
-        ) : (
-          <p className="mb-4 flex items-center gap-2 text-[13px] font-bold text-brand-point">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-point opacity-60 motion-reduce:animate-none" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-point" />
-            </span>
-            LIVE · {onAir.label} 생중계 중
-          </p>
-        )}
-        <YouTubeEmbed channelId={YOUTUBE_CHANNEL_ID} title={`${onAir.label} 생방송`} />
+        <p className="mb-4 flex items-center gap-2 text-[13px] font-bold text-brand-point">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-point opacity-60 motion-reduce:animate-none" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-point" />
+          </span>
+          LIVE · {onAir ? `${onAir.label} 생중계 중` : '생중계 중'}
+        </p>
+        {/* autoLoad를 켜지 않는다 — 들어오자마자 예배 소리가 나가면 곤란하고,
+            브라우저도 음소거 없는 자동재생을 막는다. 썸네일을 누르면 그 자리에서 재생된다. */}
+        <YouTubeEmbed
+          videoId={live.videoId}
+          title={live.title || `${onAir?.label ?? '경향교회'} 생방송`}
+        />
       </div>
     );
   }
 
+  // ② 편성 시간대인데 아직 방송이 안 잡힌 경우 — 오류 화면 대신 안내
+  if (onAir) {
+    return (
+      <div className="max-w-3xl rounded-2xl border border-brand-line bg-brand-bg px-6 py-8 md:px-8 md:py-10">
+        <p className="flex items-center gap-2 text-[13px] font-bold text-brand-support">
+          <span className="inline-flex h-2.5 w-2.5 rounded-full bg-brand-support" />
+          {beforeStart ? '잠시 후 시작' : '방송 준비 중'} · {onAir.label}{' '}
+          {formatTime(onAir.startMin)}
+        </p>
+        <p className="mt-3 text-[18px] font-bold text-brand-ink md:text-[22px]">
+          곧 생방송이 시작됩니다
+        </p>
+        <p className="mt-3 text-[14px] leading-relaxed text-brand-ink-muted">
+          방송이 열리면 이 자리에서 바로 보실 수 있습니다. 화면이 바뀌지 않으면 새로고침해 주세요.
+        </p>
+        <a
+          href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-round mt-6 inline-flex items-center gap-2 bg-brand-accent px-6 py-3 text-[14px] font-bold text-white transition-colors duration-200 hover:bg-brand-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+        >
+          유튜브에서 생방송 열기
+          <ArrowUpRight className="h-4 w-4" />
+        </a>
+      </div>
+    );
+  }
+
+  // ③ 그 외 — 다음 생방송 안내
   return (
-    <div className="max-w-3xl border border-brand-line bg-brand-bg px-6 py-8 md:px-8 md:py-10">
+    <div className="max-w-3xl rounded-2xl border border-brand-line bg-brand-bg px-6 py-8 md:px-8 md:py-10">
       <p className="text-[11px] font-bold tracking-[0.3em] text-brand-support">— 생방송</p>
       <p className="mt-3 text-[18px] font-bold text-brand-ink md:text-[22px]">
         {next ? (
@@ -120,7 +154,7 @@ export function LivePanel() {
         href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn-square mt-6 inline-flex items-center gap-2 bg-brand-accent px-6 py-3 text-[14px] font-bold text-white transition-colors duration-200 hover:bg-brand-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+        className="btn-round mt-6 inline-flex items-center gap-2 bg-brand-accent px-6 py-3 text-[14px] font-bold text-white transition-colors duration-200 hover:bg-brand-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
       >
         유튜브에서 생방송 열기
         <ArrowUpRight className="h-4 w-4" />

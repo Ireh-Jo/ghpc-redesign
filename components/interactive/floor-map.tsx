@@ -514,7 +514,7 @@ export function FloorMap() {
       {/* 컨트롤 바 */}
       <div className="flex flex-wrap items-center gap-3 border-b border-brand-line p-4 md:p-5">
         <span className="text-[11px] font-bold tracking-[0.3em] text-brand-ink-muted">이동수단</span>
-        <div className="btn-square inline-flex overflow-hidden border border-brand-line">
+        <div className="btn-round inline-flex overflow-hidden border border-brand-line">
           {MODE_OPTIONS.map(({ mode: m, label, icon: Icon }) => (
             <button
               key={m}
@@ -534,7 +534,7 @@ export function FloorMap() {
         <button
           type="button"
           onClick={reset}
-          className="btn-square ml-auto inline-flex h-11 items-center gap-1.5 border border-brand-line px-3 text-[12px] font-bold tracking-wide text-brand-ink-muted transition-colors duration-200 hover:text-brand-ink"
+          className="btn-round ml-auto inline-flex h-11 items-center gap-1.5 border border-brand-line px-3 text-[12px] font-bold tracking-wide text-brand-ink-muted transition-colors duration-200 hover:text-brand-ink"
         >
           <RotateCcw className="h-4 w-4" strokeWidth={1.5} />
           다시 선택
@@ -549,7 +549,7 @@ export function FloorMap() {
             type="button"
             onClick={() => !animating && setFloorId(fid)}
             className={cn(
-              'btn-square h-9 px-3 text-[12px] font-bold tracking-wide transition-colors duration-200',
+              'btn-round h-9 px-3 text-[12px] font-bold tracking-wide transition-colors duration-200',
               floorId === fid ? 'bg-brand-ink text-white' : 'border border-brand-line text-brand-ink-muted hover:text-brand-ink'
             )}
             aria-pressed={floorId === fid}
@@ -636,7 +636,7 @@ export function FloorMap() {
               type="button"
               aria-label={label}
               onClick={onClick}
-              className="btn-square flex h-11 w-11 items-center justify-center border border-brand-line bg-brand-surface text-brand-ink shadow-sm transition-colors duration-200 hover:border-brand-ink"
+              className="btn-round flex h-11 w-11 items-center justify-center border border-brand-line bg-brand-surface text-brand-ink shadow-sm transition-colors duration-200 hover:border-brand-ink"
             >
               <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
             </button>

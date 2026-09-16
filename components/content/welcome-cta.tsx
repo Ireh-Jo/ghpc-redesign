@@ -39,13 +39,13 @@ export function WelcomeCTA({
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href={primaryHref}
-              className="btn-square inline-flex items-center gap-2 bg-brand-accent px-7 py-4 text-sm font-bold tracking-widest text-white transition-colors hover:bg-brand-ink"
+              className="btn-round inline-flex items-center gap-2 bg-brand-accent px-7 py-4 text-sm font-bold tracking-widest text-white transition-colors hover:bg-brand-ink"
             >
               {primaryLabel} <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href={secondaryHref}
-              className="btn-square inline-flex items-center gap-2 border border-brand-line px-7 py-4 text-sm font-bold tracking-widest text-brand-ink transition-colors hover:border-brand-ink"
+              className="btn-round inline-flex items-center gap-2 border border-brand-line px-7 py-4 text-sm font-bold tracking-widest text-brand-ink transition-colors hover:border-brand-ink"
             >
               {secondaryLabel}
             </Link>

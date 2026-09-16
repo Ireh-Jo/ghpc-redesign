@@ -5,11 +5,21 @@ import { ServiceTimeTable } from '@/components/content/service-time-table';
 import { LivePanel } from '@/components/content/live-panel';
 import { VideoArchive } from '@/components/content/video-archive';
 import { SERVICE_TABLES } from '@/lib/worship-services';
-import { SERVICE_ARCHIVE, SPECIAL_ARCHIVE } from '@/lib/worship-videos';
+import { SERVICE_ARCHIVE, SPECIAL_ARCHIVE, YOUTUBE_CHANNEL_ID } from '@/lib/worship-videos';
+import { getLiveBroadcast, LIVE_REVALIDATE_SEC } from '@/lib/youtube-live';
 
 export const metadata: Metadata = { title: '예배와 교육' };
 
-export default function WorshipPage() {
+/**
+ * 생방송 상태를 1분마다 다시 확인한다 (`lib/youtube-live.ts`).
+ * 나머지 콘텐츠는 정적이라 이 값이 이 페이지의 재생성 주기를 정한다.
+ */
+export const revalidate = LIVE_REVALIDATE_SEC;
+
+export default async function WorshipPage() {
+  // 채널이 지금 방송 중이면 그 영상 ID — 아니면 null (패널이 안내 화면으로 내려앉는다)
+  const live = await getLiveBroadcast(YOUTUBE_CHANNEL_ID);
+
   return (
     <SubPage
       sectionKey="worship"
@@ -37,7 +47,7 @@ export default function WorshipPage() {
         /* ── 생방송 = 실시간 중계 + 예배 실황 다시보기 (2026-09-15 시안 확인) ── */
         live: (
           <FadeIn>
-            <LivePanel />
+            <LivePanel live={live} />
             <div className="mt-12 md:mt-16">
               <h3 className="mb-6 text-[18px] font-bold text-brand-ink md:text-[22px]">
                 예배 실황 다시보기

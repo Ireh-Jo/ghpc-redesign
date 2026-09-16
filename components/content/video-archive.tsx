@@ -50,7 +50,7 @@ export function VideoArchive({
             aria-pressed={c.key === category.key}
             onClick={() => selectCategory(c)}
             className={cn(
-              'btn-square shrink-0 whitespace-nowrap px-4 py-2 text-[13px] font-bold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2',
+              'btn-round shrink-0 whitespace-nowrap px-4 py-2 text-[13px] font-bold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2',
               c.key === category.key
                 ? 'bg-brand-ink text-white'
                 : 'bg-brand-bg text-brand-ink-muted hover:text-brand-ink',
@@ -92,7 +92,7 @@ export function VideoArchive({
                 onClick={() => setVideoId(video.videoId)}
                 className="group w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
               >
-                <span className="relative block aspect-[16/9] overflow-hidden border border-brand-line bg-brand-ink transition-colors duration-200 group-hover:border-brand-ink">
+                <span className="relative block aspect-[16/9] overflow-hidden rounded-2xl border border-brand-line bg-brand-ink shadow-sm transition-[border-color,box-shadow] duration-200 group-hover:border-brand-ink group-hover:shadow-md">
                   <Image
                     src={`https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`}
                     alt=""

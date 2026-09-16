@@ -39,12 +39,30 @@
 4. **개인정보·민감 값은 절대 커밋 금지.** `.env.local` 만 사용. RLS 미설계 테이블은 운영 데이터 넣지 말 것 (`guardrails/04-security-privacy.md`).
 5. **시안 자산은 참고만.** `prototypes/`의 HTML·예전 컨텍스트는 **결정 이력**으로만 본다. 직접 import·복붙 금지.
 
+## 자동 가드 (사람이 기억하지 않아도 되게)
+
+| 장치 | 위치 | 하는 일 |
+|---|---|---|
+| **훅** | `.claude/hooks/design-guard.mjs` (`.claude/settings.json`의 PostToolUse) | 파일을 쓸 때마다 검사: 임의 색상값(`bg-[#…]`) · 폐기 클래스(`btn-square`) · `motion-reduce` 누락 · **스펙 `.md` 없는 새 컴포넌트**. 걸리면 경고가 뜨니 그 자리에서 고친다 |
+| **스킬** | `.claude/skills/design-handoff/` | 시안 반영 절차 전체 (실측 명령어·자산 압축 규격·차이표 양식·검증·문서 목록) |
+| **모션 유틸** | `app/globals.css` (`fill-wipe` · `flip-*` · `link-wipe` · `btn-round`) | 같은 효과를 매번 다시 짜지 않게. 새 효과는 `06-motion.md`에 **먼저 등재**하고 유틸로 만든다 |
+
+> 훅 경고는 "규칙이 이렇다"는 신호지 실패가 아니다. 규칙 자체가 틀렸으면 문서를 먼저 고치고 훅을 고친다.
+
+## 인터랙션 기준 — 사랑의교회(sarang.org)를 모토로
+
+움직임의 **성격**만 가져온다: 짧고(200~500ms), 한 방향이고, 과하지 않다.
+색·라운드·타이포는 우리 토큰이 단일 출처다. 구체 목록은 `context/design/06-motion.md`.
+자동재생 캐러셀·패럴랙스·스크롤 잭킹은 금지 그대로.
+
 ## 작업 모드별 읽기 라우터
 
 Claude는 작업 종류에 맞는 문서만 읽으면 충분하다. 전체 컨텍스트를 다 읽지 말 것.
 
 | 작업 | 반드시 읽어라 | 필요 시 |
 |---|---|---|
+| **디자인 시안 반영** (`.ai`/PNG 수령) | **스킬 `design-handoff` 실행** — 실측→차이표→인벤토리→구현→검증→문서 절차가 거기 있다 | `docs/*-디자인시안-반영.md` (선례 2건) |
+| **애니메이션·인터랙션 추가** | `context/design/06-motion.md` (등재된 효과만) · `app/globals.css`의 공용 유틸 | 스킬 `design-handoff` §5 |
 | **새 컴포넌트 만들기** | `context/design/*` 전체 · `context/components/00-inventory.md` · 해당 컴포넌트 `.md` · `guardrails/00-rules.md` · `guardrails/02-design-consistency.md` | `context/features/<관련>.md` |
 | **기존 컴포넌트 수정** | 해당 컴포넌트 `.md` (frontmatter의 `depends-on` 따라 토큰·의존 컴포넌트 추가 로드) · `guardrails/02-design-consistency.md` | `context/design/*` |
 | **페이지 구현** | `context/pages/<n>-*.md` → 그 페이지의 `composes` 컴포넌트들의 `.md` · `context/04-information-architecture.md` | `context/design/*` |

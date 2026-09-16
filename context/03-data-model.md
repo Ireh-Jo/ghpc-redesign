@@ -90,6 +90,12 @@
 
 **RLS:** 익명 SELECT (published=true), 어드민 ALL.
 
+> **DECISION NEEDED (2026-09-16 · 메인 시안 반영에서 드러남):**
+> ① `category`에 **`notice`(공지사항)** 가 없다. 메인 공지 4줄과 `/church-admin/notice`가 이 카테고리를 쓴다.
+> ② **메인 배너 테이블이 아예 없다.** 관리자가 넣고 빼는 영역이 공지·배너 둘인데(2026-09-16 사용자 지시)
+>    배너 쪽은 담을 표가 없다. `banners(id, image_url, image_url_mobile, alt, href, starts_at, ends_at, sort, published)`
+>    같은 표가 필요하다. 지금은 `lib/notices.ts`·`lib/main-banners.ts` 파일이 임시 출처다.
+
 ### 6. `staff` — 섬기는 사람들
 
 | 컬럼 | 타입 | 비고 |
