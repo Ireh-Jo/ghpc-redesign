@@ -68,7 +68,8 @@
 > **룩 기준 (2026-09-16 갱신): 디자인팀 시안이 단일 출처다.** 2026-07-05의 "F안 다크 미니멀 베이스"는
 > 메인 시안 확정으로 종료됐다 — 라운드는 전역 적용(`context/design/03-spacing.md`), 다크는 **메인 헤로와
 > 푸터에만** 남는다. 나머지는 라이트(웜 화이트) 기조.
-> Header는 route 기준 톤 분기 (`/`=다크 헤로 위 투명, 서브=라이트).
+> Header는 route 기준 톤 분기 — **사진 히어로가 깔린 라우트**(메인 + 대메뉴 5개)는 투명 + 흰 글씨(볼드) + 흰 로고,
+> 스텁·본문형은 라이트. 목록은 `header.tsx`의 `PHOTO_HERO_ROUTES` (2026-09-18).
 
 ### Content
 
@@ -83,6 +84,7 @@
 | NoticeList | wip | `/` 공지사항 4줄 — **관리자 영역** | `content/notice-list.md` |
 | NewcomerCard | wip | `/` 새가족 환영 + 등록 카드 (안내 문구·칩 3·주 버튼) | `content/newcomer-card.md` |
 | RelatedOrgs | wip | `/` 관련 기관 6칸 (카드 뒤집기) | `content/related-orgs.md` |
+| EduDept | wip | `/education` 부서 섹션 7종 (번호·소개카드·부서카드·행사·FAQ) | `content/edu-dept.md` |
 | VideoArchive | wip | `/worship#live`·`/worship#special` 영상 아카이브 (분류 탭 + 플레이어 + 목록) | `content/video-archive.md` |
 | LivePanel | wip | `/worship#live` 상단 생방송 상태 (수동 on/off 없음) | `content/live-panel.md` |
 | YouTubeEmbed | wip | `/worship#live`(채널 라이브) · `/worship#special` · `/intro` 50주년 영상 | `content/youtube-embed.md` |

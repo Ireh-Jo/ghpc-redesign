@@ -364,3 +364,26 @@ export const QUICK_MENU: { key: string; label: string; href: string; desc: strin
   },
   { key: 'bulletin', label: '주보', href: '/activity/bulletin', desc: '이번 주 · 지난 주보' },
 ];
+
+/**
+ * GNB 하위 항목이 실제로 갈 주소.
+ *
+ * **각 라우트의 첫 앵커 항목은 해시를 떼고 라우트 루트로 보낸다** (2026-09-18 사용자 지시).
+ * 예: `예배와 교육 > 예배 및 모임 안내`(`/worship#times`) → `/worship`,
+ *     `예배와 교육 > 주일학교`(`/education#kids`) → `/education`.
+ *
+ * 이유: 해시로 들어가면 sticky 헤더 아래로 스크롤돼 **상단 배너를 볼 일이 없다.**
+ * 첫 항목은 그 페이지의 대문 역할이라 맨 위에서 시작하는 게 맞고, 둘째 항목부터는 해당 위치로 간다.
+ *
+ * 섹션 안의 순서를 그대로 쓴다 — `NAV`에서 항목 순서를 바꾸면 "첫 항목"도 같이 따라온다.
+ */
+export function resolveItemHref(section: NavSection, item: NavItem): string {
+  const hash = item.href.indexOf('#');
+  if (hash < 0) return item.href;
+  const route = item.href.slice(0, hash);
+  if (!route) return item.href; // 같은 페이지 안 앵커(`#foo`)는 그대로
+  const firstOfRoute = section.groups
+    .flatMap((group) => group.items)
+    .find((candidate) => candidate.href.startsWith(`${route}#`));
+  return firstOfRoute?.href === item.href ? route : item.href;
+}

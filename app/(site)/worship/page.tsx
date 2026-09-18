@@ -23,22 +23,32 @@ export default async function WorshipPage() {
   return (
     <SubPage
       sectionKey="worship"
-      // 디자인팀 배너 (2026-09-15 수령). 규격·용량 규칙: public/hero/README.md
-      // 전달분이 PNG(1920×540 · 375×175, 1x)라 JPEG q85로 변환해 넣었다 — 560KB → 107KB.
-      // 2x(3840×1080 · 750×344) 원본을 받으면 같은 이름으로 교체.
+      // 디자인팀 배너 (2026-09-18 재전달 — 9/15 분을 교체). 규격·용량 규칙: public/hero/README.md
+      // PC 2000×625 webp(60KB) · 모바일 750×899 jpg(84KB). 모바일 전달분은 PNG(782×938)라 JPEG q85로 변환.
+      // 구 `worship.jpg`(1920×540)는 삭제했다.
+      // 문구는 2026-09-18 예배 화면 시안 그대로 — GNB 라벨("예배와 교육")과 다르므로 오버라이드한다.
       heroImage={{
-        src: '/hero/worship.jpg',
+        src: '/hero/worship.webp',
         srcMobile: '/hero/worship-m.jpg',
-        alt: '하늘과 구름을 배경으로 선 십자가',
-        lead: '주일 1·2·3부와 수요·금요 예배, 그리고 다음세대 교육.',
+        alt: '파란 하늘 아래 올려다본 경향교회 본당과 "세계를 품은 교회" 표지',
+        eyebrow: '— 예배와 교육 - 예배',
+        title: '예배',
+        lead: '주일예배와 주중예배 안내',
+        titleEn: 'GYUNG - HYANG PRESBYTERIAN CHURCH',
       }}
+      // `times` 섹션은 표 3종이 각자 제목을 갖는다 — 섹션 h2("예배 및 모임 안내")와 첫 표 제목이
+      // 같은 문구로 두 번 나와서 섹션 h2를 숨기고 표 제목을 h2로 올렸다 (2026-09-18 시안).
+      bareSections={['times']}
+      // 하단 "교육" 바로가기 카드 제거 — `/education`이 독립 페이지로 완성됐다 (2026-09-18 사용자 지시).
+      // GNB의 교육 항목은 그대로 `/education#*`로 간다.
+      hideOutboundGroups={['교육']}
       overrides={{
         /* ── 예배 시간 안내 — 표 3종 (디자인팀 시안 2026-09-15) ── */
         times: (
           <div className="space-y-12 md:space-y-16">
             {SERVICE_TABLES.map((table, i) => (
               <FadeIn key={table.id} delay={i * 60}>
-                <ServiceTimeTable table={table} />
+                <ServiceTimeTable table={table} headingLevel="h2" />
               </FadeIn>
             ))}
           </div>

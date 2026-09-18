@@ -9,6 +9,8 @@
 
 export type ServiceColumn = { key: string; label: string };
 export type ServiceGroup = { label: string; span: number };
+/** 표 제목 오른쪽에 붙는 바로가기 (네이버 카페 등 외부 링크) — 2026-09-18 예배 시안 */
+export type ServiceLink = { label: string; href: string };
 export type ServiceTable = {
   id: string;
   title: string;
@@ -16,12 +18,15 @@ export type ServiceTable = {
   groups?: ServiceGroup[];
   rows: Record<string, string>[];
   note?: string;
+  links?: ServiceLink[];
 };
 
 export const SERVICE_TABLES: ServiceTable[] = [
   {
     id: 'services',
     title: '예배 및 모임안내',
+    // 시안(2026-09-18)이 이 표 오른쪽에 주일학교 카페를 뒀다. URL은 사용자 전달분.
+    links: [{ label: '주일학교 카페', href: 'https://cafe.naver.com/ghpcedu1' }],
     columns: [
       { key: 'name', label: '구분' },
       { key: 'time', label: '시간' },
@@ -66,6 +71,12 @@ export const SERVICE_TABLES: ServiceTable[] = [
   {
     id: 'sfc',
     title: 'S.F.C. 주일예배 및 모임',
+    // 시안은 중등부·고등부·대학부 3개 버튼이지만 전달받은 URL은 중고등부 통합 1개 + 대학부 1개다 (2026-09-18).
+    // 중등부·고등부가 분리된 카페가 따로 있으면 여기 항목만 늘리면 된다.
+    links: [
+      { label: '중고등부 카페', href: 'https://cafe.naver.com/ghmhsfc' },
+      { label: '대학부 카페', href: 'https://cafe.naver.com/shalomuniv' },
+    ],
     // 시안은 헤더가 `부서 | 예배 | 장소 | 예배 | 장소`로 4·5열이 '예배'로 잘못 적혀 있다.
     // 현행 사이트 기준 두 번째 묶음은 중·고등부 = 성경공부, 대학부 = 모임이다 (검토서 §6-2).
     // 같은 이름의 열이 두 번 나오는 모호함도 없애려고 2단 헤더로 묶었다.

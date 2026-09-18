@@ -8,7 +8,7 @@ import { ArrowRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Container } from './container';
 import { MobileNav } from './mobile-nav';
-import { NAV, LIVE_URL } from '@/lib/nav';
+import { NAV, LIVE_URL, resolveItemHref } from '@/lib/nav';
 
 /**
  * 전역 헤더(GNB) + 메가메뉴.
@@ -25,10 +25,26 @@ import { NAV, LIVE_URL } from '@/lib/nav';
  * 닫힌 패널은 `invisible`(visibility:hidden) — 포커스 대상에서 빠진다.
  *
  * - 모바일: 햄버거 → 드릴다운 2단(MobileNav).
- * - 톤 분기 (2026-07-05 환영 동선 라이트화): `/`(다크 영상 헤로)만 다크 톤 —
- *   투명 → 스크롤·메가 오픈 시 다크 솔리드. 서브페이지는 라이트 헤로라 라이트 톤.
+ * - 톤 분기 (2026-09-18 확장): **사진 히어로가 깔린 라우트**(메인 + 대메뉴 5개)는 다크 톤 —
+ *   투명 + 흰 글씨(볼드) + 흰 로고 → 스크롤·메가 오픈 시 다크 솔리드.
+ *   스텁·본문형 라우트는 그대로 라이트 톤. 목록은 아래 `PHOTO_HERO_ROUTES`.
  * 메뉴 항목은 lib/nav.ts 단일 출처.
  */
+/**
+ * 상단에 **사진 히어로**가 깔리는 라우트 — 헤더가 투명하게 얹히고 글자·로고가 흰색이 된다 (2026-09-18).
+ * 메인(`/`)과 대메뉴 5개(`SubPage` + `heroImage`)가 전부다. 스텁 라우트(`/worship/live` 등)는
+ * 라이트 배경이라 여기 넣으면 흰 글씨가 사라진다 — **사진 히어로를 새로 얹은 라우트만 추가할 것.**
+ */
+const PHOTO_HERO_ROUTES = new Set([
+  '/',
+  '/intro',
+  '/worship',
+  '/education',
+  '/care',
+  '/activity',
+  '/newcomer',
+]);
+
 /** 그룹 수 → 열 클래스. Tailwind가 정적 스캔하므로 `grid-cols-${n}` 보간을 쓰지 않는다 */
 const GROUP_COLS: Record<number, string> = {
   1: 'grid-cols-1',
@@ -41,8 +57,8 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  // 메인만 다크 헤로 위에 얹힘 — 나머지는 라이트 배경 위
-  const dark = usePathname() === '/';
+  // 사진 히어로 위에 얹히는 라우트는 투명 + 흰 글씨, 나머지(스텁·본문형)는 라이트
+  const dark = PHOTO_HERO_ROUTES.has(usePathname());
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -115,9 +131,9 @@ export function Header() {
                     aria-expanded={open}
                     aria-controls={`mega-${section.key}`}
                     className={cn(
-                      'relative cursor-default py-1 text-[13px] tracking-widest',
-                      dark ? 'text-white' : 'text-brand-ink',
-                      section.highlight ? 'font-bold' : 'font-medium',
+                      // GNB는 전부 볼드 (2026-09-18 사용자 지시) — 사진 위 흰 글씨 가독성 보강
+                      'relative cursor-default py-1 text-[13px] font-bold tracking-widest',
+                      dark ? 'text-white drop-shadow-[0_1px_6px_rgba(20,18,16,0.5)]' : 'text-brand-ink',
                       'after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-brand-support after:transition-transform after:duration-200',
                       open ? 'after:scale-x-100' : 'after:scale-x-0'
                     )}
@@ -200,7 +216,8 @@ export function Header() {
                               {group.items.map((item) => (
                                 <li key={item.href}>
                                   <Link
-                                    href={item.href}
+                                    // 각 라우트의 첫 항목은 해시 없이 맨 위로 (배너가 보이게) — lib/nav.ts
+                                    href={resolveItemHref(section, item)}
                                     onClick={closeMega}
                                     className={cn(
                                       'transition-colors',
@@ -232,8 +249,8 @@ export function Header() {
             target="_blank"
             rel="noopener"
             className={cn(
-              'inline-flex items-center gap-2 text-[12px] font-medium tracking-widest',
-              dark ? 'text-white' : 'text-brand-ink'
+              'inline-flex items-center gap-2 text-[12px] font-bold tracking-widest',
+              dark ? 'text-white drop-shadow-[0_1px_6px_rgba(20,18,16,0.5)]' : 'text-brand-ink'
             )}
           >
             <span className="relative flex h-2 w-2">

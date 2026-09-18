@@ -29,11 +29,13 @@ export default function IntroPage() {
   return (
     <SubPage
       sectionKey="intro"
-      // 예시 이미지(unsplash) — 디자인팀 교체 가이드: 본당 내부(따뜻한 조명) 또는 건물 외관
-      // 골든아워. 상세: context/components/content/hero-image.md
+      // 디자인팀 배너 (2026-09-18 수령). 규격·용량 규칙: public/hero/README.md
+      // PC 2000×625 webp(40KB) · 모바일 750×899 jpg(80KB) — PC/모바일 크롭이 달라 <picture>로 한 장만 받는다.
+      // 모바일 전달분은 PNG(782×938)라 JPEG q85로 변환했다 (이 맥에 webp 인코더가 없다).
       heroImage={{
-        src: 'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1600&q=80',
-        alt: '따뜻한 조명의 예배당 내부 (예시 이미지)',
+        src: '/hero/intro.webp',
+        srcMobile: '/hero/intro-m.jpg',
+        alt: '파란 하늘을 배경으로 올려다본 경향교회 본당과 첨탑',
         lead: '1973년부터 가양동에서 — 경향교회의 이야기와 섬기는 사람들을 소개합니다.',
       }}
       overrides={{

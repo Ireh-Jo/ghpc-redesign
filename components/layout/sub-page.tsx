@@ -27,10 +27,35 @@ export function SubPage({
   sectionKey,
   overrides,
   heroImage,
+  bareSections,
+  hideOutboundGroups,
 }: {
   sectionKey: string;
   overrides?: Record<string, ReactNode>;
-  heroImage?: { src: string; srcMobile?: string; alt: string; lead?: string };
+  /**
+   * 사진 히어로. `eyebrow`·`title`·`titleEn`은 시안 문구가 GNB 라벨과 다를 때만 넘긴다
+   * (예: `/worship`은 GNB가 "예배와 교육"인데 시안 제목은 "예배" — 2026-09-18).
+   */
+  heroImage?: {
+    src: string;
+    srcMobile?: string;
+    alt: string;
+    lead?: string;
+    eyebrow?: string;
+    title?: string;
+    titleEn?: string;
+  };
+  /**
+   * 다른 페이지로 나가는 그룹 카드 중 **숨길 그룹 라벨** 목록.
+   * 그 그룹이 독립 페이지로 완성돼서 이 페이지에 바로가기를 둘 이유가 없어졌을 때 쓴다
+   * (예: `/worship`의 "교육" 그룹 — `/education`이 완성돼 2026-09-18에 내렸다). GNB 링크는 그대로 남는다.
+   */
+  hideOutboundGroups?: string[];
+  /**
+   * 섹션 h2를 숨길 앵커 id 목록. override가 자기 제목(표 제목 등)을 갖고 있어
+   * 같은 문구가 두 번 나오는 경우에만 쓴다 — 이때 override 쪽 제목을 h2로 올릴 것.
+   */
+  bareSections?: string[];
 }) {
   const section = NAV.find((n) => n.key === sectionKey);
   if (!section) notFound();
@@ -46,14 +71,16 @@ export function SubPage({
 
   const outboundGroups = section.groups
     .map((g) => ({ label: g.label, items: g.items.filter((i) => !ownAnchor(i)) }))
-    .filter((g) => g.items.length > 0);
+    .filter((g) => g.items.length > 0 && !hideOutboundGroups?.includes(g.label));
 
   return (
     <>
       {/* 서브 헤로 (라이트 — 2026-07-05 환영 동선 라이트화) — fixed 헤더 높이만큼 pt 보정 */}
       {heroImage ? (
         <HeroImage
-          title={section.label}
+          eyebrow={heroImage.eyebrow}
+          title={heroImage.title ?? section.label}
+          titleEn={heroImage.titleEn}
           lead={heroImage.lead}
           imageSrc={heroImage.src}
           imageSrcMobile={heroImage.srcMobile}
@@ -79,7 +106,9 @@ export function SubPage({
           className="scroll-mt-32 border-b border-brand-line py-16 md:scroll-mt-36 md:py-20"
         >
           <Container>
-            <h2 className="mb-3 text-2xl font-bold md:text-3xl">{label}</h2>
+            {!bareSections?.includes(id) && (
+              <h2 className="mb-3 text-2xl font-bold md:text-3xl">{label}</h2>
+            )}
             {overrides?.[id] ?? (
               <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
                 준비 중입니다. 콘텐츠는 순차적으로 채워집니다.

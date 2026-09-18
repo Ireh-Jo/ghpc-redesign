@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ChevronRight, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { NAV, LIVE_URL, type NavSection } from '@/lib/nav';
+import { NAV, LIVE_URL, type NavSection, resolveItemHref } from '@/lib/nav';
 
 /**
  * 모바일 풀스크린 메뉴 (다크). 햄버거에서 열림.
@@ -165,7 +165,8 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
                 {group.items.map((item) => (
                   <li key={item.href}>
                     <Link
-                      href={item.href}
+                      // 각 라우트의 첫 항목은 해시 없이 맨 위로 (배너가 보이게) — lib/nav.ts
+                      href={resolveItemHref(section, item)}
                       onClick={close}
                       className="flex items-center justify-between border-b border-white/10 py-4 text-[15px] text-white/85"
                     >
