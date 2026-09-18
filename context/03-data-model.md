@@ -168,8 +168,9 @@
 
 **RLS:** 익명 SELECT (active=true), 어드민 ALL.
 
-> DECISION NEEDED: 장소 목록 확정 (회의) — 후보: 교육실 1~8·10, 체육관, 1세미나실, 연합회의실,
-> 트리니티홀, 비전홀, 글로브홀. 운동장·식당은 추후.
+✅ **장소 확정 (2026-09-19)** — 교육실 **1·2·3·4·7·8·10**(5·6·9 제외) · 체육관 · 제1세미나실 ·
+연합회의실 · 트리니티홀 · 비전홀 · 글로브홀 · **운동장**. 식당은 추후.
+목록 단일 출처는 `lib/rooms.ts` (Supabase 이관 시 이 테이블의 시드가 된다).
 
 ### 11. `reservations` — 시설 예약 신청 (개인정보 포함)
 
@@ -182,8 +183,9 @@
 | `org` | text | 이용기관 (달력 공개 표시) |
 | `purpose` | text | 용도 (달력 공개 표시) |
 | `starts_at` / `ends_at` | timestamptz | |
-| `status` | text | pending / approved / rejected / cancelled |
-| `recurrence_group_id` | uuid | nullable — 반복 신청 묶음 (§반복 미정, 미지원 확정 시 제거) |
+| `status` | text | **`confirmed` / `cancelled` 둘뿐** (2026-09-19 — 승인 단계 폐기) |
+| `recurrence_group_id` | uuid | nullable — 주간 반복 묶음. **지원 확정** (각 회차가 개별 행) |
+| `cancel_password_hash` | text | **본인 취소용 비밀번호 해시.** 평문 저장 금지 — `pgcrypto`의 `crypt(pw, gen_salt('bf'))` |
 | `admin_note` | text | nullable |
 | `consent_privacy` | boolean | 필수 true |
 | `created_at` / `updated_at` | timestamptz | |
@@ -194,10 +196,19 @@
   room_id·org·purpose·starts_at·ends_at·status)로만.
 - 어드민: 전체 권한.
 
-**겹침 방지:** exclusion constraint (`btree_gist` + `tstzrange(starts_at, ends_at)` && 같은 room_id).
-> DECISION NEEDED: constraint 적용 대상 status — A안 `('pending','approved')` vs B안 `('approved')`
-> (`context/features/reservation.md` §2, 회의 확정 대기. 담당자 추천 A안).
-> DECISION NEEDED: 3일 전 마감 차단 여부·신청 가능 시간대·반복 신청 (§3).
+**겹침 방지 (A안 확정):** exclusion constraint — `btree_gist` + `tstzrange(starts_at, ends_at)` &&
+같은 `room_id`, `WHERE (status = 'confirmed')`. 동시 제출 레이스까지 DB가 막는다.
+
+**CHECK 제약 (2026-09-19 확정 정책):**
+- 이용 시간: `starts_at`·`ends_at`의 서울 현지 시각이 **08:00~20:00**
+- 당일 신청 불가: `starts_at::date > (now() AT TIME ZONE 'Asia/Seoul')::date`
+  (INSERT 시점 기준이므로 트리거 또는 서버 검증으로 강제 — CHECK는 `now()` 사용 불가)
+- `ends_at > starts_at`
+
+**비밀번호 취소:** 익명 UPDATE는 금지하고 `cancel_reservation(id, password)` **RPC(SECURITY DEFINER)** 하나만
+공개한다 — 비밀번호가 맞을 때 `status='cancelled'`로 바꾼다. 무인증 사이트에서 UPDATE 권한을 열지 않기 위한 장치다.
+> DECISION NEEDED: 취소 RPC의 레이트 리밋 (비밀번호 대입 시도 차단) — Turnstile 토큰 재검증으로 갈지,
+> Postgres 쪽 시도 기록 테이블을 둘지.
 
 ## 인증
 

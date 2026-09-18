@@ -52,6 +52,10 @@
 - **9/18 배너 5종 적용 완료** (`worship`·`intro`·`education`·`care`·`newcomer`) — 남은 건 `activity` 하나.
 - **9/18 GNB 첫 항목·앵커바 첫 탭은 페이지 맨 위로** — 해시로 들어가면 상단 배너를 볼 수 없다는 지적 반영
   (`lib/nav.ts`의 `resolveItemHref` · `AnchorNav`). 규칙: `context/04-information-architecture.md` §첫 항목은 라우트 루트로
+- **9/19 시설 예약 정책 확정 + 구현.** 담당자 회신으로 미결 5건이 전부 닫혔다 — 장소(교육실 5·6·9 제외,
+  운동장 포함) · 겹침 A안 · 당일 신청 불가 · 08~20시 · **승인 없이 즉시 확정** · 비밀번호 본인 취소(수정 없음) ·
+  주간 반복 · Turnstile. 달력 + 전용 폼까지 구현했고 **접수는 Supabase·Turnstile 키 대기로 막혀 있다** →
+  [`context/features/reservation.md`](../context/features/reservation.md) §결정 잠금
 - 디자이너 작업요청 가이드 → [`docs/2026-08-23-디자이너-작업요청-가이드.md`](2026-08-23-디자이너-작업요청-가이드.md)
 
 ### ⚠️ 브랜치 주의 (2026-08-23 사고)
@@ -122,8 +126,8 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 | **퀵메뉴 `구역공과` 목적지** | 교회 (OPEN_QUESTIONS와 동일 건) | `lib/nav.ts`의 `QUICK_MENU` 한 줄. 지금은 잠정으로 `/church-admin/resources` |
 | **관련 기관 URL 2건** (경향키즈놀이학원 · 경향복지재단) | 교회 | `lib/related-orgs.ts` 한 줄씩. 지금은 `/ministry` 앵커로 보낸다 |
 | **비주얼 자산 공유 폴더 위치** | 디자인팀 회신 | 가이드 §공통 전달 규칙에 채워 재발송 |
-| **예약시스템 ②겹침 A/B · ③신청규칙** | 시설 담당자 회의 | `context/features/reservation.md`의 DECISION NEEDED 확정 → `/church-admin/reserve`에 달력 UI 얹기. 지금은 현행과 같은 신청 폼 |
-| **`rooms` 장소 목록** | 시설 담당자 회의 | `/church-admin/reserve`의 `place`를 자유 입력 text → select로 교체 (`lib/schemas/reservation.ts`만 수정) |
+| **Cloudflare Turnstile 사이트 키·시크릿** | 사용자 액션 (Cloudflare 계정) | `.env.local`에 `NEXT_PUBLIC_TURNSTILE_SITE_KEY`·`TURNSTILE_SECRET_KEY` → 예약 폼의 보안문구 위젯이 살아난다. 키가 없으면 제출이 막혀 있다 (의도된 동작) |
+| **AG 최정호 스크린 웹폰트** (교육 메뉴) | 디자인팀 | woff2 파일 + 웹 라이선스. 요청 항목·드롭인 절차는 [`public/fonts/README.md`](../public/fonts/README.md). 권장 범위는 **교육 제목만** |
 | **집사회·권사회 → 섬기는 사람들** | 담임목사 (9/6 회의) | `lib/nav.ts` 항목 2개 이동 + 앵커 `/care#deacons` → `/intro#deacons` + IA 갱신. **30분.** 개인정보 이슈 없음 확인 완료 |
 | **대메뉴 순서 — 새가족 2번째?** | 교역자 회의 (9/6) | `NAV` 배열 순서 한 줄. 순서 지시라면 2026-08-12 디자이너 잠금이 풀린다 |
 | **'문화' 항목 채택 여부·위치** | 담임목사 (9/6 회의) | 채택 시 A(교회 활동 안 그룹) / B(`/culture` 랜딩) / 대메뉴 6번째 중 택일. **코드 비용 없음** |
@@ -163,6 +167,7 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 | 2026-08-23 | 신청 폼 4종은 **현행 사이트 필드 그대로** 이식. 폼 정의 + 공통 렌더러 구조 | `context/features/form-handling.md` § 폼 종류 · `context/components/interactive/apply-form.md` |
 | 2026-09-06 | **청년회 소속 = 교육 확정** (교역자 회의). 잠정 배치 그대로라 코드 변경 없음 | `context/04-information-architecture.md` § 교역자 회의 반영 |
 | 2026-09-06 | **"대메뉴 5개 고정"은 기술 제약이 아니라 사용자 지시 — 철회 가능.** 6번째 대메뉴는 추가 개발 비용 없이 들어감(헤더 여유 · `GROUP_COLS` 4열). '문화'의 쟁점은 개수가 아니라 콘텐츠(14개 중 8개 원고 전무 · 5개 중복) | [교역자회의 결과 검토 §2-5](meetings/2026-09-06-교역자회의-결과-검토.md) |
+| 2026-09-19 | **시설 예약 정책 잠금** — 장소 14곳 · 겹침 A안 · 당일 차단 · 08~20시 · 주간반복 · 승인 폐기(즉시 확정) · 비밀번호 취소(수정 없음) · Turnstile. 상태는 `confirmed/cancelled` 둘뿐 | `context/features/reservation.md` §결정 잠금 · `context/03-data-model.md` §10·§11 |
 | 2026-09-18 | **GNB 첫 항목 = 라우트 루트.** 각 라우트의 첫 앵커 항목과 `AnchorNav` 첫 탭은 해시 없이 맨 위로 (상단 배너 노출) | `context/04-information-architecture.md` §첫 항목은 라우트 루트로 · `context/components/layout/anchor-nav.md` |
 | 2026-09-18 | **`/education` 신설 · `/worship`에서 교육 카드 제거.** 교육은 대메뉴 하위 그룹이라 `SubPage`를 쓰지 않고 직접 조립(판단 근거는 반영 문서 §3). 부서 콘텐츠는 TF 화면안 이관분 | [교육 시안 반영](2026-09-18-교육페이지-시안-반영.md) · `context/components/content/edu-dept.md` |
 | 2026-09-18 | **서브 히어로 톤 전환.** 웜 화이트 스크림(안개) 폐기 → 사진 선명 + **다크 그라데이션**(텍스트 쪽만) · 히어로/GNB 텍스트 **흰색 볼드** · 로고 흰색. 헤더 다크 톤이 대메뉴 5개로 확장(`PHOTO_HERO_ROUTES`) | `context/components/content/hero-image.md` · `guardrails/02-design-consistency.md` |

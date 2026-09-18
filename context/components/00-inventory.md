@@ -114,6 +114,8 @@
 | NewsTabs | draft | `/activity` 영상뉴스/소식/교우/교단 탭 | `interactive/news-tabs.md` |
 | ScrollToTop | draft | 전 페이지 | `interactive/scroll-to-top.md` |
 | FloorMap | shipped | `/intro` 오시는 길 · 실내 길찾기 | `interactive/floor-map.md` |
+| ReservationCalendar | wip | `/church-admin/reserve` 시설 예약 월간 달력 (공개 정보만) | `interactive/reservation-calendar.md` |
+| ReservationForm | wip | `/church-admin/reserve` 시설 이용 신청 폼 (기간·주간반복·복수 장소·비밀번호·Turnstile) | `interactive/reservation-form.md` |
 
 ## 의존성 그래프 시각화 (요약)
 
