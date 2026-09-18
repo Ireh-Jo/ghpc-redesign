@@ -498,7 +498,7 @@ export function FloorMap() {
                       type="button"
                       onClick={() => selectViaSearch(r)}
                       aria-label={`검색결과: ${r.name} (${r.floorLabel})`}
-                      className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-[13px] text-brand-ink transition-colors duration-200 hover:bg-brand-bg"
+                      className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-[13px] text-brand-ink transition-colors duration-200 hover:bg-brand-subtle"
                     >
                       <span>{r.name}</span>
                       <span className="text-[11px] text-brand-ink-muted">{r.floorLabel}</span>
@@ -567,7 +567,7 @@ export function FloorMap() {
       {/* 지도 */}
       <div
         ref={viewportRef}
-        className="relative h-[380px] cursor-grab touch-none select-none overflow-hidden bg-brand-bg active:cursor-grabbing md:h-[520px]"
+        className="relative h-[380px] cursor-grab touch-none select-none overflow-hidden bg-brand-subtle active:cursor-grabbing md:h-[520px]"
       >
         {!ready && !loadError && (
           <div className="absolute inset-0 flex items-center justify-center text-[13px] text-brand-ink-muted">

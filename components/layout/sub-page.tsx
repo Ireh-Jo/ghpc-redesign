@@ -128,7 +128,7 @@ export function SubPage({
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="group flex h-full flex-col justify-between gap-4 bg-brand-surface p-6 transition-colors hover:bg-brand-bg"
+                    className="group flex h-full flex-col justify-between gap-4 bg-brand-surface p-6 transition-colors hover:bg-brand-subtle"
                   >
                     <span>
                       <span className="block text-[17px] font-bold text-brand-ink">{item.label}</span>

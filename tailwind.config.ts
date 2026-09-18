@@ -15,6 +15,8 @@ const config: Config = {
         brand: {
           bg: 'rgb(var(--brand-bg) / <alpha-value>)',
           surface: 'rgb(var(--brand-surface) / <alpha-value>)',
+          // 옅은 면 — 표 헤더·행 호버·비활성 탭처럼 **카드 안쪽**에서 깊이를 만드는 자리 (2026-09-19)
+          subtle: 'rgb(var(--brand-subtle) / <alpha-value>)',
           ink: 'rgb(var(--brand-ink) / <alpha-value>)',
           'ink-muted': 'rgb(var(--brand-ink-muted) / <alpha-value>)',
           accent: 'rgb(var(--brand-accent) / <alpha-value>)',

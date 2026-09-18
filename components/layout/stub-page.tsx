@@ -108,7 +108,7 @@ export function StubPage({
                 <li key={child.href}>
                   <Link
                     href={child.href}
-                    className="group flex h-full flex-col justify-between gap-6 bg-brand-surface p-6 transition-colors hover:bg-brand-bg md:p-8"
+                    className="group flex h-full flex-col justify-between gap-6 bg-brand-surface p-6 transition-colors hover:bg-brand-subtle md:p-8"
                   >
                     <span>
                       <span className="block text-[19px] font-bold text-brand-ink">{child.label}</span>

@@ -55,7 +55,7 @@ export function ServiceTimeTable({
         <table className="w-full border-collapse border-t-2 border-brand-ink text-center text-[15px]">
           <thead>
             {groups && (
-              <tr className="bg-brand-bg">
+              <tr className="bg-brand-subtle">
                 {groups.map((group, i) => (
                   <th
                     key={`${group.label}-${i}`}
@@ -68,7 +68,7 @@ export function ServiceTimeTable({
                 ))}
               </tr>
             )}
-            <tr className="bg-brand-bg">
+            <tr className="bg-brand-subtle">
               {columns.map((column) => (
                 <th
                   key={column.key}
@@ -84,7 +84,7 @@ export function ServiceTimeTable({
             {rows.map((row) => (
               <tr
                 key={cell(row, head.key)}
-                className="transition-colors duration-200 hover:bg-brand-bg/60"
+                className="transition-colors duration-200 hover:bg-brand-subtle/60"
               >
                 <th
                   scope="row"

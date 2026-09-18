@@ -53,7 +53,7 @@ export function VideoArchive({
               'btn-round shrink-0 whitespace-nowrap px-4 py-2 text-[13px] font-bold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2',
               c.key === category.key
                 ? 'bg-brand-ink text-white'
-                : 'bg-brand-bg text-brand-ink-muted hover:text-brand-ink',
+                : 'bg-brand-subtle text-brand-ink-muted hover:text-brand-ink',
             )}
           >
             {c.label}

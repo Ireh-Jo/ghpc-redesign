@@ -11,21 +11,30 @@
     /* ─────────────────────────────────────────────────────────────
        브랜드 토큰 (rgb 채널 · alpha 지원). 단일 출처: context/design/01-color.md
        메인 3색은 2026-07-02 디자이너 확정값 (로고색 톤다운 — 파랑/초록/빨강).
-       뉴트럴 5종은 2026-07-05 워밍 (쿨 그레이 → stone 계열 · 디자이너 리뷰 대기).
+
+       2026-09-19: **바탕·보더를 중립으로.** 2026-07-05 워밍(stone 계열)에서 바탕이 노랑으로 기울어
+       "베이지처럼 보인다"는 사용자 판단 → bg·line만 R=G=B로 맞췄다. 컨텐츠(흰 카드·표)가 더 떠 보인다.
+       **ink·ink-muted는 웜 유지** — 웜 near-black은 누렇게 보이지 않고 무드 "따뜻한"을 지탱하는 축이다.
+       흰색(#FFF)으로 가지 않은 이유: bg/surface 교대로 섹션을 구분하고 있어서 단차가 0이 되면
+       그 리듬이 사라진다 (`context/design/01-color.md` §사용 규칙).
+       bg를 밝게 올린 만큼 **`--brand-subtle`(#F4F4F4)** 을 새로 두고, 카드·표 **안쪽**의 옅은 면
+       (표 헤더·행 호버·비활성 탭·빈 날짜 칸)은 그 토큰을 쓴다 — 페이지 바탕 밝기와 무관하게 깊이가 유지된다.
        ───────────────────────────────────────────────────────────── */
-    --brand-bg: 250 249 247;          /* #FAF9F7 warm off-white */
+    --brand-bg: 251 251 251;          /* #FBFBFB neutral off-white (2026-09-19) */
     --brand-surface: 255 255 255;     /* #FFFFFF */
+    --brand-subtle: 244 244 244;      /* #F4F4F4 옅은 면 — 표 헤더·호버·비활성 탭 (2026-09-19 신설) */
     --brand-ink: 20 18 16;            /* #141210 warm near-black */
     --brand-ink-muted: 120 113 108;   /* #78716C warm gray (stone-500) */
     --brand-accent: 0 45 96;          /* #002D60 파랑 (2026-07-02 확정) */
     --brand-accent-2: 20 18 16;       /* #141210 (= ink) */
     --brand-support: 0 99 74;         /* #00634A 초록 (2026-07-02 확정) */
     --brand-point: 160 7 17;          /* #A00711 빨강 (2026-07-02 확정 · 사용처 미정) */
-    --brand-line: 231 229 228;        /* #E7E5E4 warm (stone-200) */
+    --brand-line: 231 231 231;        /* #E7E7E7 neutral (2026-09-19) */
 
-    /* ─── shadcn/ui semantic (brand 위 매핑 · 근사 HSL · 웜 뉴트럴 정합) ───
+    /* ─── shadcn/ui semantic (brand 위 매핑 · 근사 HSL) ───
+       2026-09-19: bg·border 중립화에 맞춰 회색 계열의 hue를 0으로. 나머지는 brand 값 그대로.
        DECISION NEEDED: 정밀 HSL 변환 (context/design/01-color.md). */
-    --background: 40 24% 97%;
+    --background: 0 0% 98.4%;      /* #FBFBFB — brand-bg와 짝 (2026-09-19 중립화) */
     --foreground: 30 11% 7%;
     --card: 0 0% 100%;
     --card-foreground: 30 11% 7%;
@@ -33,16 +42,16 @@
     --popover-foreground: 30 11% 7%;
     --primary: 212 100% 19%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 60 5% 96%;
+    --secondary: 0 0% 96%;
     --secondary-foreground: 30 11% 7%;
-    --muted: 60 5% 96%;
+    --muted: 0 0% 96%;
     --muted-foreground: 25 5% 45%;
-    --accent: 60 5% 96%;
+    --accent: 0 0% 96%;
     --accent-foreground: 30 11% 7%;
     --destructive: 356 92% 33%; /* brand-point #A00711 — 폼 에러 (01-color.md 잠정 사용처) */
     --destructive-foreground: 0 0% 100%;
-    --border: 20 6% 90%;
-    --input: 20 6% 90%;
+    --border: 0 0% 91%;     /* #E7E7E7 — brand-line과 짝 */
+    --input: 0 0% 91%;
     --ring: 212 100% 19%;
     --radius: 0.5rem;
   }

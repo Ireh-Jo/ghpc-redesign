@@ -107,7 +107,7 @@ export function LivePanel({ live }: { live?: LiveBroadcast | null }) {
   // ② 편성 시간대인데 아직 방송이 안 잡힌 경우 — 오류 화면 대신 안내
   if (onAir) {
     return (
-      <div className="max-w-3xl rounded-2xl border border-brand-line bg-brand-bg px-6 py-8 md:px-8 md:py-10">
+      <div className="max-w-3xl rounded-2xl border border-brand-line bg-brand-surface px-6 py-8 md:px-8 md:py-10">
         <p className="flex items-center gap-2 text-[13px] font-bold text-brand-support">
           <span className="inline-flex h-2.5 w-2.5 rounded-full bg-brand-support" />
           {beforeStart ? '잠시 후 시작' : '방송 준비 중'} · {onAir.label}{' '}
@@ -134,7 +134,7 @@ export function LivePanel({ live }: { live?: LiveBroadcast | null }) {
 
   // ③ 그 외 — 다음 생방송 안내
   return (
-    <div className="max-w-3xl rounded-2xl border border-brand-line bg-brand-bg px-6 py-8 md:px-8 md:py-10">
+    <div className="max-w-3xl rounded-2xl border border-brand-line bg-brand-surface px-6 py-8 md:px-8 md:py-10">
       <p className="text-[11px] font-bold tracking-[0.3em] text-brand-support">— 생방송</p>
       <p className="mt-3 text-[18px] font-bold text-brand-ink md:text-[22px]">
         {next ? (

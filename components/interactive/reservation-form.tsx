@@ -284,7 +284,7 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
         </div>
 
         {/* ── 주간 반복 ── */}
-        <div className="rounded-2xl border border-brand-line bg-brand-bg p-5">
+        <div className="rounded-2xl border border-brand-line bg-brand-subtle p-5">
           <FormField
             control={form.control}
             name="repeatWeekly"
@@ -507,7 +507,7 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
         />
 
         {/* ── 보안문구 (Turnstile) ── */}
-        <div className="rounded-2xl border border-brand-line bg-brand-bg p-5">
+        <div className="rounded-2xl border border-brand-line bg-brand-subtle p-5">
           <p className="flex items-center gap-2 text-[14px] font-bold text-brand-ink">
             <ShieldCheck className="h-4 w-4 text-brand-accent" />
             보안문구 확인

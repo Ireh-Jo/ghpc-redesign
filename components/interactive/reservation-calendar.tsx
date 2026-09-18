@@ -118,7 +118,7 @@ export function ReservationCalendar({ reservations }: { reservations: PublicRese
       {/* 날짜 칸 */}
       <div className="grid grid-cols-7 gap-px bg-brand-line">
         {cells.map((date, i) => {
-          if (!date) return <div key={`pad-${i}`} className="min-h-[76px] bg-brand-bg md:min-h-[104px]" />;
+          if (!date) return <div key={`pad-${i}`} className="min-h-[76px] bg-brand-subtle md:min-h-[104px]" />;
           const list = byDate.get(date) ?? [];
           const day = Number(date.slice(-2));
           const isToday = date === today;
@@ -130,8 +130,8 @@ export function ReservationCalendar({ reservations }: { reservations: PublicRese
               onClick={() => setOpenDate(openDate === date ? null : date)}
               aria-expanded={openDate === date}
               className={cn(
-                'min-h-[76px] bg-brand-surface p-2 text-left align-top transition-colors duration-200 hover:bg-brand-bg md:min-h-[104px] md:p-2.5',
-                isPast && 'bg-brand-bg/60',
+                'min-h-[76px] bg-brand-surface p-2 text-left align-top transition-colors duration-200 hover:bg-brand-subtle md:min-h-[104px] md:p-2.5',
+                isPast && 'bg-brand-subtle/60',
                 openDate === date && 'ring-2 ring-inset ring-brand-accent',
               )}
             >
