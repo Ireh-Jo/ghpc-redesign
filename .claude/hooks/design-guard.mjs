@@ -63,8 +63,11 @@ if (src.includes('btn-square')) {
 /* ── 3. 움직이는 효과에는 모션 축소 대응 (context/design/06-motion.md) ──
    공용 유틸(fill-wipe, flip-card, link-wipe)은 globals.css가 이미 처리하므로 제외. */
 if (ext === '.tsx') {
+  // `animate-spin`(로딩 스피너)은 제외한다 — 상태 표시라 끄면 오히려 피드백이 사라지고,
+  // 전역 `prefers-reduced-motion` 블록이 이미 duration을 0으로 만든다 (2026-09-19 오탐 1건 후 완화).
   const movesInline =
-    /(group-)?(hover|focus)[^"'\s]*:(scale|translate|rotate)/.test(src) || /\banimate-(?!none)/.test(src);
+    /(group-)?(hover|focus)[^"'\s]*:(scale|translate|rotate)/.test(src) ||
+    /\banimate-(?!none|spin)/.test(src);
   const usesSharedUtil = /(fill-wipe|flip-card|flip-scene|link-wipe)/.test(src);
   if (movesInline && !usesSharedUtil && !src.includes('motion-reduce')) {
     problems.push(

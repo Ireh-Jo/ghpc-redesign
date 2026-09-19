@@ -205,10 +205,13 @@
   (INSERT 시점 기준이므로 트리거 또는 서버 검증으로 강제 — CHECK는 `now()` 사용 불가)
 - `ends_at > starts_at`
 
-**비밀번호 취소:** 익명 UPDATE는 금지하고 `cancel_reservation(id, password)` **RPC(SECURITY DEFINER)** 하나만
-공개한다 — 비밀번호가 맞을 때 `status='cancelled'`로 바꾼다. 무인증 사이트에서 UPDATE 권한을 열지 않기 위한 장치다.
-> DECISION NEEDED: 취소 RPC의 레이트 리밋 (비밀번호 대입 시도 차단) — Turnstile 토큰 재검증으로 갈지,
-> Postgres 쪽 시도 기록 테이블을 둘지.
+**비밀번호 취소:** 익명 UPDATE는 금지하고 `cancel_reservation(id, password, scope)` **RPC(SECURITY DEFINER)**
+하나만 공개한다 — 비밀번호가 맞을 때 `status='cancelled'`로 바꾼다.
+- `scope='single'` → 그 행만
+- `scope='series'` → 같은 `recurrence_group_id` 중 **오늘 이후** 행만 (지난 회차는 보존)
+- 실패 응답은 "일치하지 않습니다" 하나로 통일 — 존재/불일치를 구분하면 예약 존재 여부가 새어 나간다 무인증 사이트에서 UPDATE 권한을 열지 않기 위한 장치다.
+✅ **비밀번호 대입 차단 확정 (2026-09-19): Turnstile 재검증만.** 실패 횟수 기록 테이블은 두지 않는다 —
+운영 부담(정리 작업·오탐) 대비 이득이 작다는 판단. 필요해지면 그때 얹는다.
 
 ## 인증
 

@@ -14,7 +14,7 @@ import { roomName } from '@/lib/rooms';
  *   1. 신청: 회차별로 `reservations` INSERT (같은 `recurrence_group_id`).
  *      겹침은 exclusion constraint가 최종 방어 → 23P01 에러를 "이미 예약된 시간" 메시지로 변환
  *   2. 비밀번호: `crypt(pw, gen_salt('bf'))`로 **해시만** 저장 (평문·복호화 가능 암호화 금지)
- *   3. 취소: `cancel_reservation(id, password)` RPC(SECURITY DEFINER) 호출 — 익명 UPDATE 권한은 열지 않는다
+ *   3. 취소: `cancel_reservation(id, password, scope)` RPC(SECURITY DEFINER) 호출 — 익명 UPDATE 권한은 열지 않는다
  *   4. 달력 조회: 공개 뷰 `reservations_public`(PII 제외)만 사용
  *
  * ⚠️ RLS 미설계 + Turnstile 키 미발급 상태에서 운영 데이터가 들어가지 않도록,
@@ -91,7 +91,10 @@ export async function cancelReservation(input: unknown): Promise<Result> {
     return { ok: false, error: NOT_READY };
   }
 
-  // TODO(Supabase): cancel_reservation RPC 호출. 비밀번호 불일치는 "일치하지 않습니다"로만 알린다
-  //                 (어떤 예약이 존재하는지 알려주지 않기 위해 상세 구분 금지)
+  // TODO(Supabase): `cancel_reservation(reservation_id, password, scope)` RPC(SECURITY DEFINER) 호출.
+  //   - scope='single' → 그 행만 status='cancelled'
+  //   - scope='series' → 같은 recurrence_group_id 중 **오늘 이후** 행만 (지난 회차는 그대로 둔다)
+  //   비밀번호 불일치는 "일치하지 않습니다"로만 알린다 — 어떤 예약이 존재하는지 알려주지 않기 위해
+  //   존재/불일치를 구분해서 응답하지 않는다.
   return { ok: true };
 }

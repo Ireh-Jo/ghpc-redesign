@@ -103,9 +103,16 @@ export const reservationSchema = z
 
 export type ReservationInput = z.infer<typeof reservationSchema>;
 
-/** 취소 — 신청 시 정한 비밀번호로 본인 확인. **수정은 없다 (취소 후 재신청)** */
+/**
+ * 취소 — 신청 시 정한 비밀번호로 본인 확인. **수정은 없다 (취소 후 재신청)**.
+ *
+ * `scope` (2026-09-19 사용자 확정):
+ * - `single` 이 회차만 — **단건 예약은 항상 이것**이고 사용자에게 묻지 않는다
+ * - `series` 남은 회차 전부 — 반복 예약에서만 고를 수 있다. **지난 회차는 건드리지 않는다**
+ */
 export const reservationCancelSchema = z.object({
   reservationId: z.string().min(1),
+  scope: z.enum(['single', 'series']),
   cancelPassword: z.string().min(1, '비밀번호를 입력해주세요').max(64),
   captchaToken: z.string().min(1, '보안문구 확인을 완료해주세요'),
 });

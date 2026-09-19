@@ -168,6 +168,7 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 | 2026-09-06 | **청년회 소속 = 교육 확정** (교역자 회의). 잠정 배치 그대로라 코드 변경 없음 | `context/04-information-architecture.md` § 교역자 회의 반영 |
 | 2026-09-06 | **"대메뉴 5개 고정"은 기술 제약이 아니라 사용자 지시 — 철회 가능.** 6번째 대메뉴는 추가 개발 비용 없이 들어감(헤더 여유 · `GROUP_COLS` 4열). '문화'의 쟁점은 개수가 아니라 콘텐츠(14개 중 8개 원고 전무 · 5개 중복) | [교역자회의 결과 검토 §2-5](meetings/2026-09-06-교역자회의-결과-검토.md) |
 | 2026-09-19 | **바탕 3단 구조 확정** — `bg` `#FAF9F7`→**`#FBFBFB`**(중립·한 단 밝게) · `line` `#E7E5E4`→`#E7E7E7` · **`subtle` `#F4F4F4` 신설**(표 헤더·호버·비활성 탭). 글자는 웜 유지, 완전 화이트는 섹션 단차가 사라져 반려 | `context/design/01-color.md` §토큰·§사용 규칙 |
+| 2026-09-19 | **예약 취소 범위 확정** — 단건은 확인 없이 바로, 반복은 `이 회차만`/`남은 회차 전부` 선택(기본=이 회차만, 지난 회차 보존). 비밀번호 대입 차단은 **Turnstile만**(시도 기록 테이블 없음) | `context/features/reservation.md` · `context/components/interactive/reservation-cancel.md` |
 | 2026-09-19 | **예약 반복 5종 확대** (담당자 2차 피드백) — 기간 매일 · 주중(월–금) · 매주 · 매월(날짜) · 매월(N번째 요일). 없는 날짜는 건너뛰고 화면이 실제 회차를 보여준다. **상한 12회 확정**(담당자 피드백) · 기간 방식은 60회 | `context/features/reservation.md` §반복 방식 5종 |
 | 2026-09-19 | **시설 예약 정책 잠금** — 장소 14곳 · 겹침 A안 · 당일 차단 · 08~20시 · 주간반복 · 승인 폐기(즉시 확정) · 비밀번호 취소(수정 없음) · Turnstile. 상태는 `confirmed/cancelled` 둘뿐 | `context/features/reservation.md` §결정 잠금 · `context/03-data-model.md` §10·§11 |
 | 2026-09-18 | **GNB 첫 항목 = 라우트 루트.** 각 라우트의 첫 앵커 항목과 `AnchorNav` 첫 탭은 해시 없이 맨 위로 (상단 배너 노출) | `context/04-information-architecture.md` §첫 항목은 라우트 루트로 · `context/components/layout/anchor-nav.md` |

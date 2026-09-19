@@ -232,6 +232,24 @@ export function findConflicts(
   return conflicts;
 }
 
+/**
+ * 이 예약이 속한 반복 묶음에서 **아직 남은 회차** (자기 자신 포함, 오늘 이후).
+ * 취소 범위를 고를 때 "남은 회차 N건"을 보여주기 위한 것 — 지난 회차는 취소 대상이 아니다.
+ * 반복이 아니면 `null` (단건은 범위를 물을 필요가 없다).
+ */
+export function seriesRemaining(
+  reservation: PublicReservation,
+  all: PublicReservation[],
+  now: Date = new Date(),
+): PublicReservation[] | null {
+  if (!reservation.recurrenceGroupId) return null;
+  const today = todayInSeoul(now);
+  const remaining = all
+    .filter((r) => r.recurrenceGroupId === reservation.recurrenceGroupId && r.date >= today)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  return remaining.length > 1 ? remaining : null; // 남은 게 이 건뿐이면 단건과 같다
+}
+
 /* ────────────────────────────── 목업 데이터 ──────────────────────────────
    현행 게시판(`/Board/Index/25484`)의 실제 신청 패턴을 옮겼다 — 여전도회·학교·대학부가
    교육실과 홀을 주로 쓰고, 한 건이 여러 교육실을 잡는 경우가 흔하다.

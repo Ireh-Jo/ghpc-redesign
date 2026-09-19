@@ -116,6 +116,7 @@
 | FloorMap | shipped | `/intro` 오시는 길 · 실내 길찾기 | `interactive/floor-map.md` |
 | ReservationCalendar | wip | `/church-admin/reserve` 시설 예약 월간 달력 (공개 정보만) | `interactive/reservation-calendar.md` |
 | ReservationForm | wip | `/church-admin/reserve` 시설 이용 신청 폼 (기간·주간반복·복수 장소·비밀번호·Turnstile) | `interactive/reservation-form.md` |
+| ReservationCancel | wip | `/church-admin/reserve` 달력에서 예약 취소 (비밀번호 · 반복이면 범위 선택) | `interactive/reservation-cancel.md` |
 
 ## 의존성 그래프 시각화 (요약)
 

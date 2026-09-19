@@ -3,7 +3,13 @@
 import { useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { WEEKDAY_LABELS, todayInSeoul, type PublicReservation } from '@/lib/reservations';
+import {
+  WEEKDAY_LABELS,
+  seriesRemaining,
+  todayInSeoul,
+  type PublicReservation,
+} from '@/lib/reservations';
+import { ReservationCancel } from './reservation-cancel';
 import { ROOM_GROUPS, roomName, roomsByGroup } from '@/lib/rooms';
 
 /**
@@ -12,12 +18,17 @@ import { ROOM_GROUPS, roomName, roomsByGroup } from '@/lib/rooms';
  *
  * **표시는 공개 정보만** — 장소·이용기관·용도·시간. 이름·연락처는 관리자 화면에서만 본다
  * (담당자 확정 사항). 그래서 `PublicReservation` 타입 자체에 PII가 없다.
+ *
+ * 각 예약에는 **취소** 버튼이 붙는다 (`ReservationCancel`). 비밀번호로 막혀 있으므로 버튼은 공개해도 된다 —
+ * 반복 예약이면 "이 회차만 / 남은 회차 전부"를 고르게 한다 (2026-09-19 사용자 확정).
  */
 export function ReservationCalendar({ reservations }: { reservations: PublicReservation[] }) {
   const today = todayInSeoul();
   const [cursor, setCursor] = useState(() => today.slice(0, 7)); // `YYYY-MM`
   const [roomFilter, setRoomFilter] = useState<string>('all');
   const [openDate, setOpenDate] = useState<string | null>(null);
+  /** 취소 폼을 연 예약 id — 한 번에 하나만 연다 */
+  const [cancelingId, setCancelingId] = useState<string | null>(null);
 
   const visible = useMemo(
     () => reservations.filter((r) => roomFilter === 'all' || r.roomId === roomFilter),
@@ -47,6 +58,7 @@ export function ReservationCalendar({ reservations }: { reservations: PublicRese
     const next = new Date(Date.UTC(year, month - 1 + delta, 1));
     setCursor(next.toISOString().slice(0, 7));
     setOpenDate(null);
+    setCancelingId(null);
   };
 
   const monthLabel = `${year}년 ${month}월`;
@@ -179,18 +191,46 @@ export function ReservationCalendar({ reservations }: { reservations: PublicRese
             <p className="mt-2 text-[14px] text-brand-ink-muted">등록된 예약이 없습니다.</p>
           ) : (
             <ul className="mt-3 divide-y divide-brand-line">
-              {openList.map((reservation) => (
-                <li key={reservation.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-3">
-                  <span className="text-[14px] font-bold text-brand-accent">
-                    {reservation.startTime}–{reservation.endTime}
-                  </span>
-                  <span className="text-[14px] font-bold text-brand-ink">
-                    {roomName(reservation.roomId)}
-                  </span>
-                  <span className="text-[14px] text-brand-ink">{reservation.org}</span>
-                  <span className="text-[13px] text-brand-ink-muted">{reservation.purpose}</span>
-                </li>
-              ))}
+              {openList.map((reservation) => {
+                const remaining = seriesRemaining(reservation, reservations);
+                return (
+                  <li key={reservation.id} className="py-3">
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span className="text-[14px] font-bold text-brand-accent">
+                        {reservation.startTime}–{reservation.endTime}
+                      </span>
+                      <span className="text-[14px] font-bold text-brand-ink">
+                        {roomName(reservation.roomId)}
+                      </span>
+                      <span className="text-[14px] text-brand-ink">{reservation.org}</span>
+                      <span className="text-[13px] text-brand-ink-muted">{reservation.purpose}</span>
+                      {remaining && (
+                        <span className="btn-round bg-brand-accent/10 px-2 py-0.5 text-[12px] font-bold text-brand-accent">
+                          반복 {remaining.length}회 남음
+                        </span>
+                      )}
+                      {/* 취소는 비밀번호로 막혀 있으므로 버튼 자체는 누구에게나 보인다 */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCancelingId(cancelingId === reservation.id ? null : reservation.id)
+                        }
+                        aria-expanded={cancelingId === reservation.id}
+                        className="link-wipe ml-auto text-[13px] font-bold text-brand-ink-muted transition-colors duration-200 hover:text-brand-point"
+                      >
+                        취소
+                      </button>
+                    </div>
+                    {cancelingId === reservation.id && (
+                      <ReservationCancel
+                        reservation={reservation}
+                        remaining={remaining}
+                        onClose={() => setCancelingId(null)}
+                      />
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
