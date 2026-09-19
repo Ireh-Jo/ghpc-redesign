@@ -2,11 +2,13 @@ import { z } from 'zod';
 import { ROOMS } from '@/lib/rooms';
 import {
   CLOSE_TIME,
+  MAX_OCCURRENCES,
   MAX_REPEAT_COUNT,
   OPEN_TIME,
   expandOccurrences,
   isBookableDate,
   isWithinOperatingHours,
+  usesRepeatCount,
 } from '@/lib/reservations';
 
 /**
@@ -31,10 +33,12 @@ export const reservationSchema = z
     endDate: z.string().min(1, '종료일을 선택해주세요'),
     startTime: z.string().min(1, '시작 시각을 입력해주세요'),
     endTime: z.string().min(1, '종료 시각을 입력해주세요'),
-    repeatWeekly: z.boolean(),
+    /** 반복 방식 — 일(기간)·주중·매주·매월 2종 (2026-09-19 담당자 피드백) */
+    repeatMode: z.enum(['none', 'weekdays', 'weekly', 'monthlyDate', 'monthlyWeekday']),
     /**
      * 반복 횟수 — **문자열**로 받는다. `z.coerce`/`.default()`를 쓰면 zod의 입력 타입과 출력 타입이
      * 갈라져 `react-hook-form`의 resolver 타입과 맞지 않는다 (`headcount`와 같은 방식으로 통일).
+     * 기간 방식(`none`·`weekdays`)에서는 쓰이지 않는다 — 종료일이 회차를 정한다.
      */
     repeatCount: z
       .string()
@@ -79,15 +83,20 @@ export const reservationSchema = z
     message: `이용 시간은 ${OPEN_TIME}~${CLOSE_TIME} 안에서, 종료가 시작보다 늦게 입력해주세요`,
     path: ['endTime'],
   })
-  // 주간 반복은 "시작일의 요일로 매주"라 종료일을 쓰지 않는다 — 기간을 같이 넓혀 놓으면 의도가 모호해진다
-  .refine((v) => !v.repeatWeekly || v.startDate === v.endDate, {
-    message: '주간 반복을 쓰면 기간은 하루로 두세요 (반복 회차로 날짜가 만들어집니다)',
+  // 횟수 기반 반복(매주·매월)은 시작일 하나로 회차를 만든다 — 기간을 같이 넓히면 의도가 모호해진다
+  .refine((v) => !usesRepeatCount(v.repeatMode) || v.startDate === v.endDate, {
+    message: '매주·매월 반복은 기간을 하루로 두세요 (반복 횟수로 날짜가 만들어집니다)',
     path: ['endDate'],
   })
+  // 주중 반복인데 기간에 평일이 하나도 없는 경우 (주말만 고른 기간)
+  .refine(
+    (v) => expandOccurrences({ ...v, repeatCount: Number(v.repeatCount) }).length > 0,
+    { message: '선택한 기간에 신청할 수 있는 날이 없습니다. 기간을 다시 확인해주세요', path: ['endDate'] },
+  )
   .refine(
     (v) => {
       const occurrences = expandOccurrences({ ...v, repeatCount: Number(v.repeatCount) });
-      return occurrences.every((o) => isBookableDate(o.date)) && occurrences.length <= 60;
+      return occurrences.every((o) => isBookableDate(o.date)) && occurrences.length <= MAX_OCCURRENCES;
     },
     { message: '신청 회차의 날짜를 다시 확인해주세요', path: ['repeatCount'] },
   );

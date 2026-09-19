@@ -3,8 +3,8 @@
 import { useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ROOMS_IN_USE, WEEKDAY_LABELS, todayInSeoul, type PublicReservation } from '@/lib/reservations';
-import { roomName } from '@/lib/rooms';
+import { WEEKDAY_LABELS, todayInSeoul, type PublicReservation } from '@/lib/reservations';
+import { ROOM_GROUPS, roomName, roomsByGroup } from '@/lib/rooms';
 
 /**
  * 시설 예약 월간 달력 — 빈 시간을 눈으로 확인하고 신청하게 한다.
@@ -98,11 +98,17 @@ export function ReservationCalendar({ reservations }: { reservations: PublicRese
             }}
             className="btn-round border border-brand-line bg-brand-surface px-3 py-2 text-[13px] font-bold text-brand-ink"
           >
-            <option value="all">전체</option>
-            {ROOMS_IN_USE.map((room) => (
-              <option key={room.id} value={room.id}>
-                {room.name}
-              </option>
+            {/* 예약이 있는 장소만 추리지 않는다 — 달력의 목적은 **빈 시간 확인**이라
+               "예약 0건"이 곧 필요한 답이다. 신청 폼과 같은 장소 마스터(`lib/rooms.ts`)를 그대로 쓴다. */}
+            <option value="all">전체 장소</option>
+            {ROOM_GROUPS.map((group) => (
+              <optgroup key={group} label={group}>
+                {roomsByGroup(group).map((room) => (
+                  <option key={room.id} value={room.id}>
+                    {room.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </label>
@@ -191,8 +197,10 @@ export function ReservationCalendar({ reservations }: { reservations: PublicRese
       )}
 
       {visible.length === 0 && (
-        <p className="mt-5 text-[14px] text-brand-ink-muted">
-          조건에 맞는 예약이 없습니다. 날짜를 눌러 비어 있는 시간을 확인하세요.
+        <p className="mt-5 text-[14px] leading-relaxed text-brand-ink-muted">
+          {roomFilter === 'all'
+            ? '등록된 예약이 없습니다. 원하는 날짜로 바로 신청하실 수 있습니다.'
+            : `${roomName(roomFilter)}은(는) 등록된 예약이 없습니다 — 이용 가능 시간 전체가 열려 있습니다.`}
         </p>
       )}
     </div>

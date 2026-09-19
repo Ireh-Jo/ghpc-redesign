@@ -25,12 +25,16 @@ import {
   CLOSE_TIME,
   MAX_REPEAT_COUNT,
   OPEN_TIME,
+  REPEAT_LABELS,
   WEEKDAY_LABELS,
   expandOccurrences,
   findConflicts,
+  nthWeekdayOf,
   todayInSeoul,
+  usesRepeatCount,
   weekdayOf,
   type PublicReservation,
+  type RepeatMode,
 } from '@/lib/reservations';
 
 /**
@@ -73,8 +77,8 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
       endDate: '',
       startTime: '',
       endTime: '',
-      repeatWeekly: false,
-      repeatCount: '1',
+      repeatMode: 'none' as RepeatMode,
+      repeatCount: '4',
       org: '',
       headcount: '',
       purpose: '',
@@ -95,33 +99,25 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
     if (values.startDate && !values.endDate) form.setValue('endDate', values.startDate);
   }, [values.startDate, values.endDate, form]);
 
-  /** 입력한 조건이 기존 예약과 겹치는지 — 제출 전에 미리 보여준다 (최종 판정은 DB) */
-  const conflicts = useMemo(() => {
-    if (!values.startDate || !values.startTime || !values.endTime || values.roomIds.length === 0) {
-      return [];
-    }
-    const occurrences = expandOccurrences({
-      startDate: values.startDate,
-      endDate: values.endDate || values.startDate,
-      startTime: values.startTime,
-      endTime: values.endTime,
-      repeatWeekly: values.repeatWeekly,
-      repeatCount: Number(values.repeatCount),
-    });
-    return findConflicts(occurrences, values.roomIds, reservations);
-  }, [values, reservations]);
-
-  const occurrenceCount = useMemo(() => {
-    if (!values.startDate || !values.startTime || !values.endTime) return 0;
+  /** 입력값 → 실제 신청 회차. 겹침·개수·미리보기가 모두 이 하나를 본다 */
+  const occurrences = useMemo(() => {
+    if (!values.startDate || !values.startTime || !values.endTime) return [];
     return expandOccurrences({
       startDate: values.startDate,
       endDate: values.endDate || values.startDate,
       startTime: values.startTime,
       endTime: values.endTime,
-      repeatWeekly: values.repeatWeekly,
+      repeatMode: values.repeatMode,
       repeatCount: Number(values.repeatCount),
-    }).length;
+    });
   }, [values]);
+
+  /** 기존 예약과 겹치는지 — 제출 전에 미리 보여준다 (최종 판정은 DB) */
+  const conflicts = useMemo(
+    () =>
+      values.roomIds.length === 0 ? [] : findConflicts(occurrences, values.roomIds, reservations),
+    [occurrences, values.roomIds, reservations],
+  );
 
   async function onSubmit(input: ReservationInput) {
     if (conflicts.length > 0) {
@@ -237,12 +233,14 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
                   <Input
                     type="date"
                     min={values.startDate || minDate.current}
-                    disabled={values.repeatWeekly}
+                    disabled={usesRepeatCount(values.repeatMode)}
                     {...field}
                   />
                 </FormControl>
                 <FormDescription>
-                  {values.repeatWeekly ? '주간 반복을 쓰면 회차로 날짜가 만들어집니다.' : '하루만 쓰시면 시작일과 같게 두세요.'}
+                  {usesRepeatCount(values.repeatMode)
+                    ? '반복 횟수로 날짜가 만들어집니다.'
+                    : '하루만 쓰시면 시작일과 같게 두세요.'}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -283,37 +281,56 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
           />
         </div>
 
-        {/* ── 주간 반복 ── */}
+        {/* ── 반복 ── */}
         <div className="rounded-2xl border border-brand-line bg-brand-subtle p-5">
           <FormField
             control={form.control}
-            name="repeatWeekly"
+            name="repeatMode"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-start gap-3">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={(checked) => {
-                        field.onChange(checked === true);
-                        if (checked === true && values.startDate) {
-                          form.setValue('endDate', values.startDate);
-                        }
-                      }}
-                    />
-                  </FormControl>
-                  <div>
-                    <FormLabel className="cursor-pointer">매주 반복해서 신청</FormLabel>
-                    <FormDescription>
-                      같은 요일·같은 시간으로 여러 주를 한 번에 신청합니다. 사이 날짜는 비어 있어 다른 부서가 쓸 수 있습니다.
-                    </FormDescription>
-                  </div>
-                </div>
+                <FormLabel>반복 방식</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    onChange={(e) => {
+                      const mode = e.target.value as RepeatMode;
+                      field.onChange(mode);
+                      // 횟수 기반 반복은 시작일 하나로 회차를 만든다 — 기간을 하루로 맞춘다
+                      if (usesRepeatCount(mode) && values.startDate) {
+                        form.setValue('endDate', values.startDate);
+                      }
+                    }}
+                    className="btn-round w-full border border-brand-line bg-brand-surface px-3.5 py-2.5 text-[14px] font-bold text-brand-ink md:max-w-md"
+                  >
+                    {(Object.keys(REPEAT_LABELS) as RepeatMode[]).map((mode) => (
+                      <option key={mode} value={mode}>
+                        {REPEAT_LABELS[mode]}
+                      </option>
+                    ))}
+                  </select>
+                </FormControl>
+                <FormDescription>
+                  {values.repeatMode === 'none' &&
+                    '기간을 잡으면 그 사이 모든 날을 신청합니다. 하루만 쓰시면 시작일과 종료일을 같게 두세요.'}
+                  {values.repeatMode === 'weekdays' &&
+                    '기간 안에서 토·일을 빼고 월~금만 신청합니다.'}
+                  {values.repeatMode === 'weekly' &&
+                    values.startDate &&
+                    `매주 ${WEEKDAY_LABELS[weekdayOf(values.startDate)]}요일에 반복합니다. 사이 날짜는 비어 있어 다른 부서가 쓸 수 있습니다.`}
+                  {values.repeatMode === 'monthlyDate' &&
+                    values.startDate &&
+                    `매월 ${Number(values.startDate.slice(-2))}일에 반복합니다. 그 날짜가 없는 달(31일 등)은 건너뜁니다.`}
+                  {values.repeatMode === 'monthlyWeekday' &&
+                    values.startDate &&
+                    `매월 ${nthWeekdayOf(values.startDate)}번째 ${WEEKDAY_LABELS[weekdayOf(values.startDate)]}요일에 반복합니다. 그 주가 없는 달은 건너뜁니다. (월례회에 맞는 방식입니다)`}
+                  {usesRepeatCount(values.repeatMode) && !values.startDate && '시작일을 먼저 선택해주세요.'}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {values.repeatWeekly && (
+
+          {usesRepeatCount(values.repeatMode) && (
             <FormField
               control={form.control}
               name="repeatCount"
@@ -321,13 +338,15 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
                 <FormItem className="mt-4 max-w-[14rem]">
                   <FormLabel>반복 횟수</FormLabel>
                   <FormControl>
-                    <Input type="number" inputMode="numeric" min={1} max={MAX_REPEAT_COUNT} {...field} />
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      min={1}
+                      max={MAX_REPEAT_COUNT}
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>
-                    {values.startDate
-                      ? `매주 ${WEEKDAY_LABELS[weekdayOf(values.startDate)]}요일 · 최대 ${MAX_REPEAT_COUNT}회`
-                      : `최대 ${MAX_REPEAT_COUNT}회`}
-                  </FormDescription>
+                  <FormDescription>최대 {MAX_REPEAT_COUNT}회</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -336,7 +355,7 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
         </div>
 
         {/* ── 신청 내용 미리보기 · 겹침 안내 ── */}
-        {occurrenceCount > 0 && (
+        {occurrences.length > 0 && (
           <div
             className={`rounded-2xl border p-5 ${
               conflicts.length > 0
@@ -347,10 +366,24 @@ export function ReservationForm({ reservations }: { reservations: PublicReservat
             <p className="text-[14px] font-bold text-brand-ink">
               {conflicts.length > 0
                 ? '이미 예약된 시간이 있습니다'
-                : `신청 예정 ${occurrenceCount}회 · 장소 ${values.roomIds.length}곳 — 겹치는 예약 없음`}
+                : `신청 예정 ${occurrences.length}회 · 장소 ${values.roomIds.length}곳 — 겹치는 예약 없음`}
             </p>
+
+            {/* 반복은 "몇 회가 실제로 잡히는지"가 헷갈리기 쉬워 날짜를 직접 보여준다
+               (31일·다섯째 주처럼 건너뛰는 달이 있으면 요청 횟수보다 적을 수 있다) */}
+            <p className="mt-2 text-[13px] leading-relaxed text-brand-ink-muted">
+              {occurrences
+                .slice(0, 5)
+                .map((o) => `${o.date.slice(5).replace('-', '.')}(${WEEKDAY_LABELS[weekdayOf(o.date)]})`)
+                .join(' · ')}
+              {occurrences.length > 5 &&
+                ` … 마지막 ${occurrences[occurrences.length - 1].date.slice(5).replace('-', '.')}`}
+              {' · '}
+              {values.startTime}–{values.endTime}
+            </p>
+
             {conflicts.length > 0 && (
-              <ul className="mt-2 space-y-1 text-[13px] leading-relaxed text-brand-ink">
+              <ul className="mt-3 space-y-1 text-[13px] leading-relaxed text-brand-ink">
                 {conflicts.slice(0, 6).map((conflict, i) => (
                   <li key={`${conflict.date}-${conflict.roomId}-${i}`}>
                     · {conflict.date.replace(/-/g, '.')} {roomName(conflict.roomId)}{' '}
