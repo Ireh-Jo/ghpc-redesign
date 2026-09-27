@@ -20,12 +20,18 @@ export function useActiveSection(ids: string[]) {
       .filter((el): el is HTMLElement => !!el);
     if (!sections.length) return;
 
+    // 콜백의 entries는 **바뀐 것만** 온다 — 지금 걸려 있는 전체는 직접 들고 있어야 한다
+    const visible = new Set<Element>();
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (!visible.length) return;
-        const topMost = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
-        setActiveId(topMost.target.id);
+        entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+        if (!visible.size) return;
+        // 시작점이 **가장 아래**인 것 = 가장 안쪽. 상위 섹션이 하위 행을 품는 2단 목록(C안)에서 하위가 이긴다
+        // (2026-09-27). 형제끼리는 경계에서 다음 섹션으로 조금 일찍 넘어갈 뿐이다.
+        const inner = [...visible].reduce((a, b) =>
+          a.getBoundingClientRect().top > b.getBoundingClientRect().top ? a : b
+        );
+        setActiveId(inner.id);
       },
       { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
     );

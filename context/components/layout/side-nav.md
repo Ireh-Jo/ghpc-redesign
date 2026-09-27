@@ -3,7 +3,7 @@ name: side-nav
 category: layout
 status: wip
 client-component: true
-pages: [education-b]
+pages: [education-b, education-c]
 depends-on:
   design: [color, typography, spacing, iconography, motion]
   components: [layout/anchor-nav]
@@ -41,7 +41,12 @@ interface SideNavProps {
   eyebrow?: string;
   title: string;
   lead?: string;
-  items: { id: string; label: string }[];
+  /** children = 2단 목록 (C안: 미취학부 > 영아부·유아부…). 하위가 활성이면 상위도 진하게 */
+  items: { id: string; label: string; children?: { id: string; label: string }[] }[];
+  /** 첫 항목 = 페이지 맨 위로 (기본 true — AnchorNav·GNB 규칙). C안처럼 페이지 중간 패널이면 false */
+  topOnFirst?: boolean;
+  /** sticky 위치 덮어쓰기 — C안은 상단 부서 탭 아래라 `top-40` */
+  className?: string;
   /** detail = 전화번호처럼 끊기면 안 되는 값. 좁은 열에서는 label 아래 줄로 내려간다 */
   cta?: { label: string; detail?: string; href: string };
 }
@@ -71,3 +76,11 @@ interface SideNavProps {
 
 - 라벨이 길면("제네바신학대학원 평생교육원") 두 줄로 넘어간다 — 번호는 첫 줄에 고정(`items-baseline`).
 - 항목이 1개 이하면 목록을 렌더하지 않는다.
+
+## 2026-09-27 — C안 확장 (2단 목록 · `topOnFirst` · `className`)
+
+- `items[].children` — C안의 "미취학부 > 영아부·유아부…". 하위는 번호 없이 들여쓰기, 14px.
+- 추적은 상·하위 id를 **한 번에** 넘긴다. 상위 섹션이 하위 행을 품고 있어 둘이 같이 화면 중앙에 걸리므로,
+  `useActiveSection`이 **시작점이 가장 아래인 것(= 가장 안쪽)**을 고르도록 바꿨다 (형제끼리일 때는 경계에서
+  다음 섹션으로 조금 일찍 넘어갈 뿐 동작 차이가 없다 — AnchorNav 포함).
+- `topOnFirst=false` — C안 패널은 부서마다 있어서 첫 항목(소개)을 누르면 **그 부서의 소개로** 가야 한다.

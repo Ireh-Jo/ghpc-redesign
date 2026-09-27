@@ -5,7 +5,8 @@ import { ServiceTimeTable } from '@/components/content/service-time-table';
 import { LivePanel } from '@/components/content/live-panel';
 import { VideoArchive } from '@/components/content/video-archive';
 import { SERVICE_TABLES } from '@/lib/worship-services';
-import { SERVICE_ARCHIVE, SPECIAL_ARCHIVE, YOUTUBE_CHANNEL_ID } from '@/lib/worship-videos';
+import { YOUTUBE_CHANNEL_ID } from '@/lib/worship-videos';
+import { getServiceArchive, getSpecialArchive } from '@/lib/worship-archive';
 import { getLiveBroadcast, LIVE_REVALIDATE_SEC } from '@/lib/youtube-live';
 
 export const metadata: Metadata = { title: '예배와 교육' };
@@ -18,7 +19,12 @@ export const revalidate = LIVE_REVALIDATE_SEC;
 
 export default async function WorshipPage() {
   // 채널이 지금 방송 중이면 그 영상 ID — 아니면 null (패널이 안내 화면으로 내려앉는다)
-  const live = await getLiveBroadcast(YOUTUBE_CHANNEL_ID);
+  // 영상 목록은 유튜브 재생목록 RSS + 시드 병합 (`lib/worship-archive.ts`, 2026-09-27) — 10분 캐시
+  const [live, serviceArchive, specialArchive] = await Promise.all([
+    getLiveBroadcast(YOUTUBE_CHANNEL_ID),
+    getServiceArchive(),
+    getSpecialArchive(),
+  ]);
 
   return (
     <SubPage
@@ -62,7 +68,7 @@ export default async function WorshipPage() {
               <h3 className="mb-6 text-[18px] font-bold text-brand-ink md:text-[22px]">
                 예배 실황 다시보기
               </h3>
-              <VideoArchive categories={SERVICE_ARCHIVE} label="예배 실황 분류" />
+              <VideoArchive categories={serviceArchive} label="예배 실황 분류" />
             </div>
           </FadeIn>
         ),
@@ -73,7 +79,7 @@ export default async function WorshipPage() {
             <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
               주일 예배의 특송과 신앙 간증을 다시 보실 수 있습니다.
             </p>
-            <VideoArchive categories={SPECIAL_ARCHIVE} label="특별순서 분류" />
+            <VideoArchive categories={specialArchive} label="특별순서 분류" />
           </FadeIn>
         ),
       }}

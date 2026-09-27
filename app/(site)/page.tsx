@@ -7,7 +7,7 @@ import { NewcomerCard } from '@/components/content/newcomer-card';
 import { RelatedOrgs } from '@/components/content/related-orgs';
 import { MAIN_BANNERS } from '@/lib/main-banners';
 import { NOTICES, MAIN_NOTICE_COUNT } from '@/lib/notices';
-import { SERVICE_ARCHIVE } from '@/lib/worship-videos';
+import { getServiceArchive } from '@/lib/worship-archive';
 
 /**
  * 메인 페이지 (/) — 조립도: context/pages/01-main.md
@@ -28,10 +28,15 @@ import { SERVICE_ARCHIVE } from '@/lib/worship-videos';
  * Supabase 연결 뒤 어드민으로 이관한다.
  */
 
-/** 말씀 3편 = 주일 낮예배 최신순 (Supabase/유튜브 동기화 전까지 `lib/worship-videos.ts`) */
-const WEEKLY_SERMONS = SERVICE_ARCHIVE[0].videos.slice(0, 3);
+/**
+ * 말씀 3편 = 주일 낮예배 최신순. 유튜브 재생목록 RSS + 시드 병합 (`lib/worship-archive.ts`, 2026-09-27) —
+ * 새 설교가 올라오면 최대 10분 뒤 메인에 뜬다. 이 값이 메인 페이지의 재생성 주기다.
+ */
+export const revalidate = 600; // = FEED_REVALIDATE_SEC (segment config는 리터럴이어야 한다)
 
-export default function HomePage() {
+export default async function HomePage() {
+  const weeklySermons = (await getServiceArchive())[0].videos.slice(0, 3);
+
   return (
     <>
       <HeroVideo
@@ -51,7 +56,7 @@ export default function HomePage() {
         ]}
       />
 
-      <WeeklySermons sermons={WEEKLY_SERMONS} />
+      <WeeklySermons sermons={weeklySermons} />
 
       <MainBanner banners={MAIN_BANNERS} />
 

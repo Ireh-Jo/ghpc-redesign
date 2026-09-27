@@ -116,11 +116,11 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 
 | 대기 | 누구/무엇 | 오면 할 일 |
 |---|---|---|
-| **교육 페이지 A안/B안 비교** — 상단 가로 탭(`/education`) vs 좌측 sticky 패널(`/education/b`) | 사용자 · 디자인팀 · 교회 | 결정 마커: `context/04-information-architecture.md` §확정 대기. 채택이면 B안을 `/education`으로 옮기고 `SubPage` 확장(0.5~1일), 탈락이면 `/education/b`·`SideNav` 삭제 |
+| **교육 페이지 A/B/C안 비교** — 상단 가로 탭(`/education`) · 좌측 sticky 패널(`/education/b`) · 부서별 배너 + 부서별 하위 메뉴(`/education/c`) | 사용자 · 디자인팀 · 교회 | 결정 마커: `context/04-information-architecture.md` §확정 대기. C안이면 **부서 배너 사진 7장** 요청(`lib/education.ts`의 `banner`). 채택안을 `/education`으로 옮기고 나머지 삭제 |
 | **예배 표 콘텐츠 사실확인 6건** (주일학교 연령 · S.F.C. 성경공부 열 · 주일밤 장소 · 금요밤 명칭 · 구역장성경공부 행) | 교회 · 미디어팀 | `lib/worship-services.ts` 한 파일 수정 (검토서 §7) |
 | **히어로 배너 원본** — 남은 라우트 **`activity` 하나** (2x 권장) | 디자인팀 | `public/hero/`에 규격대로 넣고 해당 `page.tsx`의 `heroImage` 한 줄. **`/worship`·`/intro`는 수령·적용 완료** (intro는 2026-09-18) |
 | 푸터 · 헤더 생방송 CTA 유지 여부 | 디자인팀 | 시안에 없어서 확인만 |
-| **유튜브 동기화 범위** (특별순서만 자동 vs 전체) | 사용자 판단 → API 키 발급 | `lib/youtube.ts` 신설. 조사 결과는 검토서 §4-4 |
+| **TODO: YouTube Data API 키 발급** — 영상 목록은 2026-09-27부터 **RSS로 자동 갱신 중**(재생목록당 최신 15편 한계) | 사용자 액션 (Google Cloud 콘솔, 무료) | `.env.local`에 `YOUTUBE_API_KEY` → `lib/youtube-feed.ts`의 `getPlaylistFeed`를 `playlistItems.list`로 교체. 검색·페이지네이션이 여기서 열린다. 결정 기록: `context/features/video-embed.md` §영상 목록 자동 갱신 |
 | **로고 SVG 3종 · 히어로 영상 2종** | 디자인팀 (Phase 1, 가이드 발송함) | `logo.png`/`logo_black.png` 교체 · `HeroVideo` 실제 영상 연결 (메인 헤로는 영상으로 확정 — 2026-09-16) |
 | **메인 배너 모바일 크롭** (예: 750×780) | 디자인팀 | `lib/main-banners.ts`의 `srcMobile`에 파일명만 추가. 지금은 PC 배너를 16:9로 잘라 써서 양 끝이 잘린다 |
 | **푸터 시안 적용** (관련기관 6 · SNS 4 URL) | 디자인팀 + 사용자 판단 | 시안 푸터는 전역 컴포넌트라 서브페이지 전체 영향. 헤더 생방송 CTA 회신과 묶어서 한 번에 |
