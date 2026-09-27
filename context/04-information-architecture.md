@@ -127,6 +127,14 @@
 
 **확정 대기 — 회신 전 착수 금지**
 
+> DECISION NEEDED: **서브페이지 섹션 바로가기 배치 — A안(상단 가로 탭) vs B안(좌측 sticky 패널)** (2026-09-27 외부 제안).
+> 레퍼런스 `feedbluetiger.imweb.me`처럼 "큰 주제 이미지 → 좌측 서브메뉴가 따라오고 우측 콘텐츠" 구조로 바꾸자는 제안.
+> **교육 페이지에만 비교용으로 구현해 뒀다** — A안 `/education`(현행) · B안 `/education/b`(noindex, lg 이상만 2단,
+> 그 아래는 A안과 동일). 컴포넌트: `context/components/layout/side-nav.md`.
+> 2026-07-01 "상단 앵커 탭" 결정(`context/components/layout/anchor-nav.md`)을 **바꾸는 것이라 확정 전까지 다른 페이지로 넓히지 않는다.**
+> 채택 → B안을 `/education` 자리로 옮기고 `SubPage`에 적용(0.5~1일). 탈락 → `app/(site)/education/b/`·`SideNav`·
+> `header.tsx` `PHOTO_HERO_ROUTES`의 `/education/b` 한 줄 삭제.
+
 > DECISION NEEDED: **대메뉴 나열 순서.** 회의 결과가 `교회소개 / 새가족 / 예배와교육 / 목양과사역 / 교회활동`로
 > **새가족을 2번째**에 적었다. 현재는 **맨 뒤 + highlight**이고 이것은 2026-08-12 디자이너 1:1 합의로 잠근 결정이다
 > (모바일 맨 아래 유지 포함). **배치 순서 지시인지 단순 나열인지 확인**이 필요하다 — 순서 지시라면 8/12 잠금이 풀린다.

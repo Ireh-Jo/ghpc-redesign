@@ -57,6 +57,7 @@
 | SectionHeader | wip | 메인 말씀·공지사항 (2026-09-16 시안) · 이후 서브페이지 섹션 | `layout/section-header.md` |
 | FadeIn | wip | 스크롤 진입 페이드업 래퍼 (`/worship`) | `layout/fade-in.md` |
 | AnchorNav | shipped | 모든 서브페이지(`SubPage`) 상단 sticky 섹션 바로가기 | `layout/anchor-nav.md` |
+| SideNav | wip | `/education/b` (B안 시범) 좌측 sticky 섹션 바로가기 — lg 이상. 채택 전 비교용 (2026-09-27) | `layout/side-nav.md` |
 | SubPage | shipped | 대메뉴 5개 페이지 골격 (앵커 섹션 + 외부 라우트는 바로가기 카드) | `layout/sub-page.md` |
 | StubPage | shipped | 2차 목차로 신설된 라우트 13종의 골격 (콘텐츠 이관 전) | `layout/stub-page.md` |
 

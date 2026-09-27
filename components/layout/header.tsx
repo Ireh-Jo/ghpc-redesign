@@ -40,6 +40,7 @@ const PHOTO_HERO_ROUTES = new Set([
   '/intro',
   '/worship',
   '/education',
+  '/education/b', // B안 시범 (2026-09-27) — 채택/탈락 시 같이 정리
   '/care',
   '/activity',
   '/newcomer',

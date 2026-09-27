@@ -55,3 +55,9 @@ depends-on:
   (주소창에 `#`이 남으면 새로고침 때 다시 섹션으로 튄다)
 - 같은 규칙이 GNB에도 있다: `lib/nav.ts`의 `resolveItemHref` — 각 라우트의 **첫 앵커 항목**은
   해시 없이 라우트 루트로 링크된다. 두 곳이 같은 규칙을 공유해야 동작이 일관된다
+
+## 2026-09-27 — 로직 공유 · `className`
+
+- 현재 섹션 추적(`useActiveSection`)과 첫 탭 맨 위 스크롤(`scrollToPageTop`)을 `lib/active-section.ts`로 뺐다.
+  좌측 패널 `SideNav`(B안 시범, `layout/side-nav.md`)가 **같은 동작**을 써야 해서다. 동작 자체는 바뀌지 않았다.
+- `className` prop 추가 — B안(`/education/b`)이 lg 이상에서 이 탭을 숨길 때(`lg:hidden`) 쓴다.
