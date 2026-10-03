@@ -4,7 +4,7 @@ import { EDU_PRINCIPLES, CHURCH_TEL } from '@/lib/education';
 
 /**
  * 교육 방침 + 부서 문의 — 화면안에서 부서마다 반복되던 공통 블록. 페이지 끝에 한 번만 둔다.
- * A안(`/education`)·B안(`/education/b`)이 같은 블록을 쓰도록 2026-09-27에 뺐다.
+ * 2026-09-27 시안 비교 때 별도 파일로 뺐다 (지금은 `/education` 한 곳에서만 쓴다).
  */
 export function EduPrinciples() {
   return (

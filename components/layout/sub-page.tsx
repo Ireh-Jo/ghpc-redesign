@@ -2,8 +2,11 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Container } from './container';
 import { AnchorNav } from './anchor-nav';
+import { SideNav } from './side-nav';
+import { SideNavLayout, sideSectionClass } from './side-nav-layout';
 import { HeroImage } from '@/components/content/hero-image';
 import { NAV, type NavItem } from '@/lib/nav';
 
@@ -20,8 +23,13 @@ import { NAV, type NavItem } from '@/lib/nav';
  * 실제 콘텐츠는 content 컴포넌트로 순차 교체. (조립도: `context/pages/*`)
  * `overrides`로 특정 앵커(hash id)의 placeholder 본문만 실제 콘텐츠로 교체 가능.
  * `heroImage`가 있으면 사진 분할 히어로(HeroImage), 없으면 텍스트 히어로.
- * 섹션이 길어지는 것에 대한 대응은 아코디언이 아니라 sticky `AnchorNav`(섹션 바로가기) —
+ * 섹션이 길어지는 것에 대한 대응은 아코디언이 아니라 sticky 섹션 바로가기 —
  * 이유는 `context/components/layout/anchor-nav.md` 참조.
+ *
+ * ── 2026-10-03: 좌측 sticky 패널(B안) 확정 ──
+ * lg 이상은 **좌측 `SideNav`가 따라오고 우측에 섹션**(`SideNavLayout`), lg 미만은 기존 상단 `AnchorNav`.
+ * 앵커가 1개 이하면(`/activity` — 사실상 바로가기 허브) 패널이 비므로 예전처럼 한 단으로 둔다.
+ * 비교 기록: `context/04-information-architecture.md` §서브페이지 섹션 바로가기 배치.
  */
 export function SubPage({
   sectionKey,
@@ -29,6 +37,7 @@ export function SubPage({
   heroImage,
   bareSections,
   hideOutboundGroups,
+  sideNav,
 }: {
   sectionKey: string;
   overrides?: Record<string, ReactNode>;
@@ -56,6 +65,11 @@ export function SubPage({
    * 같은 문구가 두 번 나오는 경우에만 쓴다 — 이때 override 쪽 제목을 h2로 올릴 것.
    */
   bareSections?: string[];
+  /**
+   * 좌측 패널 문구. 기본은 제목 = 히어로 제목(없으면 GNB 라벨), 소개 = GNB `tagline`.
+   * `cta`는 패널 맨 아래 1차 버튼 (예: 부서 문의 전화) — 없으면 안 그린다.
+   */
+  sideNav?: { lead?: string; cta?: { label: string; detail?: string; href: string } };
 }) {
   const section = NAV.find((n) => n.key === sectionKey);
   if (!section) notFound();
@@ -72,6 +86,20 @@ export function SubPage({
   const outboundGroups = section.groups
     .map((g) => ({ label: g.label, items: g.items.filter((i) => !ownAnchor(i)) }))
     .filter((g) => g.items.length > 0 && !hideOutboundGroups?.includes(g.label));
+
+  /** 좌측 패널은 앵커가 2개 이상일 때만 — 1개면 패널에 목록이 없어 빈 기둥만 남는다 */
+  const twoColumn = anchors.length > 1;
+
+  const sectionBody = (id: string, label: string) => (
+    <>
+      {!bareSections?.includes(id) && <h2 className="mb-3 text-2xl font-bold md:text-3xl">{label}</h2>}
+      {overrides?.[id] ?? (
+        <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
+          준비 중입니다. 콘텐츠는 순차적으로 채워집니다.
+        </p>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -97,30 +125,50 @@ export function SubPage({
         </section>
       )}
 
-      <AnchorNav items={anchors.map(({ id, label }) => ({ id, label }))} />
+      <AnchorNav
+        items={anchors.map(({ id, label }) => ({ id, label }))}
+        className={twoColumn ? 'lg:hidden' : undefined}
+      />
 
-      {anchors.map(({ id, label }) => (
-        <section
-          key={id}
-          id={id}
-          className="scroll-mt-32 border-b border-brand-line py-16 md:scroll-mt-36 md:py-20"
+      {twoColumn ? (
+        <SideNavLayout
+          nav={
+            <SideNav
+              title={heroImage?.title ?? section.label}
+              lead={sideNav?.lead ?? section.tagline}
+              items={anchors.map(({ id, label }) => ({ id, label }))}
+              cta={sideNav?.cta}
+            />
+          }
         >
-          <Container>
-            {!bareSections?.includes(id) && (
-              <h2 className="mb-3 text-2xl font-bold md:text-3xl">{label}</h2>
-            )}
-            {overrides?.[id] ?? (
-              <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
-                준비 중입니다. 콘텐츠는 순차적으로 채워집니다.
-              </p>
-            )}
-          </Container>
-        </section>
-      ))}
+          {anchors.map(({ id, label }, i) => (
+            <section key={id} id={id} className={sideSectionClass(i === anchors.length - 1)}>
+              {sectionBody(id, label)}
+            </section>
+          ))}
+        </SideNavLayout>
+      ) : (
+        anchors.map(({ id, label }) => (
+          <section
+            key={id}
+            id={id}
+            className="scroll-mt-32 border-b border-brand-line py-16 md:scroll-mt-36 md:py-20"
+          >
+            <Container>{sectionBody(id, label)}</Container>
+          </section>
+        ))
+      )}
 
       {/* 다른 페이지로 나가는 항목 — 그룹별 카드. 여기에 내용이 있는 것처럼 보이지 않게 링크로만 둔다 */}
-      {outboundGroups.map((group) => (
-        <section key={group.label} className="border-b border-brand-line py-16 md:py-20">
+      {outboundGroups.map((group, gi) => (
+        <section
+          key={group.label}
+          // 2단 레이아웃의 마지막 섹션은 아래 경계선이 없다 — 첫 카드 묶음이 위 경계선을 대신 긋는다
+          className={cn(
+            'border-b border-brand-line py-16 md:py-20',
+            twoColumn && gi === 0 && 'border-t'
+          )}
+        >
           <Container>
             <h2 className="mb-6 text-2xl font-bold md:text-3xl">{group.label}</h2>
             <ul className="grid gap-px bg-brand-line sm:grid-cols-2 lg:grid-cols-3">

@@ -3,7 +3,7 @@
 > **"다음 할 작업 뭐지?"의 단일 출처.** 다른 PC에서 `git pull` 후 이 파일만 읽으면 바로 이어서 할 수 있게 유지한다.
 > 작업을 끝내면 해당 항목을 여기서 **지우고**, 새로 생긴 건 여기에 **추가한다.** (완료 이력은 git log가 담당)
 >
-> 마지막 갱신: **2026-09-27** · 작업 브랜치 `feature/ghpc_a` (Vercel 배포 대상)
+> 마지막 갱신: **2026-10-03** · 작업 브랜치 `feature/ghpc_a` (Vercel 배포 대상)
 
 ---
 
@@ -49,7 +49,8 @@
 - **9/18 `/education` 완성** — 부서 7종(주일학교·중고등부·대학부·청년회·시니어스쿨·평생교육원·새소식반).
   콘텐츠는 TF 화면안 이관분이라 **교육 담당 원고 오면 `lib/education.ts` 교체**. `/worship` 하단 교육 카드는 내렸다 →
   [교육 시안 반영](2026-09-18-교육페이지-시안-반영.md)
-- **9/18 배너 5종 적용 완료** (`worship`·`intro`·`education`·`care`·`newcomer`) — 남은 건 `activity` 하나.
+- **배너 전 라우트 적용 완료** — 9/18 5종(`worship`·`intro`·`education`·`care`·`newcomer`) + 10/3 `activity`·`ministry`(사역, 스텁 위). 규격: `public/hero/README.md`
+- **10/3 서브페이지 좌측 sticky 패널(B안) 확정** — 모든 서브페이지(`SubPage`·`/education`·`/ministry`) lg 이상 좌측 `SideNav`, lg 미만 상단 탭. 결정: `context/04-information-architecture.md`
 - **9/18 GNB 첫 항목·앵커바 첫 탭은 페이지 맨 위로** — 해시로 들어가면 상단 배너를 볼 수 없다는 지적 반영
   (`lib/nav.ts`의 `resolveItemHref` · `AnchorNav`). 규칙: `context/04-information-architecture.md` §첫 항목은 라우트 루트로
 - **9/19 시설 예약 정책 확정 + 구현.** 담당자 회신으로 미결 5건이 전부 닫혔다 — 장소(교육실 5·6·9 제외,
@@ -116,9 +117,8 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 
 | 대기 | 누구/무엇 | 오면 할 일 |
 |---|---|---|
-| **교육 페이지 A/B/C안 비교** — 상단 가로 탭(`/education`) · 좌측 sticky 패널(`/education/b`) · 부서별 배너 + 부서별 하위 메뉴(`/education/c`) | 사용자 · 디자인팀 · 교회 | 결정 마커: `context/04-information-architecture.md` §확정 대기. C안이면 **부서 배너 사진 7장** 요청(`lib/education.ts`의 `banner`). 채택안을 `/education`으로 옮기고 나머지 삭제 |
+| **교회활동·사역 배너 문구 확인** — 두 배너 리드가 교육 배너와 같은 "영아부터 어르신까지, 한 말씀 위에서 자라는 사람들", PC 아이브로우가 "-예배와 교육 - 교육" | 디자인팀 | 시안 복사 실수로 보임. 리드는 시안대로 반영. 아이브로우는 교회활동 `-경향교회`(모바일 시안) · 사역 `목양과 사역 - 사역`(예배·교육과 같은 꼴)로 뒀다. 답 오면 `app/(site)/activity/page.tsx`·`ministry/page.tsx` 한 줄씩 |
 | **예배 표 콘텐츠 사실확인 6건** (주일학교 연령 · S.F.C. 성경공부 열 · 주일밤 장소 · 금요밤 명칭 · 구역장성경공부 행) | 교회 · 미디어팀 | `lib/worship-services.ts` 한 파일 수정 (검토서 §7) |
-| **히어로 배너 원본** — 남은 라우트 **`activity` 하나** (2x 권장) | 디자인팀 | `public/hero/`에 규격대로 넣고 해당 `page.tsx`의 `heroImage` 한 줄. **`/worship`·`/intro`는 수령·적용 완료** (intro는 2026-09-18) |
 | 푸터 · 헤더 생방송 CTA 유지 여부 | 디자인팀 | 시안에 없어서 확인만 |
 | **TODO: YouTube Data API 키 발급** — 영상 목록은 2026-09-27부터 **RSS로 자동 갱신 중**(재생목록당 최신 15편 한계) | 사용자 액션 (Google Cloud 콘솔, 무료) | `.env.local`에 `YOUTUBE_API_KEY` → `lib/youtube-feed.ts`의 `getPlaylistFeed`를 `playlistItems.list`로 교체. 검색·페이지네이션이 여기서 열린다. 결정 기록: `context/features/video-embed.md` §영상 목록 자동 갱신 |
 | **로고 SVG 3종 · 히어로 영상 2종** | 디자인팀 (Phase 1, 가이드 발송함) | `logo.png`/`logo_black.png` 교체 · `HeroVideo` 실제 영상 연결 (메인 헤로는 영상으로 확정 — 2026-09-16) |

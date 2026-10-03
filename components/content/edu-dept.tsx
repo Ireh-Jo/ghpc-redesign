@@ -4,9 +4,6 @@ import type { EduDept as Dept } from '@/lib/education';
 
 /**
  * 교육 페이지 부서 섹션 — 7개 부서가 데이터만 바꿔 쓴다.
- *
- * 2026-09-27: 블록을 하나씩 export 한다 — C안(`EduChapter`, `/education/c`)이 블록을 하위 섹션으로
- * 쪼개 쓰기 때문이다. `EduDept`는 전과 같은 순서로 블록을 이어 붙일 뿐이라 A·B안 출력은 그대로다.
  * 근거 시안: 디자인팀 교육 화면 (2026-09-18, 주일학교만 완성) + TF 화면안 콘텐츠
  * (`docs/meetings/screens/교육.html`). 상세: context/components/content/edu-dept.md
  *
@@ -14,26 +11,11 @@ import type { EduDept as Dept } from '@/lib/education';
  * 제목은 h2다 (`SubPage`의 섹션 h2를 `bareSections`로 숨기고 이 제목이 대신한다).
  */
 export function EduDept({ dept }: { dept: Dept }) {
+  const { no, en, title, lead, links, intro, groups, facts, roster, bullets, events, faq, notes } =
+    dept;
+
   return (
     <div>
-      <EduHead dept={dept} />
-      <EduIntro dept={dept} />
-      <EduGroups dept={dept} />
-      <EduFacts dept={dept} />
-      <EduRoster dept={dept} />
-      <EduBullets dept={dept} />
-      <EduEvents dept={dept} />
-      <EduFaq dept={dept} />
-      <EduNotes dept={dept} />
-    </div>
-  );
-}
-
-/** 머리 — 번호·영문 · h2 제목 · 리드 · 바로가기 알약 + 구분선 */
-export function EduHead({ dept }: { dept: Dept }) {
-  const { no, en, title, lead, links } = dept;
-  return (
-    <>
       {/* ── 머리 ── */}
       <p className="text-[12px] font-bold tracking-[0.2em] text-brand-accent">
         {no} {en}
@@ -67,15 +49,7 @@ export function EduHead({ dept }: { dept: Dept }) {
         )}
       </div>
       <div aria-hidden className="mt-6 h-px w-full bg-brand-line" />
-    </>
-  );
-}
 
-/** 소개 카드 (시안의 연블루 박스) */
-export function EduIntro({ dept }: { dept: Dept }) {
-  const { no, intro } = dept;
-  return (
-    <>
       {/* ── 소개 카드 (시안의 연블루 박스) ── */}
       <div
         className={`mt-8 grid gap-6 rounded-2xl bg-brand-accent/5 p-6 md:gap-8 md:p-8 ${
@@ -103,15 +77,7 @@ export function EduIntro({ dept }: { dept: Dept }) {
           </ul>
         ) : null}
       </div>
-    </>
-  );
-}
 
-/** 부서 카드 그룹 (4열 카드) */
-export function EduGroups({ dept }: { dept: Dept }) {
-  const { groups } = dept;
-  return (
-    <>
       {/* ── 부서 카드 그룹 ── */}
       {groups?.map((group) => (
         <div key={group.label} className="mt-10 md:mt-12">
@@ -136,15 +102,7 @@ export function EduGroups({ dept }: { dept: Dept }) {
           </ul>
         </div>
       ))}
-    </>
-  );
-}
 
-/** 정보 리스트 (라벨·값) */
-export function EduFacts({ dept }: { dept: Dept }) {
-  const { facts } = dept;
-  return (
-    <>
       {/* ── 정보 리스트 ── */}
       {facts && (
         <div className="mt-10 md:mt-12">
@@ -170,15 +128,7 @@ export function EduFacts({ dept }: { dept: Dept }) {
           </dl>
         </div>
       )}
-    </>
-  );
-}
 
-/** 지회 구성표 (청년회) */
-export function EduRoster({ dept }: { dept: Dept }) {
-  const { roster } = dept;
-  return (
-    <>
       {/* ── 지회 구성표 (청년회) ── */}
       {roster && (
         <div className="mt-10 md:mt-12">
@@ -201,15 +151,7 @@ export function EduRoster({ dept }: { dept: Dept }) {
           )}
         </div>
       )}
-    </>
-  );
-}
 
-/** 특징·혜택 */
-export function EduBullets({ dept }: { dept: Dept }) {
-  const { bullets } = dept;
-  return (
-    <>
       {/* ── 특징·혜택 ── */}
       {bullets && (
         <div className="mt-10 md:mt-12">
@@ -226,15 +168,7 @@ export function EduBullets({ dept }: { dept: Dept }) {
           </ul>
         </div>
       )}
-    </>
-  );
-}
 
-/** 주요 행사 (번호 카드) */
-export function EduEvents({ dept }: { dept: Dept }) {
-  const { events } = dept;
-  return (
-    <>
       {/* ── 주요 행사 ── */}
       {events && events.length > 0 && (
         <div className="mt-10 md:mt-12">
@@ -261,15 +195,7 @@ export function EduEvents({ dept }: { dept: Dept }) {
           </ul>
         </div>
       )}
-    </>
-  );
-}
 
-/** FAQ */
-export function EduFaq({ dept }: { dept: Dept }) {
-  const { faq } = dept;
-  return (
-    <>
       {/* ── FAQ ── */}
       {faq && faq.length > 0 && (
         <div className="mt-10 md:mt-12">
@@ -279,15 +205,7 @@ export function EduFaq({ dept }: { dept: Dept }) {
           <FaqAccordion items={faq} />
         </div>
       )}
-    </>
-  );
-}
 
-/** 각주 */
-export function EduNotes({ dept }: { dept: Dept }) {
-  const { notes } = dept;
-  return (
-    <>
       {/* ── 각주 ── */}
       {notes && notes.length > 0 && (
         <ul className="mt-8 space-y-1.5 border-t border-brand-line pt-5">
@@ -298,6 +216,6 @@ export function EduNotes({ dept }: { dept: Dept }) {
           ))}
         </ul>
       )}
-    </>
+    </div>
   );
 }

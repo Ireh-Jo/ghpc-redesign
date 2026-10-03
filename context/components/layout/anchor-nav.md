@@ -61,3 +61,8 @@ depends-on:
 - 현재 섹션 추적(`useActiveSection`)과 첫 탭 맨 위 스크롤(`scrollToPageTop`)을 `lib/active-section.ts`로 뺐다.
   좌측 패널 `SideNav`(B안 시범, `layout/side-nav.md`)가 **같은 동작**을 써야 해서다. 동작 자체는 바뀌지 않았다.
 - `className` prop 추가 — B안(`/education/b`)이 lg 이상에서 이 탭을 숨길 때(`lg:hidden`) 쓴다.
+
+## 2026-10-03 — lg 미만 전용
+
+좌측 sticky 패널(`layout/side-nav.md`) 확정으로 lg(1024) 이상에서는 이 탭을 숨긴다(`className="lg:hidden"`).
+모바일·태블릿은 좌측 열을 둘 폭이 없어 그대로 이 탭이 섹션 바로가기를 맡는다. 동작은 바뀌지 않았다.

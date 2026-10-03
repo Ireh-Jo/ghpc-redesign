@@ -40,11 +40,10 @@ const PHOTO_HERO_ROUTES = new Set([
   '/intro',
   '/worship',
   '/education',
-  '/education/b', // B·C안 시범 (2026-09-27) — 채택/탈락 시 같이 정리
-  '/education/c',
   '/care',
   '/activity',
   '/newcomer',
+  '/ministry', // 스텁이지만 디자인팀 사진 배너가 먼저 왔다 (2026-10-03)
 ]);
 
 /** 그룹 수 → 열 클래스. Tailwind가 정적 스캔하므로 `grid-cols-${n}` 보간을 쓰지 않는다 */

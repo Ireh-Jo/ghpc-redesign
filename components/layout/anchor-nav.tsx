@@ -13,7 +13,7 @@ export type AnchorNavItem = { id: string; label: string };
  * 같은 규칙이 GNB에도 적용돼 있다 — `lib/nav.ts`의 `resolveItemHref`.
  *
  * 2026-09-27: 추적·맨 위 스크롤 로직을 `lib/active-section.ts`로 뺐다 — `SideNav`(좌측 패널)와 공유.
- * `className`은 B안(`/education/b`)이 lg 이상에서 이 탭을 숨길 때 쓴다.
+ * `className`은 좌측 패널(`SideNav`)이 있는 페이지가 lg 이상에서 이 탭을 숨길 때(`lg:hidden`) 쓴다 (2026-10-03 전 서브페이지).
  */
 export function AnchorNav({ items, className }: { items: AnchorNavItem[]; className?: string }) {
   const activeId = useActiveSection(items.map((item) => item.id));

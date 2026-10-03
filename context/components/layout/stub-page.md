@@ -5,7 +5,7 @@ status: shipped
 owner: 이레
 depends-on:
   design: [color, typography, spacing]
-  components: [layout/container, layout/anchor-nav]
+  components: [layout/container, layout/anchor-nav, layout/side-nav, layout/side-nav-layout, content/hero-image]
   data: []
 ---
 
@@ -40,6 +40,15 @@ depends-on:
 - `tabs`는 아직 동작하지 않는다. 동작하는 탭처럼 보이면 리뷰에서 오해를 사므로
   **"예정 구성"이라고 명시**하고 회색 칩으로만 그린다.
 - nav에 없는 route를 주면 breadcrumb 없이 `title`만 쓴다 (`/privacy`가 이 경우).
+
+## 2026-10-03 — 사진 히어로 · 좌측 패널
+
+- `heroImage` prop(`{src, srcMobile?, alt, eyebrow?, titleEn?, lead?}`) — 주면 텍스트 히어로 대신 `HeroImage`.
+  **디자인팀 배너가 먼저 도착한 스텁**용이다 (첫 사례 `/ministry` 사역). 제목은 `title`/GNB 라벨 그대로.
+  이 라우트는 `header.tsx`의 `PHOTO_HERO_ROUTES`에도 넣어야 헤더가 투명·흰 글씨가 된다.
+  현행 사이트 링크(`legacy`)는 히어로 아래 띠로 옮긴다.
+- 앵커가 2개 이상이면 `SubPage`와 같은 2단 — lg 이상 좌측 `SideNav`, lg 미만 상단 `AnchorNav`
+  (서브페이지 B안 확정, `context/04-information-architecture.md`). 패널 소개는 `lead` prop.
 
 ## 폐기 조건
 

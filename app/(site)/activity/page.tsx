@@ -7,12 +7,17 @@ export default function ActivityPage() {
   return (
     <SubPage
       sectionKey="activity"
-      // 예시 이미지(unsplash) — 디자인팀 교체 가이드: 행사 분위기(따뜻한 보케 조명·야외),
-      // 특정 개인 클로즈업 회피. 상세: context/components/content/hero-image.md
+      // 디자인팀 배너 (2026-10-03). PC 2000×626 webp(44KB) · 모바일 PNG 782×938 → JPEG q85 750×900(92KB).
+      // 첫 전달분은 로고·메뉴·제목이 박힌 시안 캡처라 쓰지 못했고, 같은 날 글자 없는 원본으로 재전달받았다.
+      // 아이브로우는 모바일 시안의 `-경향교회`(= 기본값). PC 시안의 `-예배와 교육 - 교육`은 교육 배너에서 복사된 것으로
+      // 보여 따르지 않았다. 리드 문구도 교육 배너와 같은 문장이라 확인 요청 중 (`docs/NEXT.md` §2).
       heroImage={{
-        src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80',
-        alt: '꽃과 식기가 정갈하게 준비된 행사 테이블 (예시 이미지)',
-        lead: '교회 일정과 소식, 주보를 한 곳에서.',
+        src: '/hero/activity.webp',
+        srcMobile: '/hero/activity-m.jpg',
+        alt: '푸른 하늘 아래 올려다본 경향교회 본당과 종탑, 목자 벽화',
+        title: '교회활동',
+        titleEn: 'GYUNG - HYANG PRESBYTERIAN CHURCH',
+        lead: '영아부터 어르신까지, 한 말씀 위에서 자라는 사람들',
       }}
     />
   );

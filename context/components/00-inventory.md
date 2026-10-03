@@ -56,8 +56,9 @@
 | Footer | wip | 전 페이지 | `layout/footer.md` |
 | SectionHeader | wip | 메인 말씀·공지사항 (2026-09-16 시안) · 이후 서브페이지 섹션 | `layout/section-header.md` |
 | FadeIn | wip | 스크롤 진입 페이드업 래퍼 (`/worship`) | `layout/fade-in.md` |
-| AnchorNav | shipped | 모든 서브페이지(`SubPage`) 상단 sticky 섹션 바로가기 | `layout/anchor-nav.md` |
-| SideNav | wip | `/education/b`·`/education/c` (B·C안 시범) 좌측 sticky 섹션 바로가기 — lg 이상. 2단 목록(하위 항목) 지원. 채택 전 비교용 (2026-09-27) | `layout/side-nav.md` |
+| AnchorNav | shipped | 모든 서브페이지 상단 sticky 섹션 바로가기 — **lg 미만만** (lg 이상은 SideNav, 2026-10-03) | `layout/anchor-nav.md` |
+| SideNav | shipped | 모든 서브페이지(`SubPage`·`/education`) 좌측 sticky 섹션 바로가기 — lg 이상 (2026-10-03 B안 확정) | `layout/side-nav.md` |
+| SideNavLayout | shipped | 서브페이지 본문 2단 골격 (좌 SideNav / 우 섹션) + 섹션 클래스 | `layout/side-nav-layout.md` |
 | SubPage | shipped | 대메뉴 5개 페이지 골격 (앵커 섹션 + 외부 라우트는 바로가기 카드) | `layout/sub-page.md` |
 | StubPage | shipped | 2차 목차로 신설된 라우트 13종의 골격 (콘텐츠 이관 전) | `layout/stub-page.md` |
 
@@ -85,8 +86,7 @@
 | NoticeList | wip | `/` 공지사항 4줄 — **관리자 영역** | `content/notice-list.md` |
 | NewcomerCard | wip | `/` 새가족 환영 + 등록 카드 (안내 문구·칩 3·주 버튼) | `content/newcomer-card.md` |
 | RelatedOrgs | wip | `/` 관련 기관 6칸 (카드 뒤집기) | `content/related-orgs.md` |
-| EduDept | wip | `/education` 부서 섹션 7종 (번호·소개카드·부서카드·행사·FAQ). 2026-09-27 블록 단위 export (C안 재사용) | `content/edu-dept.md` |
-| EduChapter | wip | `/education/c` (C안 시범) 부서 1개 = 배너 + 좌측 부서별 하위 메뉴 + 우측 콘텐츠 (2026-09-27) | `content/edu-chapter.md` |
+| EduDept | wip | `/education` 부서 섹션 7종 (번호·소개카드·부서카드·행사·FAQ) | `content/edu-dept.md` |
 | VideoArchive | wip | `/worship#live`·`/worship#special` 영상 아카이브 (분류 탭 + 플레이어 + 목록) | `content/video-archive.md` |
 | LivePanel | wip | `/worship#live` 상단 생방송 상태 (수동 on/off 없음) | `content/live-panel.md` |
 | YouTubeEmbed | wip | `/worship#live`(채널 라이브) · `/worship#special` · `/intro` 50주년 영상 | `content/youtube-embed.md` |

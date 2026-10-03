@@ -41,11 +41,6 @@ export type EduDept = {
   faq?: { question: string; answer: string }[];
   /** 섹션 맨 아래 각주 */
   notes?: string[];
-  /**
-   * 부서 배너 — C안(`/education/c`)의 부서별 배너 자리 (2026-09-27). 없으면 placeholder 면.
-   * 디자인팀 사진이 오면 `public/edu/<id>.webp`에 넣고 한 줄 추가한다.
-   */
-  banner?: { src: string; alt: string };
 };
 
 /** 모든 부서가 공유하는 교육 방침 (화면안 공통 블록) */

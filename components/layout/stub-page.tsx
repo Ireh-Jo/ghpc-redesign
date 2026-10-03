@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { ArrowRight, ExternalLink } from 'lucide-react';
 import { Container } from './container';
 import { AnchorNav } from './anchor-nav';
+import { SideNav } from './side-nav';
+import { SideNavLayout, sideSectionClass } from './side-nav-layout';
+import { HeroImage } from '@/components/content/hero-image';
 import { NAV, findByHref, type NavItem } from '@/lib/nav';
 
 /**
@@ -17,6 +20,9 @@ import { NAV, findByHref, type NavItem } from '@/lib/nav';
  * 동작하는 탭처럼 보이면 리뷰에서 오해를 산다.
  *
  * `legacy`(현행 사이트 URL)는 콘텐츠 이관 전까지만 노출한다. 이관 완료 시 `lib/nav.ts`에서 제거.
+ *
+ * 2026-10-03: `heroImage`를 주면 디자인팀 사진 배너(`HeroImage`)로 시작한다 — 배너가 콘텐츠보다 먼저 온 스텁용
+ * (`/ministry`). 앵커가 2개 이상이면 `SubPage`와 같은 2단(좌측 `SideNav`)이다. 상세: context/components/layout/stub-page.md
  */
 export function StubPage({
   route,
@@ -24,6 +30,7 @@ export function StubPage({
   lead,
   tabs,
   children,
+  heroImage,
 }: {
   route: string;
   /** nav에 없는 라우트(예: /privacy)이거나 nav 라벨과 다르게 쓰고 싶을 때 */
@@ -31,6 +38,15 @@ export function StubPage({
   lead?: string;
   tabs?: string[];
   children?: ReactNode;
+  /** 사진 배너 — 없으면 텍스트 히어로. 쓰면 `header.tsx`의 `PHOTO_HERO_ROUTES`에도 라우트를 넣을 것 */
+  heroImage?: {
+    src: string;
+    srcMobile?: string;
+    alt: string;
+    eyebrow?: string;
+    titleEn?: string;
+    lead?: string;
+  };
 }) {
   const found = findByHref(route);
   const heading = title ?? found?.item.label ?? route;
@@ -45,37 +61,90 @@ export function StubPage({
   const parent = found ?? findByHref(`${route}#${anchors[0]?.id ?? ''}`);
   const legacy = found?.item.legacy;
 
+  /** 앵커 섹션 본문 — 준비 중 문구 + 현행 사이트 링크 */
+  const anchorBody = (label: string, item: NavItem) => (
+    <>
+      <h2 className="mb-3 text-2xl font-bold md:text-3xl">{label}</h2>
+      <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
+        준비 중입니다. 콘텐츠는 순차적으로 채워집니다.
+      </p>
+      {item.legacy && (
+        <a
+          href={item.legacy}
+          target="_blank"
+          rel="noopener"
+          className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand-accent"
+        >
+          현재 홈페이지에서 보기
+          <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      )}
+    </>
+  );
+
   return (
     <>
-      <section className="border-b border-brand-line bg-brand-surface pb-14 pt-28 md:pb-20 md:pt-40">
-        <Container>
-          {parent && (
-            <p className="mb-4 text-[11px] font-bold tracking-[0.4em] text-brand-support md:text-xs">
-              {parent.section.label} — {parent.group.label}
-            </p>
-          )}
-          <h1 className="display-lg text-brand-ink">{heading}</h1>
-          {(lead ?? found?.item.desc) && (
-            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
-              {lead ?? found?.item.desc}
-            </p>
-          )}
-
+      {heroImage ? (
+        <>
+          <HeroImage
+            eyebrow={heroImage.eyebrow}
+            title={heading}
+            titleEn={heroImage.titleEn}
+            lead={heroImage.lead}
+            imageSrc={heroImage.src}
+            imageSrcMobile={heroImage.srcMobile}
+            imageAlt={heroImage.alt}
+          />
+          {/* 사진 히어로에는 현행 사이트 링크 자리가 없어 아래 띠로 옮긴다 */}
           {legacy && (
-            <a
-              href={legacy}
-              target="_blank"
-              rel="noopener"
-              className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand-accent"
-            >
-              현재 홈페이지에서 보기
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
+            <div className="border-b border-brand-line">
+              <Container className="py-4">
+                <a
+                  href={legacy}
+                  target="_blank"
+                  rel="noopener"
+                  className="inline-flex items-center gap-1.5 text-[13px] font-medium text-brand-accent"
+                >
+                  현재 홈페이지에서 보기
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              </Container>
+            </div>
           )}
-        </Container>
-      </section>
+        </>
+      ) : (
+        <section className="border-b border-brand-line bg-brand-surface pb-14 pt-28 md:pb-20 md:pt-40">
+          <Container>
+            {parent && (
+              <p className="mb-4 text-[11px] font-bold tracking-[0.4em] text-brand-support md:text-xs">
+                {parent.section.label} — {parent.group.label}
+              </p>
+            )}
+            <h1 className="display-lg text-brand-ink">{heading}</h1>
+            {(lead ?? found?.item.desc) && (
+              <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
+                {lead ?? found?.item.desc}
+              </p>
+            )}
 
-      {anchors.length > 1 && <AnchorNav items={anchors.map(({ id, label }) => ({ id, label }))} />}
+            {legacy && (
+              <a
+                href={legacy}
+                target="_blank"
+                rel="noopener"
+                className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand-accent"
+              >
+                현재 홈페이지에서 보기
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            )}
+          </Container>
+        </section>
+      )}
+
+      {anchors.length > 1 && (
+        <AnchorNav items={anchors.map(({ id, label }) => ({ id, label }))} className="lg:hidden" />
+      )}
 
       {tabs && tabs.length > 0 && (
         <section className="border-b border-brand-line py-10">
@@ -118,7 +187,7 @@ export function StubPage({
                         </span>
                       )}
                     </span>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-brand-ink-muted transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4 shrink-0 text-brand-ink-muted transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
                   </Link>
                 </li>
               ))}
@@ -127,30 +196,30 @@ export function StubPage({
         </section>
       )}
 
-      {anchors.length > 0
+      {anchors.length > 1 ? (
+        <SideNavLayout
+          nav={
+            <SideNav
+              title={heading}
+              lead={lead}
+              items={anchors.map(({ id, label }) => ({ id, label }))}
+            />
+          }
+        >
+          {anchors.map(({ id, label, item }, i) => (
+            <section key={id} id={id} className={sideSectionClass(i === anchors.length - 1)}>
+              {anchorBody(label, item)}
+            </section>
+          ))}
+        </SideNavLayout>
+      ) : anchors.length === 1
         ? anchors.map(({ id, label, item }) => (
             <section
               key={id}
               id={id}
               className="scroll-mt-32 border-b border-brand-line py-16 md:scroll-mt-36 md:py-20"
             >
-              <Container>
-                <h2 className="mb-3 text-2xl font-bold md:text-3xl">{label}</h2>
-                <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
-                  준비 중입니다. 콘텐츠는 순차적으로 채워집니다.
-                </p>
-                {item.legacy && (
-                  <a
-                    href={item.legacy}
-                    target="_blank"
-                    rel="noopener"
-                    className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand-accent"
-                  >
-                    현재 홈페이지에서 보기
-                    <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                )}
-              </Container>
+              <Container>{anchorBody(label, item)}</Container>
             </section>
           ))
         : !children && !found?.item.children && (

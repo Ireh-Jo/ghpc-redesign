@@ -8,7 +8,8 @@
 | `/intro` | `intro.webp` ✅ (2000×625) | `intro-m.jpg` ✅ (750×899) |
 | `/education` | `education.webp` ✅ (2000×625) | `education-m.jpg` ✅ (750×899) |
 | `/care` | `care.webp` ✅ (2000×625) | `care-m.jpg` ✅ (750×899) |
-| `/activity` | `activity.webp` | `activity-m.webp` |
+| `/activity` | `activity.webp` ✅ (2000×626) | `activity-m.jpg` ✅ (750×900) |
+| `/ministry` (사역) | `ministry.webp` ✅ (2000×626) | `ministry-m.jpg` ✅ (750×900) |
 | `/newcomer` | `newcomer.webp` ✅ (2000×625) | `newcomer-m.jpg` ✅ (750×899) |
 
 - **PC**: 표시 1920×540 기준. 2026-09-18 재전달분은 2000×625 webp로 왔고 그대로 쓴다 (2x면 더 좋다).
@@ -24,3 +25,8 @@
 - 이 맥에는 webp 인코더가 없어(`sips`·ImageIO 모두 미지원) **JPEG q85**로 변환해 쓰고 있다.
   webp로 가려면 디자인팀이 webp로 내보내 주거나, `brew install webp` 후 `cwebp`로 변환한다.
 - 파일 확장자를 바꾸면 `app/(site)/<라우트>/page.tsx`의 `heroImage.src`·`srcMobile`도 같이 고친다.
+
+## 글자 없는 원본으로 받을 것 (2026-10-03)
+
+배너 사진에는 **로고·메뉴·제목·문구가 없어야 한다.** 글자는 코드가 사진 위에 얹는다 — 시안 캡처(글자 박힌 이미지)를
+넣으면 화면에 글자가 두 번 나온다. 2026-10-03 교회활동 PC·모바일, 사역 PC가 캡처본으로 와서 재요청했고 같은 날 원본을 받았다.

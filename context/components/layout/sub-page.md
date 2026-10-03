@@ -5,7 +5,7 @@ status: shipped
 owner: 이레
 depends-on:
   design: [color, typography, spacing]
-  components: [layout/container, layout/anchor-nav, content/hero-image]
+  components: [layout/container, layout/anchor-nav, layout/side-nav, layout/side-nav-layout, content/hero-image]
   data: []
 ---
 
@@ -57,3 +57,17 @@ depends-on:
 그래서 **대메뉴의 하위 그룹이 독립 라우트를 갖는 경우**엔 맞지 않는다.
 `/education`이 그 사례다 (앵커는 `/education#*`, 섹션 href는 `/worship`) — `HeroImage` + `AnchorNav` +
 섹션을 직접 조립했다. 억지로 끼우지 말 것. 판단 기록: `docs/2026-09-18-교육페이지-시안-반영.md` §3.
+
+## 2026-10-03 — 좌측 sticky 패널 (B안 확정)
+
+lg 이상은 **좌측 `SideNav` + 우측 앵커 섹션**(`SideNavLayout`), lg 미만은 그대로 상단 `AnchorNav`.
+결정 기록: `context/04-information-architecture.md` §서브페이지 섹션 바로가기 배치.
+
+| prop | 설명 |
+|---|---|
+| `sideNav.lead` | 패널 소개 문구. 기본 GNB `tagline` |
+| `sideNav.cta` | 패널 맨 아래 버튼 `{label, detail?, href}`. 기본 없음 |
+
+- 패널 제목 = `heroImage.title` ?? GNB 라벨 (`/worship`은 "예배")
+- **앵커가 1개 이하면 한 단** — `/activity`(앵커 1 + 바로가기 카드)처럼 패널에 목록이 없으면 빈 기둥만 남는다
+- 바로가기 카드(다른 라우트 그룹)는 2단 **밖**, 전체 폭. 첫 카드 묶음이 위 경계선을 긋는다
