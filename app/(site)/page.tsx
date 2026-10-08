@@ -53,6 +53,11 @@ export default async function HomePage() {
         videoSrcHevc="/hero/main-hevc.mp4"
         posterSrc="/hero/main-poster.jpg"
         mobileImageSrc="/hero/main-m.jpg"
+        // 모바일 세로판 — 원본을 640×1080으로 크롭(10초까지 가운데 → 17.5초까지 왼쪽으로 천천히 패닝 → 첨탑이 왼쪽 1/3에),
+        // 패닝 구간은 60fps 보간, ffmpeg 2-pass 1.8Mbps (HEVC 4.3MB · H.264 4.4MB).
+        // 2026-10-09 채택 (design/05-imagery.md §모바일). 절차: hero-video.md
+        mobileVideoSrc="/hero/main-m.mp4"
+        mobileVideoSrcHevc="/hero/main-m-hevc.mp4"
         mobileImageAlt="노을빛 아래 하늘로 솟은 경향교회 첨탑과 본당"
         serviceTimes={[
           { label: '다음 예배', time: '주일 · 11:00', emphasize: true },

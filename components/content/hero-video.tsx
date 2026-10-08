@@ -33,6 +33,8 @@ export function HeroVideo({
   posterSrc,
   mobileImageSrc,
   mobileImageAlt,
+  mobileVideoSrc,
+  mobileVideoSrcHevc,
   serviceTimes,
 }: {
   eyebrow: string;
@@ -51,15 +53,26 @@ export function HeroVideo({
   posterSrc: string;
   mobileImageSrc: string;
   mobileImageAlt: string;
+  /**
+   * 모바일 전용 세로 영상 (H.264) — 있으면 md 미만에서도 영상을 튼다. 없으면 정지 이미지만.
+   * 2026-10-09 채택 — 결정: context/design/05-imagery.md §모바일 · 절차: context/components/content/hero-video.md
+   */
+  mobileVideoSrc?: string;
+  /** 모바일 세로 영상의 HEVC 판 */
+  mobileVideoSrcHevc?: string;
   serviceTimes: HeroServiceTime[];
 }) {
-  // display:none(hidden)은 리소스 다운로드를 막지 못함 — 영상은 md 이상 + 모션 허용일 때만
-  // 마운트해서 모바일 데이터/배터리를 보호하고 prefers-reduced-motion을 존중한다.
-  const [playVideo, setPlayVideo] = useState(false);
+  // display:none(hidden)은 리소스 다운로드를 막지 못함 — 영상은 조건이 맞을 때만 마운트한다.
+  // 데스크탑: md 이상 + 모션 허용. 모바일: 세로판이 있고 + 모션 허용 + 데이터 절약 모드 아님.
+  const [mode, setMode] = useState<'none' | 'desktop' | 'mobile'>('none');
   useEffect(() => {
     const desktop = window.matchMedia('(min-width: 768px)');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setPlayVideo(desktop.matches && !reduce.matches);
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    const update = () =>
+      setMode(
+        reduce.matches ? 'none' : desktop.matches ? 'desktop' : mobileVideoSrc && !saveData ? 'mobile' : 'none'
+      );
     update();
     desktop.addEventListener('change', update);
     reduce.addEventListener('change', update);
@@ -67,7 +80,15 @@ export function HeroVideo({
       desktop.removeEventListener('change', update);
       reduce.removeEventListener('change', update);
     };
-  }, []);
+  }, [mobileVideoSrc]);
+
+  /** 지금 모드의 소스 — HEVC를 먼저 시도하고 안 되면 H.264 */
+  const sources =
+    mode === 'desktop'
+      ? { hevc: videoSrcHevc, h264: videoSrc, poster: posterSrc }
+      : mode === 'mobile' && mobileVideoSrc
+        ? { hevc: mobileVideoSrcHevc, h264: mobileVideoSrc, poster: mobileImageSrc }
+        : null;
 
   return (
     // 높이 상한 없음 (2026-10-08) — 1000px 상한이 있으면 큰 모니터에서 16:9 영상 위아래가 31%까지 잘렸다.
@@ -79,19 +100,21 @@ export function HeroVideo({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={mobileImageSrc} alt={mobileImageAlt} className="absolute inset-0 h-full w-full object-cover" />
       </picture>
-      {playVideo && (
+      {sources && (
         <video
+          // 모드가 바뀌면(창 크기 변경) 소스가 달라지므로 새로 마운트한다 — <source>만 바꾸면 브라우저가 다시 안 읽는다
+          key={mode}
           autoPlay
           muted
           loop
           playsInline
           aria-hidden="true"
-          poster={posterSrc}
+          poster={sources.poster}
           className="absolute inset-0 h-full w-full object-cover"
         >
           {/* 재생 가능한 첫 소스 하나만 받는다 — HEVC를 먼저 시도하고 안 되면 H.264 */}
-          {videoSrcHevc && <source src={videoSrcHevc} type='video/mp4; codecs="hvc1"' />}
-          <source src={videoSrc} type="video/mp4" />
+          {sources.hevc && <source src={sources.hevc} type='video/mp4; codecs="hvc1"' />}
+          <source src={sources.h264} type="video/mp4" />
         </video>
       )}
       {/* 오버레이 — 전체를 덮던 어두운 막(35→55→95%)을 걷고 글씨가 있는 곳만 누른다 (2026-10-08, 영상 선명도).

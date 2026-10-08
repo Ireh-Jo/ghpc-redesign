@@ -117,6 +117,7 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 
 | 대기 | 누구/무엇 | 오면 할 일 |
 |---|---|---|
+| **교회 일정 달력 방식** — 10/11(일) 회의에서 확인 | 사용자 · 교회 | 현행은 구글 캘린더 iframe(`/Page/Index/111013`). 우리 달력 UI는 확정, 데이터 출처만 미정: **A** Supabase `events` + 어드민 등록(사용자는 이쪽으로 기울어 있음) / **B** 당분간 기존 구글 캘린더 iCal을 읽어 우리 UI로 표시 → 어드민 생기면 출처만 교체. 공통: 시설예약 달력(`reservation-calendar`)을 월간 그리드 공용 부품으로 분리(약 1일). 자리: `/activity#calendar` |
 | **예배 표 콘텐츠 사실확인 6건** (주일학교 연령 · S.F.C. 성경공부 열 · 주일밤 장소 · 금요밤 명칭 · 구역장성경공부 행) | 교회 · 미디어팀 | `lib/worship-services.ts` 한 파일 수정 (검토서 §7) |
 | 푸터 · 헤더 생방송 CTA 유지 여부 | 디자인팀 | 시안에 없어서 확인만 |
 | **TODO: YouTube Data API 키 발급** — 영상 목록은 2026-09-27부터 **RSS로 자동 갱신 중**(재생목록당 최신 15편 한계) | 사용자 액션 (Google Cloud 콘솔, 무료) | `.env.local`에 `YOUTUBE_API_KEY` → `lib/youtube-feed.ts`의 `getPlaylistFeed`를 `playlistItems.list`로 교체. 검색·페이지네이션이 여기서 열린다. 결정 기록: `context/features/video-embed.md` §영상 목록 자동 갱신 |
