@@ -29,6 +29,7 @@ export function HeroVideo({
   verse,
   verseRef,
   videoSrc,
+  videoSrcHevc,
   posterSrc,
   mobileImageSrc,
   mobileImageAlt,
@@ -43,7 +44,10 @@ export function HeroVideo({
   subtitle?: string;
   verse?: string;
   verseRef?: string;
+  /** H.264 mp4 — 모든 브라우저가 트는 대체본 */
   videoSrc: string;
+  /** 같은 영상의 HEVC 판 (같은 용량에 화질이 훨씬 낫다). 못 트는 브라우저는 `videoSrc`로 내려간다 — 2026-10-08 */
+  videoSrcHevc?: string;
   posterSrc: string;
   mobileImageSrc: string;
   mobileImageAlt: string;
@@ -66,7 +70,9 @@ export function HeroVideo({
   }, []);
 
   return (
-    <section className="relative flex h-[100svh] max-h-[1000px] min-h-[640px] flex-col overflow-hidden bg-brand-ink md:h-screen">
+    // 높이 상한 없음 (2026-10-08) — 1000px 상한이 있으면 큰 모니터에서 16:9 영상 위아래가 31%까지 잘렸다.
+    // 모바일은 화면의 75% (2026-10-08 "너무 길다") — 예배시간 바는 그대로 첫 화면에 있고 아래 말씀 섹션이 살짝 보인다.
+    <section className="relative flex h-[75svh] min-h-[540px] flex-col overflow-hidden bg-brand-ink md:h-screen md:min-h-[640px]">
       {/* 베이스 레이어 — <picture>가 뷰포트에 맞는 한 장만 다운로드 (모바일=정지 이미지, 데스크탑=포스터) */}
       <picture>
         <source media="(min-width: 768px)" srcSet={posterSrc} />
@@ -83,16 +89,24 @@ export function HeroVideo({
           poster={posterSrc}
           className="absolute inset-0 h-full w-full object-cover"
         >
+          {/* 재생 가능한 첫 소스 하나만 받는다 — HEVC를 먼저 시도하고 안 되면 H.264 */}
+          {videoSrcHevc && <source src={videoSrcHevc} type='video/mp4; codecs="hvc1"' />}
           <source src={videoSrc} type="video/mp4" />
         </video>
       )}
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-ink/35 via-brand-ink/55 to-brand-ink/95" />
+      {/* 오버레이 — 전체를 덮던 어두운 막(35→55→95%)을 걷고 글씨가 있는 곳만 누른다 (2026-10-08, 영상 선명도).
+          전부 없애진 않는다: 영상이 흰 화면으로 시작·끝나서 흰 글씨가 묻힌다. 상세: hero-video.md */}
+      <div aria-hidden className="absolute inset-0 bg-brand-ink/30 md:bg-transparent" />
+      <div aria-hidden className="absolute inset-0 hidden bg-gradient-to-r from-brand-ink/55 via-brand-ink/20 to-transparent md:block" />
+      <div aria-hidden className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-brand-ink/40 to-transparent" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-brand-ink/75 to-transparent" />
 
       <div className="relative mx-auto w-full max-w-container px-5 pt-24 md:px-8 md:pt-32">
         <p className="text-[11px] font-medium tracking-[0.4em] text-white/70 md:text-xs">{eyebrow}</p>
       </div>
 
-      <div className="relative mx-auto flex w-full max-w-container flex-1 flex-col justify-center px-5 text-white md:px-8">
+      {/* 글자 그림자 — 오버레이를 옅게 한 대신 글자 뒤만 누른다. 영상이 흰 화면으로 시작·끝나는 구간에서도 읽히게 */}
+      <div className="relative mx-auto flex w-full max-w-container flex-1 flex-col justify-center px-5 text-white [text-shadow:0_2px_18px_rgb(var(--brand-ink)/0.55)] md:px-8">
         {lead && (
           <p className="mb-3 whitespace-pre-line text-[24px] font-light leading-[1.35] text-white/90 md:mb-4 md:text-[40px]">
             {lead}

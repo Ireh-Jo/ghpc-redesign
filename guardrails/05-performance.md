@@ -42,7 +42,10 @@
 
 ## 영상
 
-- 헤로 영상: 짧은 루프 (< 10MB), `preload="metadata"`, 모바일은 정적 이미지 대체 (`design/05-imagery.md`)
+- 헤로 영상: 짧은 루프 **≤ 11MB** (데스크탑 전용 — 모바일은 정적 이미지 대체, `design/05-imagery.md`), `preload="metadata"`
+  - 2026-10-08 10MB → 11MB (사용자 결정). 10MB는 초기 세팅 때 넣은 어림값이었다. 화질을 위해 1MB 여유를 줬고,
+    영상은 포스터 뒤에서 늦게 붙어 LCP와 무관하며 모바일은 받지 않는다. 같은 용량에서 화질은 ffmpeg 2-pass
+    (HEVC 우선 + H.264 대체)로 짜낸다 — 절차: `public/hero/README.md` §메인 영상
 - 유튜브 임베드: lite-youtube 패턴 (`features/video-embed.md`)
 - `youtube-nocookie.com` 사용 (트래커 무게 ↓)
 

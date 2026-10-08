@@ -3,7 +3,7 @@
 > **"다음 할 작업 뭐지?"의 단일 출처.** 다른 PC에서 `git pull` 후 이 파일만 읽으면 바로 이어서 할 수 있게 유지한다.
 > 작업을 끝내면 해당 항목을 여기서 **지우고**, 새로 생긴 건 여기에 **추가한다.** (완료 이력은 git log가 담당)
 >
-> 마지막 갱신: **2026-10-03** · 작업 브랜치 `feature/ghpc_a` (Vercel 배포 대상)
+> 마지막 갱신: **2026-10-08** · 작업 브랜치 `feature/ghpc_a` (Vercel 배포 대상)
 
 ---
 
@@ -120,7 +120,8 @@ Supabase 전이라 목업 데이터로 만들고, 테이블 연결은 나중에 
 | **예배 표 콘텐츠 사실확인 6건** (주일학교 연령 · S.F.C. 성경공부 열 · 주일밤 장소 · 금요밤 명칭 · 구역장성경공부 행) | 교회 · 미디어팀 | `lib/worship-services.ts` 한 파일 수정 (검토서 §7) |
 | 푸터 · 헤더 생방송 CTA 유지 여부 | 디자인팀 | 시안에 없어서 확인만 |
 | **TODO: YouTube Data API 키 발급** — 영상 목록은 2026-09-27부터 **RSS로 자동 갱신 중**(재생목록당 최신 15편 한계) | 사용자 액션 (Google Cloud 콘솔, 무료) | `.env.local`에 `YOUTUBE_API_KEY` → `lib/youtube-feed.ts`의 `getPlaylistFeed`를 `playlistItems.list`로 교체. 검색·페이지네이션이 여기서 열린다. 결정 기록: `context/features/video-embed.md` §영상 목록 자동 갱신 |
-| **로고 SVG 3종 · 히어로 영상 2종** | 디자인팀 (Phase 1, 가이드 발송함) | `logo.png`/`logo_black.png` 교체 · `HeroVideo` 실제 영상 연결 (메인 헤로는 영상으로 확정 — 2026-09-16) |
+| **로고 SVG 3종** | 디자인팀 (Phase 1, 가이드 발송함) | `logo.png`/`logo_black.png` 교체. (메인 헤로 영상은 2026-10-08 수령·적용 — `public/hero/README.md` §메인 영상) |
+| **메인 영상 속 교인 얼굴 — 게시 동의 확인** | 교회 · 미디어팀 | 6~10초 구간에 예배 중 교인 얼굴이 식별 가능하게 나온다. 규칙상 인물 실사진은 본인 동의분만(`guardrails/00-rules.md` 6). 동의가 안 되면 그 구간을 뺀 편집본을 받아 같은 방법으로 재인코딩 |
 | **메인 배너 모바일 크롭** (예: 750×780) | 디자인팀 | `lib/main-banners.ts`의 `srcMobile`에 파일명만 추가. 지금은 PC 배너를 16:9로 잘라 써서 양 끝이 잘린다 |
 | **푸터 시안 적용** (관련기관 6 · SNS 4 URL) | 디자인팀 + 사용자 판단 | 시안 푸터는 전역 컴포넌트라 서브페이지 전체 영향. 헤더 생방송 CTA 회신과 묶어서 한 번에 |
 | **퀵메뉴 `구역공과` 목적지** | 교회 (OPEN_QUESTIONS와 동일 건) | `lib/nav.ts`의 `QUICK_MENU` 한 줄. 지금은 잠정으로 `/church-admin/resources` |

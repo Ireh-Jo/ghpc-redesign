@@ -44,10 +44,16 @@ export default async function HomePage() {
         lead={'개혁주의 신앙으로\n세계복음화의 비전을 실천해가는'}
         title="경향교회"
         titleEn="GYUNG-HYANG PRESBYTERIAN CHURCH"
-        videoSrc="https://gts.ac.kr/UserData/gtshp/Layouts/gtshp_Layout/Images/20250605.mp4"
-        posterSrc="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1920&q=80"
-        mobileImageSrc="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1080&q=80"
-        mobileImageAlt="햇살 아래 두 팔을 벌린 실루엣 — 경향교회 헤로 배경 (임시)"
+        // 디자인팀 메인 영상 (2026-10-08, `intro_05.mp4` 19.6초). 원본 123MB(50Mbps·음성 포함)를 ffmpeg 2-pass로
+        // 1080p·무음·faststart 재인코딩 — HEVC 4.3Mbps(10.3MB)를 먼저 틀고, 못 트는 브라우저는 H.264 4.3Mbps(10.4MB).
+        // 기준 ≤ 11MB (guardrails/05-performance.md). 인코딩 기록·화질 비교: public/hero/README.md §메인 영상
+        // 포스터·모바일 정지 이미지는 3초 프레임(첨탑 항공샷) — 0초는 흰 화면으로 시작해 포스터로 못 쓴다.
+        // 규격·재인코딩 방법: public/hero/README.md §메인 영상
+        videoSrc="/hero/main.mp4"
+        videoSrcHevc="/hero/main-hevc.mp4"
+        posterSrc="/hero/main-poster.jpg"
+        mobileImageSrc="/hero/main-m.jpg"
+        mobileImageAlt="노을빛 아래 하늘로 솟은 경향교회 첨탑과 본당"
         serviceTimes={[
           { label: '다음 예배', time: '주일 · 11:00', emphasize: true },
           { label: '1부', time: '9:00' },

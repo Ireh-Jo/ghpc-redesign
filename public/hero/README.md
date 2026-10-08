@@ -30,3 +30,34 @@
 
 배너 사진에는 **로고·메뉴·제목·문구가 없어야 한다.** 글자는 코드가 사진 위에 얹는다 — 시안 캡처(글자 박힌 이미지)를
 넣으면 화면에 글자가 두 번 나온다. 2026-10-03 교회활동 PC·모바일, 사역 PC가 캡처본으로 와서 재요청했고 같은 날 원본을 받았다.
+
+## 메인 영상 (`/` 헤로, 2026-10-08)
+
+| 파일 | 내용 |
+|---|---|
+| `main-hevc.mp4` | 데스크탑 루프 영상 **우선판** — 1920×1080 **HEVC** 4.3Mbps · **무음** · faststart · `hvc1` 태그, 19.6초 · 10.3MB |
+| `main.mp4` | 같은 영상의 **H.264 대체본** (HEVC 못 트는 브라우저용) — 4.3Mbps · 10.4MB |
+| `main-poster.jpg` | 영상 로딩 전·모션 축소 사용자용 포스터 — 3초 프레임 1920×1080 (368KB) |
+| `main-m.jpg` | 모바일 정지 이미지 — 같은 프레임을 첨탑 중심으로 세로 크롭 720×1080 (142KB) |
+
+- 기준 **≤ 11MB** (`guardrails/05-performance.md`, 2026-10-08 10→11MB). 원본(`intro_05.mp4`)은 123MB·50Mbps.
+- **ffmpeg 2-pass**로 만든다 (Homebrew `ffmpeg`, 약 6~7분). 목표 비트레이트 = 11MB 이내 → 4300k (19.6초 기준).
+  ```bash
+  # HEVC (우선판) — slower 프리셋, aq-mode=3(어두운 부분·하늘 그라데이션 뭉개짐 완화), Safari용 hvc1 태그
+  ffmpeg -y -i 원본.mp4 -an -c:v libx265 -preset slower -b:v 4300k -pix_fmt yuv420p -tag:v hvc1 -x265-params "pass=1:stats=x265.log:aq-mode=3" -f null /dev/null
+  ffmpeg -y -i 원본.mp4 -an -c:v libx265 -preset slower -b:v 4300k -pix_fmt yuv420p -tag:v hvc1 -x265-params "pass=2:stats=x265.log:aq-mode=3" -movflags +faststart main-hevc.mp4
+  # H.264 (대체본) — veryslow 프리셋
+  ffmpeg -y -i 원본.mp4 -an -c:v libx264 -preset veryslow -b:v 4300k -pix_fmt yuv420p -profile:v high -pass 1 -passlogfile x264 -f null /dev/null
+  ffmpeg -y -i 원본.mp4 -an -c:v libx264 -preset veryslow -b:v 4300k -pix_fmt yuv420p -profile:v high -pass 2 -passlogfile x264 -movflags +faststart main.mp4
+  ```
+- **화질 기록 (원본 대비 SSIM, 1.0 = 동일)** — macOS AVFoundation 인코더보다 ffmpeg가 같은 용량대에서 확연히 낫다:
+
+  | 인코딩 | 용량 | SSIM |
+  |---|---|---|
+  | AVFoundation H.264 2.5M (최초) | 6.1MB | 0.921 |
+  | AVFoundation HEVC 3.8M | 9.3MB | 0.934 |
+  | **ffmpeg H.264 4.3M 2-pass** | 10.4MB | 0.984 |
+  | **ffmpeg HEVC 4.3M 2-pass** | 10.3MB | **0.988** |
+
+- 영상은 **0초가 흰 화면**(페이드인)이라 포스터는 3초 프레임을 쓴다. 새 영상이 오면 포스터 프레임부터 다시 고를 것.
+- 모바일은 영상을 받지 않는다 (`HeroVideo`가 md 이상 + 모션 허용일 때만 `<video>`를 붙인다).
