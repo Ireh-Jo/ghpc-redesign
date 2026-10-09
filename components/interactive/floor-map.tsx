@@ -485,6 +485,66 @@ export function FloorMap() {
     return 'idle';
   };
 
+  // 방·시설 검색 — 평소엔 지도 위 한 줄, 크게 보기에선 상단 바 안 (query 상태는 그대로 이어진다)
+  const searchBox = (
+    <div className="relative">
+      <Search
+        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-ink-muted"
+        strokeWidth={1.5}
+      />
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          // 검색어가 있으면 Esc는 검색어만 지운다 (크게 보기까지 닫히지 않게)
+          if (e.key === 'Escape' && query) {
+            e.stopPropagation();
+            setQuery('');
+          }
+          if (e.key === 'Enter' && searchResults[0]) {
+            e.preventDefault();
+            selectViaSearch(searchResults[0]);
+          }
+        }}
+        placeholder={expanded ? '방·시설 이름으로 검색' : '방·시설 이름으로 검색 (예: 비전홀, 식당)'}
+        aria-label="방·시설 검색"
+        className="h-11 w-full border border-brand-line bg-brand-surface pl-9 pr-9 text-[13px] text-brand-ink placeholder:text-brand-ink-muted focus:border-brand-ink focus:outline-none"
+      />
+      {query && (
+        <button
+          type="button"
+          aria-label="검색어 지우기"
+          onClick={() => setQuery('')}
+          className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center text-brand-ink-muted transition-colors duration-200 hover:text-brand-ink"
+        >
+          <X className="h-4 w-4" strokeWidth={1.5} />
+        </button>
+      )}
+      {query && (
+        <ul className="absolute inset-x-0 top-full z-10 mt-1 border border-brand-line bg-brand-surface shadow-sm">
+          {searchResults.length === 0 ? (
+            <li className="px-4 py-2.5 text-[13px] text-brand-ink-muted">검색 결과가 없습니다.</li>
+          ) : (
+            searchResults.map((r) => (
+              <li key={`${r.floorId}:${r.code}`}>
+                <button
+                  type="button"
+                  onClick={() => selectViaSearch(r)}
+                  aria-label={`검색결과: ${r.name} (${r.floorLabel})`}
+                  className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-[13px] text-brand-ink transition-colors duration-200 hover:bg-brand-subtle"
+                >
+                  <span>{r.name}</span>
+                  <span className="text-[11px] text-brand-ink-muted">{r.floorLabel}</span>
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
+    </div>
+  );
+
   return (
     <>
       {/* 크게 보기 배경 — PC에서만 (가운데 팝업 뒤를 어둡게, 누르면 닫힘). 휴대폰은 화면을 꽉 채우므로 없다 */}
@@ -507,76 +567,24 @@ export function FloorMap() {
     >
       {/* 크게 보기 상단 바 */}
       {expanded && (
-        <div className="flex items-center justify-between border-b border-brand-line px-4 py-3 md:px-5">
-          <p className="text-[15px] font-bold text-brand-ink">실내 길찾기</p>
+        // 검색을 제목 줄에 함께 둔다 — 줄을 하나 더 쓰면 지도가 그만큼 낮아진다. 휴대폰은 폭이 좁아 제목을 뺀다 (dialog 이름이 대신한다)
+        <div className="relative z-20 flex items-center gap-3 border-b border-brand-line px-4 py-3 md:px-5">
+          <p className="hidden shrink-0 text-[15px] font-bold text-brand-ink md:block">실내 길찾기</p>
+          <div className="min-w-0 flex-1 md:max-w-md">{searchBox}</div>
           <button
             ref={closeButtonRef}
             type="button"
             aria-label="크게 보기 닫기"
             onClick={() => setExpanded(false)}
-            className="btn-round flex h-11 w-11 items-center justify-center border border-brand-line text-brand-ink transition-colors duration-200 hover:border-brand-ink"
+            className="btn-round ml-auto flex h-11 w-11 shrink-0 items-center justify-center border border-brand-line text-brand-ink transition-colors duration-200 hover:border-brand-ink"
           >
             <X className="h-5 w-5" strokeWidth={1.5} />
           </button>
         </div>
       )}
 
-      {/* 검색 — 크게 보기에서는 숨긴다. 도면이 가로로 길어 지도 크기는 **높이**가 정하므로 지도 위 영역을 최대한 줄인다
-          (지도를 직접 눌러 고르면 되고, 검색은 닫으면 바로 다시 보인다) */}
-      <div className={cn('border-b border-brand-line p-4 md:p-5', expanded && 'hidden')}>
-        <div className="relative">
-          <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-ink-muted"
-            strokeWidth={1.5}
-          />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') setQuery('');
-              if (e.key === 'Enter' && searchResults[0]) {
-                e.preventDefault();
-                selectViaSearch(searchResults[0]);
-              }
-            }}
-            placeholder="방·시설 이름으로 검색 (예: 비전홀, 식당)"
-            aria-label="방·시설 검색"
-            className="h-11 w-full border border-brand-line bg-brand-surface pl-9 pr-9 text-[13px] text-brand-ink placeholder:text-brand-ink-muted focus:border-brand-ink focus:outline-none"
-          />
-          {query && (
-            <button
-              type="button"
-              aria-label="검색어 지우기"
-              onClick={() => setQuery('')}
-              className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center text-brand-ink-muted transition-colors duration-200 hover:text-brand-ink"
-            >
-              <X className="h-4 w-4" strokeWidth={1.5} />
-            </button>
-          )}
-          {query && (
-            <ul className="absolute inset-x-0 top-full z-10 mt-1 border border-brand-line bg-brand-surface shadow-sm">
-              {searchResults.length === 0 ? (
-                <li className="px-4 py-2.5 text-[13px] text-brand-ink-muted">검색 결과가 없습니다.</li>
-              ) : (
-                searchResults.map((r) => (
-                  <li key={`${r.floorId}:${r.code}`}>
-                    <button
-                      type="button"
-                      onClick={() => selectViaSearch(r)}
-                      aria-label={`검색결과: ${r.name} (${r.floorLabel})`}
-                      className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-[13px] text-brand-ink transition-colors duration-200 hover:bg-brand-subtle"
-                    >
-                      <span>{r.name}</span>
-                      <span className="text-[11px] text-brand-ink-muted">{r.floorLabel}</span>
-                    </button>
-                  </li>
-                ))
-              )}
-            </ul>
-          )}
-        </div>
-      </div>
+      {/* 검색 — 크게 보기에서는 상단 바로 올라간다 (아래) */}
+      {!expanded && <div className="border-b border-brand-line p-4 md:p-5">{searchBox}</div>}
 
       {/* 컨트롤 바 */}
       <div className={cn('flex flex-wrap items-center gap-3 border-b border-brand-line', expanded ? 'px-4 py-2.5 md:px-5' : 'p-4 md:p-5')}>
