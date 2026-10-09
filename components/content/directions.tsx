@@ -1,6 +1,16 @@
 import { ArrowUpRight, Bus, Car, MapPin, Navigation, TrainFront } from 'lucide-react';
 import { KakaoMap } from '@/components/interactive/kakao-map';
-import { BUILDINGS, BUS, MAP_CENTER, MAP_LINKS, PARKING, SUBWAY, routeTo } from '@/lib/directions';
+import { BUILDINGS, BUS, MAP_CENTER, MAP_LINKS, PARKING, SUBWAY, routeTo, type BusTone } from '@/lib/directions';
+
+/**
+ * 버스 종류별 색 (2026-10-10) — 실제 정류장 표지와 같은 색이라 한눈에 구분된다. 토큰 `transit-*` (01-color.md §기능 색).
+ * 면을 꽉 채우지 않는다: 초록 위 흰 글씨는 대비 미달 → 옅은 바탕 + 색 테두리 + 진한 글씨. 클래스는 정적으로 적어야 Tailwind가 만든다.
+ */
+const BUS_TONE: Record<NonNullable<BusTone>, { dot: string; chip: string }> = {
+  trunk: { dot: 'bg-transit-trunk', chip: 'border-transit-trunk bg-transit-trunk/10' },
+  branch: { dot: 'bg-transit-branch', chip: 'border-transit-branch bg-transit-branch/10' },
+};
+const BUS_NEUTRAL = { dot: 'bg-brand-ink-muted', chip: 'border-brand-line bg-brand-subtle' };
 
 /**
  * 오시는 길 본문 — 지도 · 지도 앱 버튼 · 건물 3곳 · 대중교통 · 주차.
@@ -67,9 +77,10 @@ export function Directions() {
             지하철
           </h3>
           <p className="mt-4 flex items-center gap-2.5">
+            {/* 9호선 골드 — 골드 위 흰 숫자는 대비가 약해 진한 숫자 */}
             <span
               aria-label={`${SUBWAY.line}호선`}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-accent-2 text-[13px] font-extrabold text-white"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-transit-line9 text-[13px] font-extrabold text-brand-ink"
             >
               {SUBWAY.line}
             </span>
@@ -86,18 +97,27 @@ export function Directions() {
           <p className="mt-4 text-[13px] font-bold text-brand-ink-muted">정류장</p>
           <p className="mt-1 text-[14px] leading-relaxed text-brand-ink md:text-[15px]">{BUS.stops.join(' · ')}</p>
           <dl className="mt-4 space-y-2">
-            {BUS.lines.map((line) => (
-              <div key={line.type} className="flex gap-3">
-                <dt className="w-9 shrink-0 pt-0.5 text-[13px] font-bold text-brand-ink-muted">{line.type}</dt>
-                <dd className="flex flex-wrap gap-1.5">
-                  {line.numbers.map((n) => (
-                    <span key={n} className="rounded-md bg-brand-subtle px-2 py-0.5 text-[13px] font-bold tabular-nums text-brand-ink">
-                      {n}
-                    </span>
-                  ))}
-                </dd>
-              </div>
-            ))}
+            {BUS.lines.map((line) => {
+              const tone = line.tone ? BUS_TONE[line.tone] : BUS_NEUTRAL;
+              return (
+                <div key={line.type} className="flex gap-3">
+                  <dt className="flex w-12 shrink-0 items-center gap-1.5 self-start pt-0.5 text-[13px] font-bold text-brand-ink">
+                    <span aria-hidden className={`h-2.5 w-2.5 shrink-0 rounded-full ${tone.dot}`} />
+                    {line.type}
+                  </dt>
+                  <dd className="flex flex-wrap gap-1.5">
+                    {line.numbers.map((n) => (
+                      <span
+                        key={n}
+                        className={`rounded-md border px-2 py-0.5 text-[13px] font-bold tabular-nums text-brand-ink ${tone.chip}`}
+                      >
+                        {n}
+                      </span>
+                    ))}
+                  </dd>
+                </div>
+              );
+            })}
           </dl>
         </div>
       </div>

@@ -4,7 +4,7 @@
 
 ## 컬러
 
-- [ ] `context/design/01-color.md`의 7개 토큰 외 컬러 사용 없음
+- [ ] `context/design/01-color.md`의 7개 토큰 외 컬러 사용 없음 (예외: `transit-*` 교통 기능 색 — **오시는 길 교통 표시에만**, 2026-10-10)
 - [ ] 본문 텍스트 모두 `text-brand-ink`
 - [ ] 보조 텍스트 모두 `text-brand-ink-muted`
 - [ ] 1차 CTA는 항상 `bg-brand-accent text-white`

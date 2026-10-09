@@ -43,14 +43,20 @@ export const SUBWAY = {
   guide: '9호선 가양역 8번 출구에서 마포중·고등학교 방면으로 도보 5분',
 };
 
-export const BUS = {
+/**
+ * 버스 종류별 색 — 서울시 버스 체계(간선 파랑 · 지선/마을 초록). 토큰은 `transit-*` (01-color.md §기능 색).
+ * `null` = 공식 색을 확인 못 해 중립으로 둔 종류 (공항 · 경기 일반) — DECISION NEEDED.
+ */
+export type BusTone = 'trunk' | 'branch' | null;
+
+export const BUS: { stops: string[]; lines: { type: string; tone: BusTone; numbers: string[] }[] } = {
   stops: ['KBS스포츠월드', '경복비즈니스고등학교', '강서구청사거리 · 서울디지털대학교'],
   lines: [
-    { type: '간선', numbers: ['601', '604', '605', '606', '650', '652', '654', '661', '673', 'N26 (심야)'] },
-    { type: '지선', numbers: ['5712', '6514', '6627', '6629', '6633', '6642', '6645', '6715'] },
-    { type: '공항', numbers: ['6003', '6018'] },
-    { type: '일반', numbers: ['60', '60-3', '70-2', '70-3'] },
-    { type: '마을', numbers: ['강서04', '강서05'] },
+    { type: '간선', tone: 'trunk', numbers: ['601', '604', '605', '606', '650', '652', '654', '661', '673', 'N26 (심야)'] },
+    { type: '지선', tone: 'branch', numbers: ['5712', '6514', '6627', '6629', '6633', '6642', '6645', '6715'] },
+    { type: '공항', tone: null, numbers: ['6003', '6018'] },
+    { type: '일반', tone: null, numbers: ['60', '60-3', '70-2', '70-3'] },
+    { type: '마을', tone: 'branch', numbers: ['강서04', '강서05'] },
   ],
 };
 

@@ -25,6 +25,12 @@ const config: Config = {
           point: 'rgb(var(--brand-point) / <alpha-value>)',
           line: 'rgb(var(--brand-line) / <alpha-value>)',
         },
+        // ── 기능 색 — 대중교통 표시 전용 (오시는 길만, 01-color.md §기능 색) ──
+        transit: {
+          line9: 'rgb(var(--transit-line9) / <alpha-value>)',
+          trunk: 'rgb(var(--transit-trunk) / <alpha-value>)',
+          branch: 'rgb(var(--transit-branch) / <alpha-value>)',
+        },
         // ── shadcn/ui semantic 토큰 (brand 위에 매핑) ──
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

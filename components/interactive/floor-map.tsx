@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUpDown, Footprints, RotateCcw, Scan, Search, X, Zap, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowUpDown, Footprints, Maximize2, Minimize2, RotateCcw, Scan, Search, X, Zap, ZoomIn, ZoomOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { buildGraph, dijkstra, loadMask, nearestCell, simplify } from '@/lib/wayfind/engine';
 import { FLOORS, FLOOR_ORDER } from '@/lib/wayfind/floors';
@@ -46,6 +46,10 @@ export function FloorMap() {
   const [loadError, setLoadError] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [query, setQuery] = useState('');
+  /** 크게 보기 — 같은 컴포넌트를 화면 전체로 키운다 (2026-10-10). 상태(경로·층)는 그대로 */
+  const [expanded, setExpanded] = useState(false);
+  const expandButtonRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const graphRef = useRef<Graph | null>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
@@ -131,6 +135,34 @@ export function FloorMap() {
     zoomState.current = { z: 1, tx: 0, ty: 0 };
     applyTransform();
   };
+  // 크게 보기 열림/닫힘 — 스크롤 잠금 · Esc · 포커스 이동 · 크기가 바뀌니 확대 초기화
+  useEffect(() => {
+    if (!expanded) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setExpanded(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [expanded]);
+  // 닫힌 직후에만 "크게 보기" 버튼으로 포커스를 돌려준다 (처음 렌더 때는 건드리지 않는다)
+  const wasExpanded = useRef(false);
+  useEffect(() => {
+    if (wasExpanded.current && !expanded) expandButtonRef.current?.focus();
+    wasExpanded.current = expanded;
+  }, [expanded]);
+  useEffect(() => {
+    // 레이아웃이 바뀐 다음 프레임에 초기화해야 새 크기 기준으로 맞는다
+    const id = requestAnimationFrame(resetView);
+    return () => cancelAnimationFrame(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- resetView는 ref만 만진다
+  }, [expanded]);
+
   const zoomButton = (factor: number) => {
     const rect = viewportRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -454,9 +486,44 @@ export function FloorMap() {
   };
 
   return (
-    <div className="border border-brand-line bg-brand-surface">
-      {/* 검색 */}
-      <div className="border-b border-brand-line p-4 md:p-5">
+    <>
+      {/* 크게 보기 배경 — PC에서만 (가운데 팝업 뒤를 어둡게, 누르면 닫힘). 휴대폰은 화면을 꽉 채우므로 없다 */}
+      {expanded && (
+        <div
+          aria-hidden
+          className="fixed inset-0 z-[70] hidden bg-brand-ink/50 md:block"
+          onClick={() => setExpanded(false)}
+        />
+      )}
+    <div
+      {...(expanded ? { role: 'dialog', 'aria-modal': true, 'aria-label': '실내 길찾기 크게 보기' } : {})}
+      className={cn(
+        'bg-brand-surface',
+        // 휴대폰: 전체 화면 (여백을 두면 지도가 평소보다 작아진다) · PC: 가운데 팝업 (뒤 페이지가 비쳐 보이게)
+        expanded
+          ? 'fixed inset-0 z-[71] flex flex-col overflow-y-auto md:m-auto md:h-[min(92vh,880px)] md:w-[min(1120px,calc(100vw-4rem))] md:overflow-hidden md:rounded-2xl md:shadow-2xl'
+          : 'border border-brand-line'
+      )}
+    >
+      {/* 크게 보기 상단 바 */}
+      {expanded && (
+        <div className="flex items-center justify-between border-b border-brand-line px-4 py-3 md:px-5">
+          <p className="text-[15px] font-bold text-brand-ink">실내 길찾기</p>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            aria-label="크게 보기 닫기"
+            onClick={() => setExpanded(false)}
+            className="btn-round flex h-11 w-11 items-center justify-center border border-brand-line text-brand-ink transition-colors duration-200 hover:border-brand-ink"
+          >
+            <X className="h-5 w-5" strokeWidth={1.5} />
+          </button>
+        </div>
+      )}
+
+      {/* 검색 — 크게 보기에서는 숨긴다. 도면이 가로로 길어 지도 크기는 **높이**가 정하므로 지도 위 영역을 최대한 줄인다
+          (지도를 직접 눌러 고르면 되고, 검색은 닫으면 바로 다시 보인다) */}
+      <div className={cn('border-b border-brand-line p-4 md:p-5', expanded && 'hidden')}>
         <div className="relative">
           <Search
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-ink-muted"
@@ -512,7 +579,7 @@ export function FloorMap() {
       </div>
 
       {/* 컨트롤 바 */}
-      <div className="flex flex-wrap items-center gap-3 border-b border-brand-line p-4 md:p-5">
+      <div className={cn('flex flex-wrap items-center gap-3 border-b border-brand-line', expanded ? 'px-4 py-2.5 md:px-5' : 'p-4 md:p-5')}>
         <span className="text-[11px] font-bold tracking-[0.3em] text-brand-ink-muted">이동수단</span>
         <div className="btn-round inline-flex overflow-hidden border border-brand-line">
           {MODE_OPTIONS.map(({ mode: m, label, icon: Icon }) => (
@@ -541,15 +608,20 @@ export function FloorMap() {
         </button>
       </div>
 
-      {/* 층 탭 */}
-      <div className="flex flex-wrap gap-2 border-b border-brand-line p-4 md:p-5">
+      {/* 층 탭 — 크게 보기에서는 한 줄 가로 스크롤 (두 줄로 꺾이면 지도 높이를 먹는다) */}
+      <div
+        className={cn(
+          'flex gap-2 border-b border-brand-line',
+          expanded ? 'shrink-0 overflow-x-auto px-4 py-2.5 md:px-5' : 'flex-wrap p-4 md:p-5'
+        )}
+      >
         {FLOOR_ORDER.map((fid) => (
           <button
             key={fid}
             type="button"
             onClick={() => !animating && setFloorId(fid)}
             className={cn(
-              'btn-round h-9 px-3 text-[12px] font-bold tracking-wide transition-colors duration-200',
+              'btn-round h-9 shrink-0 whitespace-nowrap px-3 text-[12px] font-bold tracking-wide transition-colors duration-200',
               floorId === fid ? 'bg-brand-ink text-white' : 'border border-brand-line text-brand-ink-muted hover:text-brand-ink'
             )}
             aria-pressed={floorId === fid}
@@ -560,14 +632,18 @@ export function FloorMap() {
       </div>
 
       {/* 상태 안내 */}
-      <div className="border-b border-brand-line px-4 py-3 text-[13px] leading-relaxed text-brand-ink md:px-5">
+      <div className={cn('border-b border-brand-line px-4 text-[13px] leading-relaxed text-brand-ink md:px-5', expanded ? 'py-2' : 'py-3')}>
         <StatusText status={status} />
       </div>
 
       {/* 지도 */}
       <div
         ref={viewportRef}
-        className="relative h-[380px] cursor-grab touch-none select-none overflow-hidden bg-brand-subtle active:cursor-grabbing md:h-[520px]"
+        className={cn(
+          'relative cursor-grab touch-none select-none overflow-hidden bg-brand-subtle active:cursor-grabbing',
+          // 크게 보기면 남은 높이 전부 (최소 360px — 낮은 가로 화면에서도 지도가 납작해지지 않게)
+          expanded ? 'min-h-[360px] flex-1' : 'h-[380px] md:h-[520px]'
+        )}
       >
         {!ready && !loadError && (
           <div className="absolute inset-0 flex items-center justify-center text-[13px] text-brand-ink-muted">
@@ -630,11 +706,16 @@ export function FloorMap() {
             { icon: ZoomIn, label: '확대', onClick: () => zoomButton(1.4) },
             { icon: ZoomOut, label: '축소', onClick: () => zoomButton(1 / 1.4) },
             { icon: Scan, label: '지도 원래대로', onClick: resetView },
-          ].map(({ icon: Icon, label, onClick }) => (
+            expanded
+              ? { icon: Minimize2, label: '작게 보기', onClick: () => setExpanded(false) }
+              : { icon: Maximize2, label: '지도 크게 보기', onClick: () => setExpanded(true), ref: expandButtonRef },
+          ].map(({ icon: Icon, label, onClick, ...rest }) => (
             <button
               key={label}
+              ref={'ref' in rest ? rest.ref : undefined}
               type="button"
               aria-label={label}
+              title={label}
               onClick={onClick}
               className="btn-round flex h-11 w-11 items-center justify-center border border-brand-line bg-brand-surface text-brand-ink shadow-sm transition-colors duration-200 hover:border-brand-ink"
             >
@@ -644,8 +725,8 @@ export function FloorMap() {
         </div>
       </div>
 
-      {/* 범례 */}
-      <div className="flex flex-wrap items-center gap-4 p-4 text-[12px] text-brand-ink-muted md:p-5">
+      {/* 범례 — 크게 보기에서는 숨긴다 (지도에 자리를 준다) */}
+      <div className={cn('flex flex-wrap items-center gap-4 p-4 text-[12px] text-brand-ink-muted md:p-5', expanded && 'hidden')}>
         <span className="inline-flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-brand-support" /> 출발
         </span>
@@ -658,6 +739,7 @@ export function FloorMap() {
         <span>방을 두 번 선택하면 경로가 표시됩니다.</span>
       </div>
     </div>
+    </>
   );
 }
 

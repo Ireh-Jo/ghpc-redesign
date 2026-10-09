@@ -31,6 +31,11 @@
     --brand-point: 160 7 17;          /* #A00711 빨강 (2026-07-02 확정 · 사용처 미정) */
     --brand-line: 231 231 231;        /* #E7E7E7 neutral (2026-09-19) */
 
+    /* 기능 색 — 대중교통 표시 전용 (오시는 길만). context/design/01-color.md §기능 색 (2026-10-10) */
+    --transit-line9: 189 176 146;     /* #BDB092 9호선 골드 */
+    --transit-trunk: 0 104 183;       /* #0068B7 간선 파랑 */
+    --transit-branch: 83 179 50;      /* #53B332 지선·마을 초록 */
+
     /* ─── shadcn/ui semantic (brand 위 매핑 · 근사 HSL) ───
        2026-09-19: bg·border 중립화에 맞춰 회색 계열의 hue를 0으로. 나머지는 brand 값 그대로.
        DECISION NEEDED: 정밀 HSL 변환 (context/design/01-color.md). */
