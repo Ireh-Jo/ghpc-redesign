@@ -61,6 +61,7 @@
 | SideNavLayout | shipped | 서브페이지 본문 2단 골격 (좌 SideNav / 우 섹션) + 섹션 클래스 | `layout/side-nav-layout.md` |
 | SubPage | shipped | 대메뉴 5개 페이지 골격 (앵커 섹션 + 외부 라우트는 바로가기 카드) | `layout/sub-page.md` |
 | StubPage | shipped | 2차 목차로 신설된 라우트 13종의 골격 (콘텐츠 이관 전) | `layout/stub-page.md` |
+| SiblingNav | wip | 독립 페이지끼리 묶인 GNB 그룹(헌금 · 행정 · 소식 · 자료)의 형제 페이지 탭 줄 — `StubPage`가 히어로 아래 자동 부착 (2026-10-09) | `layout/sibling-nav.md` |
 
 > **GNB 메뉴 구조 단일 출처: `lib/nav.ts`** (트리 config). 항목·라벨·순서·뎁스는 코드에 박지 않고 이 파일에서 관리.
 > Header는 데스크탑 메가메뉴 + 모바일 풀스크린(MobileNav)을 포함. 비주얼은 2뎁스 고정, 데이터는 트리(children)라 3뎁스 확장은 렌더만 추가.
@@ -86,7 +87,10 @@
 | NoticeList | wip | `/` 공지사항 4줄 — **관리자 영역** | `content/notice-list.md` |
 | NewcomerCard | wip | `/` 새가족 환영 + 등록 카드 (안내 문구·칩 3·주 버튼) | `content/newcomer-card.md` |
 | RelatedOrgs | wip | `/` 관련 기관 6칸 (카드 뒤집기) | `content/related-orgs.md` |
-| EduDept | wip | `/education` 부서 섹션 7종 (번호·소개카드·부서카드·행사·FAQ) | `content/edu-dept.md` |
+| EduDept | wip | `/education` 부서 섹션 6종 (번호·소개카드·하위 부서 카드(특징)·공통 프로그램·행사·FAQ) — 2026-10-09 교역자 원고 | `content/edu-dept.md` |
+| EduOverview | wip | `/education` 머리 — 실천 원리 · 교육목표 · 교육방법 3단계 · 성장 로드맵 (김창진 원고, 2026-10-09) | `content/edu-overview.md` |
+| CareSections | wip | `/care` 구역모임(구역공과 최신 영상 자동) · 전도회(남/여/청년회 소속표 탭) · 동호회 카드 (2026-10-09 원고) | `content/care-sections.md` |
+| MinistrySections | wip | `/ministry` 별들의학교 · 제신원 · 경향선교회 · 복지재단 · 경향학원 · 놀이학원 (2026-10-09 원고) | `content/ministry-sections.md` |
 | VideoArchive | wip | `/worship#live`·`/worship#special` 영상 아카이브 (분류 탭 + 플레이어 + 목록) | `content/video-archive.md` |
 | LivePanel | wip | `/worship#live` 상단 생방송 상태 (수동 on/off 없음) | `content/live-panel.md` |
 | YouTubeEmbed | wip | `/worship#live`(채널 라이브) · `/worship#special` · `/intro` 50주년 영상 | `content/youtube-embed.md` |
@@ -97,6 +101,7 @@
 | TimelineItem | draft | `/intro` 역사 | `content/timeline-item.md` |
 | WelcomeCTA | **보류(미사용)** | `/care` 새가족 섹션에 쓸 예정. 메인은 `NewcomerCard`로 교체됨 (2026-09-16) | `content/welcome-cta.md` |
 | MapEmbed | **보류(미사용)** | `/intro#directions`에 쓸 예정. 지금 그 자리는 `interactive/FloorMap`이 차지 | `content/map-embed.md` |
+| Directions | wip | `/intro#directions` 오시는 길 — 카카오맵 · 건물 3곳 · 대중교통 (현행 사이트 Page/36 기준, 2026-10-09) | `content/directions.md` |
 | FaqAccordion | shipped | `/intro` 새신자 Q&A | `content/faq-accordion.md` |
 
 > **2026-09-16 삭제:** `SermonCard`·`CampaignBanner` — 메인 시안 반영으로 각각 `WeeklySermons`·`MainBanner`에
@@ -119,6 +124,8 @@
 | ReservationCalendar | wip | `/church-admin/reserve` 시설 예약 월간 달력 (공개 정보만) | `interactive/reservation-calendar.md` |
 | ReservationForm | wip | `/church-admin/reserve` 시설 이용 신청 폼 (기간·주간반복·복수 장소·비밀번호·Turnstile) | `interactive/reservation-form.md` |
 | ReservationCancel | wip | `/church-admin/reserve` 달력에서 예약 취소 (비밀번호 · 반복이면 범위 선택) | `interactive/reservation-cancel.md` |
+| ContentTabs | wip | 범용 탭(버튼 + 패널) — `/care` 전도회. 패널 내용은 서버에서 렌더해 넘긴다 | `interactive/content-tabs.md` |
+| KakaoMap | wip | 카카오맵 SDK 지도 + 다중 마커 — 키 없거나 실패 시 fallback (2026-10-09) | `interactive/kakao-map.md` |
 
 ## 의존성 그래프 시각화 (요약)
 

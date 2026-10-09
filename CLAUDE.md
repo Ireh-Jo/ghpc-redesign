@@ -73,6 +73,7 @@ Claude는 작업 종류에 맞는 문서만 읽으면 충분하다. 전체 컨�
 | **영상·생방송 임베드** | `context/features/live-streaming.md` · `context/features/video-embed.md` | - |
 | **실내 길찾기 / floor-map** | `context/features/wayfinding.md` (잠긴 결정) · `prototypes/wayfind/README.md` (동작 명세 단일 출처) | `context/design/*` · `context/components/interactive/floor-map.md` |
 | **배포·환경변수** | `context/ops/deployment.md` · `guardrails/04-security-privacy.md` | - |
+| **콘텐츠 연간·학기 갱신** | `context/ops/content-calendar.md` (언제·어느 파일) | `docs/어드민-착수-플랜.md` §8 (어드민 범위) |
 | **모니터링·장애 대응** | `context/ops/monitoring.md` · `context/ops/runbook.md` | - |
 | **디자인 토큰 변경** | `context/design/*` 전체 · `context/components/00-inventory.md` (영향 받는 컴포넌트 식별) · `guardrails/02-design-consistency.md` | - |
 | **성능 튜닝** | `guardrails/05-performance.md` · `context/02-architecture.md` | - |

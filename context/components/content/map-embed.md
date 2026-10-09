@@ -24,3 +24,9 @@ depends-on:
 
 > `> DECISION NEEDED:` 실제 지도 임베드 방식(카카오맵/네이버맵/정적 이미지) — `context/pages/01-main.md`.
 > 확정 전까지 `[지도 placeholder]` 문구 유지(`guardrails/02-design-consistency.md` "placeholder 텍스트에 `[ ]` 명시").
+
+## 2026-10-09 — 지도 방식 결정 (DECISION NEEDED 해소)
+
+**카카오맵 JavaScript SDK**로 확정 (사용자 — 현행 사이트와 같은 지도). 구현은 이 placeholder가 아니라
+`interactive/KakaoMap` + `content/Directions`(`/intro#directions`)다. 이 컴포넌트는 여전히 **보류(미사용)** — 메인에 오시는 길
+블록이 다시 생기면 `KakaoMap`으로 갈아 끼운다.

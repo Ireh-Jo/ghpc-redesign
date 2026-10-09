@@ -37,29 +37,31 @@ export function VideoArchive({
 
   return (
     <div>
-      {/* 카테고리 탭 — 모바일에선 가로 스크롤 */}
-      <div
-        role="group"
-        aria-label={label}
-        className="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:px-0"
-      >
-        {categories.map((c) => (
-          <button
-            key={c.key}
-            type="button"
-            aria-pressed={c.key === category.key}
-            onClick={() => selectCategory(c)}
-            className={cn(
-              'btn-round shrink-0 whitespace-nowrap px-4 py-2 text-[13px] font-bold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2',
-              c.key === category.key
-                ? 'bg-brand-ink text-white'
-                : 'bg-brand-subtle text-brand-ink-muted hover:text-brand-ink',
-            )}
-          >
-            {c.label}
-          </button>
-        ))}
-      </div>
+      {/* 카테고리 탭 — 모바일에선 가로 스크롤. 분류가 하나뿐이면(경향의 일주일) 탭 줄을 그리지 않는다 (2026-10-09) */}
+      {categories.length > 1 && (
+        <div
+          role="group"
+          aria-label={label}
+          className="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:px-0"
+        >
+          {categories.map((c) => (
+            <button
+              key={c.key}
+              type="button"
+              aria-pressed={c.key === category.key}
+              onClick={() => selectCategory(c)}
+              className={cn(
+                'btn-round shrink-0 whitespace-nowrap px-4 py-2 text-[13px] font-bold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2',
+                c.key === category.key
+                  ? 'bg-brand-ink text-white'
+                  : 'bg-brand-subtle text-brand-ink-muted hover:text-brand-ink',
+              )}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* 선택된 영상 */}
       {current && (

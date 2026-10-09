@@ -5,7 +5,7 @@ status: shipped
 owner: 이레
 depends-on:
   design: [color, typography, spacing]
-  components: [layout/container, layout/anchor-nav, layout/side-nav, layout/side-nav-layout, content/hero-image]
+  components: [layout/container, layout/anchor-nav, layout/side-nav, layout/side-nav-layout, layout/sibling-nav, content/hero-image]
   data: []
 ---
 
@@ -44,11 +44,16 @@ depends-on:
 ## 2026-10-03 — 사진 히어로 · 좌측 패널
 
 - `heroImage` prop(`{src, srcMobile?, alt, eyebrow?, titleEn?, lead?}`) — 주면 텍스트 히어로 대신 `HeroImage`.
-  **디자인팀 배너가 먼저 도착한 스텁**용이다 (첫 사례 `/ministry` 사역). 제목은 `title`/GNB 라벨 그대로.
+  **디자인팀 배너가 먼저 도착한 스텁**용이다 (첫 사례 `/ministry` 사역 — 2026-10-09 원고가 와서 `/ministry`는 실제 페이지로 바뀌었고 지금은 쓰는 곳이 없다. 다음 스텁에 배너가 먼저 오면 그대로 쓴다). 제목은 `title`/GNB 라벨 그대로.
   이 라우트는 `header.tsx`의 `PHOTO_HERO_ROUTES`에도 넣어야 헤더가 투명·흰 글씨가 된다.
   현행 사이트 링크(`legacy`)는 히어로 아래 띠로 옮긴다.
 - 앵커가 2개 이상이면 `SubPage`와 같은 2단 — lg 이상 좌측 `SideNav`, lg 미만 상단 `AnchorNav`
   (서브페이지 B안 확정, `context/04-information-architecture.md`). 패널 소개는 `lead` prop.
+
+## 2026-10-09 — 형제 페이지 탭 (`SiblingNav`)
+
+히어로 바로 아래에 `SiblingNav`를 자동으로 붙인다 — 같은 GNB 그룹이 전부 독립 페이지일 때(`헌금 · 행정` 5 · `소식 · 자료` 3)
+옆 페이지로 GNB 없이 넘어가게. 조건이 안 맞는 페이지에서는 아무것도 그리지 않는다. 상세 `layout/sibling-nav.md`.
 
 ## 폐기 조건
 

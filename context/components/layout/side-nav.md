@@ -3,7 +3,7 @@ name: side-nav
 category: layout
 status: shipped
 client-component: true
-pages: [intro, worship, education, care, newcomer]
+pages: [intro, worship, education, care, newcomer, ministry]
 depends-on:
   design: [color, typography, spacing, iconography, motion]
   components: [layout/anchor-nav]

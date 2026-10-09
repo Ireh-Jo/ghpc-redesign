@@ -5,6 +5,7 @@ import { Container } from './container';
 import { AnchorNav } from './anchor-nav';
 import { SideNav } from './side-nav';
 import { SideNavLayout, sideSectionClass } from './side-nav-layout';
+import { SiblingNav } from './sibling-nav';
 import { HeroImage } from '@/components/content/hero-image';
 import { NAV, findByHref, type NavItem } from '@/lib/nav';
 
@@ -23,6 +24,8 @@ import { NAV, findByHref, type NavItem } from '@/lib/nav';
  *
  * 2026-10-03: `heroImage`를 주면 디자인팀 사진 배너(`HeroImage`)로 시작한다 — 배너가 콘텐츠보다 먼저 온 스텁용
  * (`/ministry`). 앵커가 2개 이상이면 `SubPage`와 같은 2단(좌측 `SideNav`)이다. 상세: context/components/layout/stub-page.md
+ *
+ * 2026-10-09: 히어로 아래 `SiblingNav` — 같은 GNB 그룹의 형제 페이지로 바로 가는 탭 줄 (헌금 · 행정, 소식 · 자료).
  */
 export function StubPage({
   route,
@@ -141,6 +144,9 @@ export function StubPage({
           </Container>
         </section>
       )}
+
+      {/* 같은 그룹의 형제 페이지 탭 (헌금 · 행정 / 소식 · 자료) — 조건이 안 맞으면 스스로 안 그린다 (2026-10-09) */}
+      <SiblingNav route={route} />
 
       {anchors.length > 1 && (
         <AnchorNav items={anchors.map(({ id, label }) => ({ id, label }))} className="lg:hidden" />

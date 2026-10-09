@@ -22,8 +22,9 @@
  *    (그것만을 위해 그룹/대메뉴를 새로 만들지 않는다 — 2026-08-23 사용자 지시)
  * 7. **2차 개편안 PPT(`docs/meetings/교회 홈페이지 개편안 2차.pptx` 슬라이드 4~7)를 벗어나지 않는다.**
  *    항목을 늘리고 싶으면 PPT의 어느 줄에 속하는지부터 정한다 (2026-08-23 사용자 지시).
- *    - `e교회행정`은 PPT 슬라이드 4대로 **교회소개 > 교회정보**의 한 줄이다 (`/church-admin` 허브).
- *      한때 `교회 활동 > 행정·신청` 그룹으로 뒀다가 PPT 원안으로 되돌렸다.
+ *    - `e교회행정`은 PPT 슬라이드 4대로 **교회소개** 아래에 있다. 처음엔 `교회정보`의 한 줄 → `/church-admin` 허브였는데
+ *      2026-10-09 **`헌금 · 행정` 그룹으로 펼쳐** 공지사항·자료실·신청 서식·시설 예약을 GNB에서 바로 가게 했다
+ *      (사용자 지시: 뎁스 한 단계 더 들어가는 것 최소화). 허브 `/church-admin`은 공지사항으로 리다이렉트.
  *    - 교회활동의 `교회소식`은 PPT 슬라이드 7대로 **하위 3종(영상뉴스·교회소식·교우소식)을
  *      거느린 한 줄**이다. GNB에 펼쳐 나열하지 않고 페이지 안 탭으로 내린다. 교구친선리그도 그 탭.
  *    - PPT에 없던 `실내 길찾기`는 `오시는 길 · 주차` 안으로 흡수했다.
@@ -100,7 +101,8 @@ export const NAV: NavSection[] = [
         label: '교회정보',
         items: [
           // PPT 슬라이드 4 `교회정보` = 교회 위치 · 교회 시설 · 전화번호 · 온라인 헌금 · 교회 일정 · e행정.
-          // `교회 일정`만 뺐다 — 슬라이드 7에도 있는 PPT 자체 중복이라 `교회 활동`을 정본으로 삼는다.
+          // `교회 일정`은 슬라이드 7에도 있는 PPT 자체 중복이라 `교회 활동`을 정본으로 삼는다.
+          // `온라인 헌금`·`e행정`은 2026-10-09 아래 `헌금 · 행정` 그룹으로 펼쳐 옮겼다.
           {
             label: '오시는 길 · 주차',
             href: '/intro#directions',
@@ -109,39 +111,38 @@ export const NAV: NavSection[] = [
           },
           { label: '교회 시설', href: '/intro#facility', legacy: `${LEGACY}/Page/Index/238` },
           { label: '연락처', href: '/intro#contact', legacy: `${LEGACY}/Page/Index/37` },
+        ],
+      },
+      {
+        // 2026-10-09: `온라인 헌금`과 `e교회행정`(허브 → 공지·자료실·신청·예약)을 **GNB에 바로 펼쳤다** (사용자 지시 —
+        // "뎁스를 하나 더 들어가는 행위를 최소화"). 전에는 `교회정보`의 한 줄 → `/church-admin` 허브 → 항목, 클릭 2번이었다.
+        // PPT 슬라이드 4의 `교회정보 > e행정` 한 줄을 펼친 것이라 항목 자체는 PPT 범위 안이다. 허브 주소는 공지사항으로 보낸다.
+        label: '헌금 · 행정',
+        items: [
           { label: '온라인 헌금', href: '/giving' },
           {
-            label: 'e교회행정',
-            href: '/church-admin',
-            desc: '공지사항 · 자료실 · 신청 서식 · 시설 예약',
-            legacy: `${LEGACY}/Link/Index/11`,
-            // GNB엔 위 한 줄만. 아래 4개는 `/church-admin` 페이지 안에서만 보인다
-            children: [
-              {
-                label: '공지사항',
-                href: '/church-admin/notice',
-                desc: '연말정산 · 좌석 안내 등 전교인 공지',
-                legacy: `${LEGACY}/Board/Index/12`,
-              },
-              {
-                label: '자료실',
-                href: '/church-admin/resources',
-                desc: '자료실 · 로고 · 별들의 노래 · 기관회계보고',
-                legacy: `${LEGACY}/Board/Index/44544`,
-              },
-              {
-                label: '신청 · 서식',
-                href: '/church-admin/apply',
-                desc: '영상제작 · 3대 후원회원 작정 · 평생교육원 수강',
-                legacy: `${LEGACY}/Link/Index/76`,
-              },
-              {
-                label: '시설 예약',
-                href: '/church-admin/reserve',
-                desc: '교회 시설 이용 신청',
-                legacy: `${LEGACY}/Board/Index/25484`,
-              },
-            ],
+            label: '공지사항',
+            href: '/church-admin/notice',
+            desc: '연말정산 · 좌석 안내 등 전교인 공지',
+            legacy: `${LEGACY}/Board/Index/12`,
+          },
+          {
+            label: '자료실',
+            href: '/church-admin/resources',
+            desc: '자료실 · 로고 · 별들의 노래 · 기관회계보고',
+            legacy: `${LEGACY}/Board/Index/44544`,
+          },
+          {
+            label: '신청 · 서식',
+            href: '/church-admin/apply',
+            desc: '영상제작 · 3대 후원회원 작정 · 평생교육원 수강',
+            legacy: `${LEGACY}/Link/Index/76`,
+          },
+          {
+            label: '시설 예약',
+            href: '/church-admin/reserve',
+            desc: '교회 시설 이용 신청',
+            legacy: `${LEGACY}/Board/Index/25484`,
           },
         ],
       },
@@ -176,8 +177,7 @@ export const NAV: NavSection[] = [
           { label: '주일학교', href: '/education#kids', legacy: `${LEGACY}/Page/Index/57` },
           { label: '중 · 고등부', href: '/education#youth', legacy: `${LEGACY}/Page/Index/144` },
           { label: '대학부', href: '/education#college', legacy: `${LEGACY}/Page/Index/145` },
-          // 소속 = 교육 확정 (2026-09-06 교역자 회의). `목양` 중복 게재 여부만 9/20 확정 예정
-          { label: '청년회', href: '/education#young-adult', legacy: `${LEGACY}/Page/Index/64` },
+          // 청년회는 2026-10-09 `목양 > 전도회` 하위로 옮겼다 (사용자 지시 · 교역자 원고) — 아래 care 그룹
           { label: '경향시니어스쿨', href: '/education#senior', legacy: `${LEGACY}/Page/Index/148` },
           { label: '평생교육원', href: '/education#academy', legacy: `${LEGACY}/Page/Index/150` },
           { label: '새소식반', href: '/education#newsclass', legacy: `${LEGACY}/Page/Index/147` },
@@ -203,7 +203,8 @@ export const NAV: NavSection[] = [
           {
             label: '전도회',
             href: '/care#evangelism',
-            desc: '남전도회 · 여전도회',
+            // 2026-10-09 청년회가 교육에서 이리로 왔다 (전도회 탭의 세 번째). 현행 청년회 페이지: Page/Index/64
+            desc: '남전도회 · 여전도회 · 청년회',
             legacy: `${LEGACY}/Page/Index/60`,
           },
           { label: '집사회', href: '/care#deacons', legacy: `${LEGACY}/Page/Index/62` },
@@ -234,12 +235,14 @@ export const NAV: NavSection[] = [
         label: '일정',
         items: [
           { label: '교회 일정', href: '/activity#calendar', legacy: `${LEGACY}/Page/Index/111013` },
-          { label: '경향의 일주일', href: '/activity/weekly', legacy: `${LEGACY}/Board/Index/11297` },
+          // 2026-10-09: 독립 스텁 `/activity/weekly` → `/activity` 안 섹션. `/activity` = `일정` 그룹만 보여주는 페이지
+          { label: '경향의 일주일', href: '/activity#weekly', legacy: `${LEGACY}/Board/Index/11297` },
         ],
       },
       {
         // PPT 슬라이드 7 = 교회일정 / 주보 / 교회소식(영상뉴스·교회소식·교우소식) / 교단소식 / 경향의일주일.
-        // `교회소식`은 원안대로 하위 3종을 거느린 한 줄이다 — 펼쳐서 나열하지 않는다.
+        // `교회소식`은 원안대로 하위 3종을 거느린 한 줄이다 — 펼쳐서 나열하지 않는다 (하위는 그 페이지 안 탭).
+        // 2026-10-09: 이 그룹은 각자 독립 페이지 — `/activity`(일정)에 바로가기 카드로 붙이지 않는다 (사용자 결정).
         label: '소식 · 자료',
         items: [
           { label: '주보', href: '/activity/bulletin', legacy: `${LEGACY}/Board/Index/53` },
@@ -322,7 +325,8 @@ export const UNPLACED = [
  * 교회·교역자 회신을 기다리는 확인 질문 (디자인 판단이 아니라 사실·방침 확인).
  * 회신 요청서 전문: `docs/meetings/2026-09-06-교역자회의-결과-검토.md` §5.
  *
- * 2026-09-06 해소: **청년회 소속 = 교육** (교역자 회의 확정). 잠정 배치 그대로라 코드 변경 없었음.
+ * 2026-09-06 해소: **청년회 소속 = 교육** (교역자 회의 확정).
+ * 2026-10-09 변경: **청년회 = 목양 > 전도회 하위** (사용자 지시 · 교역자 원고). 교육 메뉴·페이지에서 뺐다.
  */
 export const OPEN_QUESTIONS = [
   {
@@ -337,11 +341,8 @@ export const OPEN_QUESTIONS = [
     label: "'문화' 항목",
     ask: '채택하는가? 채택 시 위치는? (대메뉴 6번째 / 교회 활동 안 그룹 / GNB 밖 `/culture`) 코드 비용은 없고, 목차 14개 중 8개는 원고 전무 · 5개는 이미 다른 메뉴에 있음',
   },
-  {
-    label: '청년회 목양 중복 게재',
-    ask: 'GNB 두 곳에 두는가? (9/20 확정 예정) TF는 반대 — 대안은 `/care` 페이지 안 카드 링크',
-  },
-  { label: '구역공과', ask: '계속 웹 게시하는가? 대상이 구역장인가 전교인인가? (현행 Board/52, 2차 목차에 없음)' },
+  // 구역공과: 2026-10-09 소모임 원고가 `목양 > 구역모임` 안에 넣었다 (영상 + PDF). 게시 여부는 해소, 대상(구역장/전교인)만 남음
+  { label: '구역공과', ask: '대상이 구역장인가 전교인인가? (원고는 `목양 > 구역모임` 안에 배치 — 퀵메뉴 목적지도 그쪽으로 옮길지)' },
   { label: '키즈그라운드 이용신청', ask: '시설이용신청과 통합 가능한가? (현행은 GNB 밖 별도 폼)' },
 ];
 
@@ -350,8 +351,8 @@ export const OPEN_QUESTIONS = [
  * 아이콘은 여기 두지 않고 `key`만 넘긴다 (이 파일은 React 의존 없는 데이터 파일).
  * 매핑은 `components/content/quick-menu.tsx`.
  *
- * > DECISION NEEDED: `구역공과` 목적지. 2차 목차 어디에도 없어 일단 `자료실`로 보냈다
- *   (위 `OPEN_QUESTIONS`의 '구역공과' 항목 — 게시 여부·대상 회신 오면 확정).
+ * `구역공과` 목적지: 2026-10-09 소모임 원고가 `목양 > 구역모임` 안에 구역공과(이번 주 영상 + PDF)를 넣어
+ * 그리로 옮겼다 (전에는 갈 곳이 없어 `자료실`로 보내 두었다).
  */
 export const QUICK_MENU: { key: string; label: string; href: string; desc: string }[] = [
   { key: 'worship-time', label: '예배시간', href: '/worship#times', desc: '주일 1·2·3부와 수요·금요' },
@@ -359,7 +360,7 @@ export const QUICK_MENU: { key: string; label: string; href: string; desc: strin
   {
     key: 'district-study',
     label: '구역공과',
-    href: '/church-admin/resources',
+    href: '/care#district',
     desc: '구역모임 공과 자료',
   },
   { key: 'bulletin', label: '주보', href: '/activity/bulletin', desc: '이번 주 · 지난 주보' },

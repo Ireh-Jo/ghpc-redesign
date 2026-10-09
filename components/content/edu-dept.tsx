@@ -1,17 +1,20 @@
-import { ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowUpRight, Check } from 'lucide-react';
 import { FaqAccordion } from '@/components/content/faq-accordion';
-import type { EduDept as Dept } from '@/lib/education';
+import type { EduDept as Dept, EduGroupItem, EduLink } from '@/lib/education';
 
 /**
- * 교육 페이지 부서 섹션 — 7개 부서가 데이터만 바꿔 쓴다.
- * 근거 시안: 디자인팀 교육 화면 (2026-09-18, 주일학교만 완성) + TF 화면안 콘텐츠
- * (`docs/meetings/screens/교육.html`). 상세: context/components/content/edu-dept.md
+ * 교육 페이지 부서 섹션 — 6개 부서가 데이터만 바꿔 쓴다.
+ * 근거 시안: 디자인팀 교육 화면 (2026-09-18, 주일학교만 완성). 상세: context/components/content/edu-dept.md
+ *
+ * 2026-10-09 교역자 원고 반영 — 하위 부서 카드에 **부서별 특징**(김창진 원고)이 붙으면 4열 요약 카드 대신
+ * 2열 카드로 펼친다 · 주일학교 **공통 프로그램** 칩 · 새소식반 **성경 구절** · 바로가기에 사이트 안 링크와 "준비 중".
+ * 청년회(지회 구성표)는 목양으로 옮겨 이 컴포넌트에서 뺐다.
  *
  * 블록은 **데이터에 있는 것만** 렌더한다 — 빈 제목만 남는 자리를 만들지 않는다.
- * 제목은 h2다 (`SubPage`의 섹션 h2를 `bareSections`로 숨기고 이 제목이 대신한다).
  */
 export function EduDept({ dept }: { dept: Dept }) {
-  const { no, en, title, lead, links, intro, groups, facts, roster, bullets, events, faq, notes } =
+  const { no, en, title, lead, links, intro, verses, groups, common, facts, bullets, events, faq, notes } =
     dept;
 
   return (
@@ -32,23 +35,26 @@ export function EduDept({ dept }: { dept: Dept }) {
         {links && links.length > 0 && (
           <ul className="flex flex-wrap items-center gap-2">
             {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-round inline-flex items-center gap-1.5 bg-brand-accent px-3.5 py-2 text-[13px] font-bold text-white transition-colors duration-200 hover:bg-brand-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
-                >
-                  {link.label}
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                  <span className="sr-only">(새 창으로 열림)</span>
-                </a>
+              <li key={link.label}>
+                <DeptLink link={link} />
               </li>
             ))}
           </ul>
         )}
       </div>
       <div aria-hidden className="mt-6 h-px w-full bg-brand-line" />
+
+      {/* ── 성경 구절 (새소식반) ── */}
+      {verses && verses.length > 0 && (
+        <figure className="mt-8 space-y-3 border-l-2 border-brand-accent pl-5">
+          {verses.map((verse) => (
+            <blockquote key={verse.ref} className="text-[15px] leading-[1.75] text-brand-ink md:text-base">
+              “{verse.text}”
+              <cite className="ml-1.5 text-[13px] not-italic text-brand-ink-muted">{verse.ref}</cite>
+            </blockquote>
+          ))}
+        </figure>
+      )}
 
       {/* ── 소개 카드 (시안의 연블루 박스) ── */}
       <div
@@ -78,30 +84,46 @@ export function EduDept({ dept }: { dept: Dept }) {
         ) : null}
       </div>
 
-      {/* ── 부서 카드 그룹 ── */}
-      {groups?.map((group) => (
-        <div key={group.label} className="mt-10 md:mt-12">
-          <h3 className="text-[19px] font-bold text-brand-ink md:text-[22px]">{group.label}</h3>
-          <ul className="mt-4 grid grid-cols-2 gap-3 md:mt-5 md:grid-cols-4 md:gap-4">
-            {group.items.map((item) => (
+      {/* ── 하위 부서 카드 그룹 ── */}
+      {groups?.map((group) => {
+        // 특징 목록이 하나라도 있으면 2열로 펼친다 — 4열 요약 카드에는 목록이 안 들어간다
+        const detailed = group.items.some((item) => item.features?.length);
+        return (
+          <div key={group.label} className="mt-10 md:mt-12">
+            <h3 className="text-[19px] font-bold text-brand-ink md:text-[22px]">{group.label}</h3>
+            {detailed ? (
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2 md:mt-5 md:gap-4">
+                {group.items.map((item) => (
+                  <GroupCardDetailed key={item.name} item={item} />
+                ))}
+              </ul>
+            ) : (
+              <ul className="mt-4 grid grid-cols-2 gap-3 md:mt-5 md:grid-cols-4 md:gap-4">
+                {group.items.map((item) => (
+                  <GroupCard key={item.name} item={item} />
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      })}
+
+      {/* ── 공통 프로그램 (주일학교) ── */}
+      {common && (
+        <div className="mt-10 rounded-2xl border border-brand-line bg-brand-subtle px-5 py-5 md:mt-12 md:px-6">
+          <h3 className="text-[15px] font-bold text-brand-ink md:text-base">{common.title}</h3>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {common.items.map((item) => (
               <li
-                key={item.name}
-                className="rounded-2xl border border-brand-accent/10 bg-brand-accent/[0.04] px-4 py-5 text-center transition-colors duration-200 hover:bg-brand-accent/[0.08]"
+                key={item}
+                className="rounded-lg border border-brand-line bg-brand-surface px-3 py-1.5 text-[13px] font-bold text-brand-ink md:text-[14px]"
               >
-                <p className="text-[15px] font-bold text-brand-ink md:text-base">{item.name}</p>
-                {item.meta && (
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-brand-ink-muted">
-                    {item.meta}
-                  </p>
-                )}
-                {item.place && (
-                  <p className="mt-0.5 text-[13px] text-brand-ink-muted">{item.place}</p>
-                )}
+                {item}
               </li>
             ))}
           </ul>
         </div>
-      ))}
+      )}
 
       {/* ── 정보 리스트 ── */}
       {facts && (
@@ -126,29 +148,6 @@ export function EduDept({ dept }: { dept: Dept }) {
               </div>
             ))}
           </dl>
-        </div>
-      )}
-
-      {/* ── 지회 구성표 (청년회) ── */}
-      {roster && (
-        <div className="mt-10 md:mt-12">
-          <h3 className="mb-4 text-[19px] font-bold text-brand-ink md:mb-5 md:text-[22px]">
-            {roster.title}
-          </h3>
-          <dl className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-            {roster.items.map((item) => (
-              <div
-                key={item.label}
-                className="flex items-baseline justify-between gap-3 rounded-xl border border-brand-line bg-brand-surface px-4 py-3"
-              >
-                <dt className="text-[15px] font-bold text-brand-ink">{item.label}</dt>
-                <dd className="text-[14px] text-brand-ink-muted">{item.value}</dd>
-              </div>
-            ))}
-          </dl>
-          {roster.note && (
-            <p className="mt-3 text-[13px] leading-relaxed text-brand-ink-muted">{roster.note}</p>
-          )}
         </div>
       )}
 
@@ -217,5 +216,86 @@ export function EduDept({ dept }: { dept: Dept }) {
         </ul>
       )}
     </div>
+  );
+}
+
+const PILL =
+  'btn-round inline-flex items-center gap-1.5 px-3.5 py-2 text-[13px] font-bold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2';
+
+/** 바로가기 알약 — 외부(새 창) · 사이트 안 · 준비 중(href 없음) 세 갈래 */
+function DeptLink({ link }: { link: EduLink }) {
+  if (!link.href) {
+    return (
+      <span
+        aria-disabled="true"
+        className={`${PILL} cursor-not-allowed border border-brand-line bg-brand-subtle text-brand-ink-muted`}
+      >
+        {link.label}
+        <span className="text-[11px] font-medium">준비 중</span>
+      </span>
+    );
+  }
+  if (link.href.startsWith('/')) {
+    return (
+      <Link href={link.href} className={`${PILL} bg-brand-accent text-white hover:bg-brand-ink`}>
+        {link.label}
+      </Link>
+    );
+  }
+  return (
+    <a
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${PILL} bg-brand-accent text-white hover:bg-brand-ink`}
+    >
+      {link.label}
+      <ArrowUpRight className="h-3.5 w-3.5" />
+      <span className="sr-only">(새 창으로 열림)</span>
+    </a>
+  );
+}
+
+/** 하위 부서 요약 카드 (특징 목록 없음) — 4열 */
+function GroupCard({ item }: { item: EduGroupItem }) {
+  return (
+    <li className="rounded-2xl border border-brand-accent/10 bg-brand-accent/[0.04] px-4 py-5 text-center transition-colors duration-200 hover:bg-brand-accent/[0.08]">
+      <p className="text-[15px] font-bold text-brand-ink md:text-base">{item.name}</p>
+      {item.meta && <p className="mt-1.5 text-[13px] leading-relaxed text-brand-ink-muted">{item.meta}</p>}
+      {item.place && <p className="mt-0.5 text-[13px] text-brand-ink-muted">{item.place}</p>}
+    </li>
+  );
+}
+
+/** 하위 부서 카드 + "우리 부서의 특징" — 2열 (2026-10-09 김창진 원고) */
+function GroupCardDetailed({ item }: { item: EduGroupItem }) {
+  return (
+    <li className="flex flex-col rounded-2xl border border-brand-line bg-brand-surface p-5 md:p-6">
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="text-[18px] font-bold text-brand-ink md:text-[20px]">{item.name}</p>
+        {item.place && (
+          <span className="shrink-0 rounded-lg bg-brand-accent/5 px-2.5 py-1 text-[12px] font-bold text-brand-accent md:text-[13px]">
+            {item.place}
+          </span>
+        )}
+      </div>
+      {item.meta && (
+        <p className="mt-1 text-[14px] leading-relaxed text-brand-ink-muted md:text-[15px]">{item.meta}</p>
+      )}
+      {item.features?.length ? (
+        <ul className="mt-4 space-y-2 border-t border-brand-line pt-4">
+          {item.features.map((feature) => (
+            <li key={feature} className="flex gap-2 text-[14px] leading-snug text-brand-ink/85 md:text-[15px]">
+              <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-brand-accent" />
+              {feature}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-4 border-t border-brand-line pt-4 text-[13px] text-brand-ink-muted">
+          부서 프로그램 안내 준비 중
+        </p>
+      )}
+    </li>
   );
 }

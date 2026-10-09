@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SubPage } from '@/components/layout/sub-page';
 import { FloorMap } from '@/components/interactive/floor-map';
+import { Directions } from '@/components/content/directions';
 import { FaqAccordion } from '@/components/content/faq-accordion';
 
 export const metadata: Metadata = { title: '교회소개' };
@@ -38,15 +39,21 @@ export default function IntroPage() {
         alt: '파란 하늘을 배경으로 올려다본 경향교회 본당과 첨탑',
         lead: '1973년부터 가양동에서 — 경향교회의 이야기와 섬기는 사람들을 소개합니다.',
       }}
+      // `헌금 · 행정`(온라인 헌금·공지·자료실·신청·예약)은 각자 독립 페이지 — GNB에서 바로 가므로 여기 카드로 붙이지 않는다
+      // (2026-10-09 사용자: 페이지마다 자기 콘텐츠만, 뎁스 최소화)
+      hideOutboundGroups={['헌금 · 행정']}
       overrides={{
+        // 오시는 길 — 카카오맵 · 건물 3곳 · 대중교통 (현행 Page/36 기준, 2026-10-09) + 실내 길찾기
         directions: (
-          <div className="space-y-8">
-            <p className="text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
-              서울 강서구 가양동. 9호선 가양역 도보 N분. [ 상세 주소·오시는 길 안내 입력 예정 ]
-              <br />
-              아래 지도에서 방·시설을 두 번 선택하면 건물 안에서의 이동 경로를 안내합니다.
-            </p>
-            <FloorMap />
+          <div>
+            <Directions />
+            <div className="mt-12 border-t border-brand-line pt-10 md:mt-14 md:pt-12">
+              <h3 className="text-[19px] font-bold text-brand-ink md:text-[22px]">실내 길찾기</h3>
+              <p className="mb-6 mt-1.5 text-[15px] leading-relaxed text-brand-ink-muted md:text-base">
+                지도에서 방·시설을 두 번 선택하면 건물 안에서의 이동 경로를 안내합니다.
+              </p>
+              <FloorMap />
+            </div>
           </div>
         ),
         qna: <FaqAccordion items={QNA_ITEMS} />,

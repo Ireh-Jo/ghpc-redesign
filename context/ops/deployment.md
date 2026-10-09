@@ -25,6 +25,7 @@ Vercel Project Settings → Environment Variables:
 | `SUPABASE_SERVICE_ROLE_KEY` | ✓ | preview에선 별도 프로젝트 권장 | (.env.local) |
 | `NEXT_PUBLIC_SITE_URL` | https://www.ghpc.or.kr | https://*-preview.vercel.app | http://localhost:3000 |
 | `SENTRY_DSN` | ✓ | (선택) | - |
+| `NEXT_PUBLIC_KAKAO_MAP_KEY` | ✓ | ✓ | (.env.local) — 카카오 JavaScript 키. 콘솔에 각 도메인 등록 필수 (등록 안 된 도메인에선 지도가 안 뜨고 바로가기 카드로 내려앉는다) |
 | `YOUTUBE_API_KEY` | ✓ | ✓ | (.env.local) |
 | `YOUTUBE_CHANNEL_ID` | UC... | UC... | UC... |
 

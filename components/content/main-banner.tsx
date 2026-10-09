@@ -47,7 +47,8 @@ export function MainBanner({ banners }: { banners: Banner[] }) {
             <div
               key={banner.id}
               aria-hidden={i !== index}
-              className="aspect-[16/9] w-full shrink-0 md:aspect-[32/10]"
+              // PC 비율 3.2:1 → 3.6:1 (높이 약 11% ↓, 2026-10-09 "너무 높다") — 위아래 5.6%씩만 잘려 원본의 로고·그림이 남는다
+              className="aspect-[16/9] w-full shrink-0 md:aspect-[36/10]"
             >
               {banner.href ? (
                 <Link

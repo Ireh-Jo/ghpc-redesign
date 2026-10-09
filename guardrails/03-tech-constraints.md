@@ -41,6 +41,7 @@
 
 | 대상 | 용도 | 비고 |
 |---|---|---|
+| **카카오맵** JavaScript SDK | `/intro#directions` 오시는 길 지도 (본당·선교회관·교육관 마커) | 2026-10-09 승인(사용자 — 현행 사이트와 같은 지도). `dapi.kakao.com/v2/maps/sdk.js?autoload=false`를 `interactive/KakaoMap`에서 **그 섹션이 화면에 다가올 때만** 로드. ② 방문자 IP·리퍼러가 카카오로 간다(지도 타일 요청) ③ 앱 키(`NEXT_PUBLIC_KAKAO_MAP_KEY`, JavaScript 키 · 공개)가 없거나 로드 실패면 **지도 앱 바로가기 카드**로 내려앉는다(빈 상자 없음). 키는 카카오 개발자 콘솔에서 사이트 도메인 등록 필요 |
 | Cloudflare **Turnstile** | 시설 예약 신청·취소의 매크로 방지 | 2026-09-19 승인. **패키지를 깔지 않는다** — `challenges.cloudflare.com/turnstile/v0/api.js`를 클라이언트 컴포넌트에서 직접 로드. 사이트 키(공개)·시크릿(서버)은 env. 키가 없으면 폼이 제출을 막는다 |
 
 > 외부 스크립트는 npm 의존성보다 **추적이 어렵다.** 새로 추가할 땐 ① 무엇을 로드하는지 ② 어떤 데이터가

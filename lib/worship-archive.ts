@@ -166,3 +166,40 @@ export async function getSpecialArchive(): Promise<ArchiveCategory[]> {
   };
   return SPECIAL_ARCHIVE.map((c) => merge(c, feed[c.key] ?? [], taken));
 }
+
+/* ── 경향의 일주일 (`/activity#weekly`) ──────────────────── */
+
+const WEEKLY_PLAYLIST = 'PLX5x3I1V2lX-JO2NQ3dHOkL9niS4d8j8c';
+
+/**
+ * 경향의 일주일 — 유튜브 `경향의일주일` 재생목록 RSS 최신 15편 (2026-10-09, `/worship` 예배 실황과 같은 방식).
+ * 시드가 없다 — 이 분류는 손으로 관리한 목록이 없었다. RSS가 실패하면 빈 배열 → 페이지가 재생목록 링크로 내려앉는다.
+ *
+ * 제목이 매주 `경향의 일주일 2026-10-04 | 경향교회`로 같아 목록에서 구분이 안 된다 → `10월 4일 경향의 일주일`로 바꿔 보인다.
+ * 설명란은 예배 시간 안내 고정 문구뿐이라 쓰지 않는다.
+ */
+export async function getWeeklyArchive(): Promise<ArchiveCategory[]> {
+  const feed = await getPlaylistFeed(WEEKLY_PLAYLIST);
+  const videos: ArchiveVideo[] = feed
+    .map((e) => {
+      const m = e.title.match(/(\d{4})-(\d{2})-(\d{2})/);
+      if (!m) return null;
+      return {
+        videoId: e.videoId,
+        date: `${m[1]}.${m[2]}.${m[3]}`,
+        title: `${Number(m[2])}월 ${Number(m[3])}일 경향의 일주일`,
+      };
+    })
+    .filter((v): v is ArchiveVideo => v !== null)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, KEEP);
+
+  return [
+    {
+      key: 'weekly',
+      label: '경향의 일주일',
+      videos,
+      legacyUrl: 'https://www.ghpc.or.kr/Board/Index/11297',
+    },
+  ];
+}

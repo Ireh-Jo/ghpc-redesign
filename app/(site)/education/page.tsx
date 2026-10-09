@@ -5,8 +5,8 @@ import { FadeIn } from '@/components/layout/fade-in';
 import { SideNav } from '@/components/layout/side-nav';
 import { SideNavLayout, sideSectionClass } from '@/components/layout/side-nav-layout';
 import { EduDept } from '@/components/content/edu-dept';
+import { EduOverview } from '@/components/content/edu-overview';
 import { EDU_DEPTS, CHURCH_TEL } from '@/lib/education';
-import { EduPrinciples } from './_principles';
 
 export const metadata: Metadata = { title: '교육' };
 
@@ -26,7 +26,11 @@ export const metadata: Metadata = { title: '교육' };
  * ── 2026-10-03: 좌측 sticky 패널(B안) 확정 ──
  * 2026-09-27 A(상단 탭)·B(좌측 패널)·C(부서별 배너 + 부서별 메뉴) 비교 끝에 B안으로 확정했다.
  * 2단 골격은 `SubPage`와 같은 `SideNavLayout`을 쓴다. lg 미만은 상단 `AnchorNav` 그대로.
- * 교육 방침은 앵커 섹션이 아니라서 2단 밖에 전체 폭으로 둔다.
+ *
+ * ── 2026-10-09 교역자 원고 반영 ──
+ * 김창진 원고(우선)·오태희 원고를 합쳤다 (`lib/education.ts`). 페이지 끝의 "교육 방침"은 원고의 교육목표·
+ * 교육방법·성장 로드맵과 합쳐 **부서 목록 앞의 `EduOverview`**로 올렸다 — 앵커 섹션이 아니라 2단 밖 전체 폭.
+ * 청년회는 목양(`/care#evangelism`)으로 옮겨 6개 부서가 됐다.
  */
 const ANCHORS = EDU_DEPTS.map((dept) => ({ id: dept.id, label: dept.title }));
 
@@ -46,6 +50,8 @@ export default function EducationPage() {
 
       <AnchorNav items={ANCHORS} className="lg:hidden" />
 
+      <EduOverview />
+
       <SideNavLayout
         nav={
           <SideNav
@@ -64,10 +70,6 @@ export default function EducationPage() {
           </section>
         ))}
       </SideNavLayout>
-
-      <div className="border-t border-brand-line">
-        <EduPrinciples />
-      </div>
     </>
   );
 }
